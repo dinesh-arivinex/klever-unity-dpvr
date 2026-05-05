@@ -312,7 +312,7 @@ public class GamificationManager : MonoBehaviour
             }
 
         }
-        StartCoroutine(PostRequest("https://api.klever-edu.com/v1/performance", jsonData));
+        StartCoroutine(PostRequest("http://13.222.120.122/v1/performance", jsonData));
         PlayerPrefs.SetString("PlayerStatus", "Completed");
         yield return new WaitForSeconds(3.5f);
       
@@ -416,7 +416,7 @@ public class GamificationManager : MonoBehaviour
             isCompleted = true
         };
         string jsonData = JsonUtility.ToJson(status);
-        StartCoroutine(SendPatchRequest("https://api.klever-edu.com/v1/device_sync/device_connecting", jsonData));
+        StartCoroutine(SendPatchRequest("http://13.222.120.122/v1/device_sync/device_connecting", jsonData));
 
     }
     IEnumerator SendPatchRequest(string api, string jsonPayload)

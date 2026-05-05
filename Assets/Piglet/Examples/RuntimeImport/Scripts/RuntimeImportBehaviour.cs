@@ -1,4 +1,4 @@
-﻿using Piglet;
+using Piglet;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
@@ -123,10 +123,8 @@ public class RuntimeImportBehaviour : MonoBehaviour
             if (isFirstTime)
             {
                 OnLoadingBar.Invoke();
+                isFirstTime = false;
             }
-
-          
-           
         }
         if(step== GltfImportStep.Download)
         {
@@ -146,7 +144,10 @@ public class RuntimeImportBehaviour : MonoBehaviour
     void Update()
     {
         // advance execution of glTF import task
-       _task.MoveNext();
+        if (_task != null)
+        {
+            _task.MoveNext();
+        }
 
         // spin model about y-axis
        // if (_model != null)

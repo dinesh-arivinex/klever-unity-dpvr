@@ -48,13 +48,16 @@ public class LoadingBar : MonoBehaviour
     {
         loadingScreen.SetActive(true);
 
-         int totalProgressSteps = totalCount;
+        int totalProgressSteps = totalCount > 0 ? totalCount : 100;
+        // Cap the max loading time to around 3-5 seconds to avoid infinite loading screens
+        float waitTime = Mathf.Clamp(5.0f / totalProgressSteps, 0.01f, 0.1f);
+        
         for (int i = 0; i <= totalProgressSteps; i++)
         {
             float progress = Mathf.Clamp01((float)i / totalProgressSteps);
             sliderNew.fillAmount = progress;
             progressText.text = (progress * 100f).ToString("F0") + "%";
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.1f)); // Random delay between updates
+            yield return new WaitForSeconds(waitTime); // Consistent, safe delay
         }
 
         // Complete the progress

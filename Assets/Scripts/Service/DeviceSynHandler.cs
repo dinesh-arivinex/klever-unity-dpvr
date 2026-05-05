@@ -94,7 +94,7 @@ public class DeviceSynHandler : MonoBehaviour
             if (isStartGame)
             {
                
-                StartCoroutine(WebGetRequest("https://api.klever-edu.com/v1/device_sync/live_tracking"));
+                StartCoroutine(WebGetRequest("http://13.222.120.122/v1/device_sync/live_tracking"));
             }
         }
     }
@@ -109,7 +109,7 @@ public class DeviceSynHandler : MonoBehaviour
             isCompleted = isGameOver
         };
         jsonData = JsonUtility.ToJson(status);
-        StartCoroutine(SendPatchRequest("https://api.klever-edu.com/v1/device_sync/device_connecting", jsonData));
+        StartCoroutine(SendPatchRequest("http://13.222.120.122/v1/device_sync/device_connecting", jsonData));
 
     }
     IEnumerator SendPatchRequest(string api, string jsonPayload)

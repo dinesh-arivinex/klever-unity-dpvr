@@ -81,7 +81,7 @@ public class API : MonoBehaviour
 
     public void CallingClassVrExperiance()
     {
-        StartCoroutine(WebGetRequest("https://api.klever-edu.com/v1/experience"));
+        StartCoroutine(WebGetRequest("http://13.222.120.122/v1/experience"));
 
     }
     public bool IsmodelDownload()
