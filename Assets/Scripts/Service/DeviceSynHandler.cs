@@ -1,10 +1,9 @@
-
 using SimpleJSON;
 using System;
 using System.Collections;
+using Klass.Net;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class SpaceData
@@ -14,6 +13,12 @@ public class SpaceData
     public string sectionId;
     public string gradeId;
 }
+
+/// <summary>
+/// MQTT-driven replacement for the previous 2s polling loop.
+/// Public surface (fields, methods, statics) is preserved so that
+/// LoadingBar / ServiceScript / GameManager / API continue to compile.
+/// </summary>
 public class DeviceSynHandler : MonoBehaviour
 {
     [System.Serializable]
@@ -24,32 +29,29 @@ public class DeviceSynHandler : MonoBehaviour
         public bool isSynced;
         public bool isCompleted;
     }
+
     [System.Serializable]
     public class Response
     {
         public Data data;
         public string message;
-        // Add other fields if needed
     }
+
     public class DeviceStatus
     {
-        //  public string deviceId;
         public bool isActive;
         public bool isSynced;
         public bool isCompleted;
     }
+
     public class SynchDevice
     {
         public string deviceId;
         public bool isCompleted;
     }
-  
 
-
+    // Preserved public surface
     private bool isSync;
-    private string jsonData;
-    float syncTimer = 0f;
-    float syncInterval = 2f;
     public bool isActiveDevice;
     public bool isSyncedDevice;
     public bool isCompletedDevice;
@@ -57,7 +59,7 @@ public class DeviceSynHandler : MonoBehaviour
     public GameObject WelcomeScene;
     private API apiManager;
     private bool isStartGame;
-    public  bool isOpenGame;
+    public bool isOpenGame;
     public LoadingBar loadingBar;
     public static bool isGameOver;
     public bool isOpening;
@@ -65,246 +67,167 @@ public class DeviceSynHandler : MonoBehaviour
     public GamificationManager gamificationManager;
     private bool isStopCalling;
     private bool isFirstTime;
-    private bool isLobby=true;
-   // public TextMeshProUGUI text;
-   
-    // Start is called before the first frame update
+    private bool isLobby = true;
+
+    private bool _mqttBooted;
+    private string _lastPublishedFingerprint;
+    private const float HeartbeatSeconds = 30f;
+    private float _heartbeatTimer;
+
     void Start()
     {
-        isFirstTime=true;
+        isFirstTime = true;
         apiManager = GameManager.Instance.api;
         isActiveDevice = false;
-        ActiveDeviceStatus();
         isOpenWelcomeScreen = true;
         isGameOver = false;
-
+        BootMqtt();
     }
 
-   
-    // Update is called once per frame
-    void FixedUpdate()
+    void OnDestroy()
     {
-        syncTimer += Time.fixedDeltaTime; // Increment the timer with fixed delta time
-
-        if (syncTimer >= syncInterval)
+        if (KlassMqttClient.Instance != null)
         {
-            syncTimer = 0f; // 
-
-            ActiveDeviceStatus();
-            if (isStartGame)
-            {
-               
-                StartCoroutine(WebGetRequest("http://13.222.120.122/v1/device_sync/live_tracking"));
-            }
+            KlassMqttClient.Instance.OnConnected      -= HandleMqttConnected;
+            KlassMqttClient.Instance.OnDisconnected   -= HandleMqttDisconnected;
+            KlassMqttClient.Instance.OnSessionControl -= HandleSessionControl;
+            KlassMqttClient.Instance.OnCommand        -= HandleCommand;
         }
     }
-    public void ActiveDeviceStatus()
+
+    void Update()
     {
-
-        DeviceStatus status = new DeviceStatus
+        _heartbeatTimer += Time.deltaTime;
+        if (_heartbeatTimer >= HeartbeatSeconds)
         {
-            //  deviceId = SystemInfo.deviceUniqueIdentifier,
-            isActive = true,
-            isSynced = isSync,
-            isCompleted = isGameOver
-        };
-        jsonData = JsonUtility.ToJson(status);
-        StartCoroutine(SendPatchRequest("http://13.222.120.122/v1/device_sync/device_connecting", jsonData));
-
+            _heartbeatTimer = 0f;
+            PublishStateIfChanged(force: true);
+        }
     }
-    IEnumerator SendPatchRequest(string api, string jsonPayload)
+
+    private void BootMqtt()
     {
-        string url = api;
-        UnityWebRequest request = new UnityWebRequest(url, "PATCH");
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonPayload);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-        //unComment
-       request.SetRequestHeader("device-id", SystemInfo.deviceUniqueIdentifier);
-       // request.SetRequestHeader("device-id", "aj4y");
-        //  request.SetRequestHeader("Authorization", $"Bearer {bearerToken}");
-
-        // Use the custom CertificateHandler to bypass certificate validation (for development purposes only)
-        request.certificateHandler = new BypassCertificateHandler();
-
-        // Send the request and await a response
-        yield return request.SendWebRequest();
-       
-        if (request.result != UnityWebRequest.Result.Success)
+        if (_mqttBooted) return;
+        _mqttBooted = true;
+        if (KlassMqttClient.Instance == null)
         {
-            DebugUtil.LogError("Error: " + request.error);
+            var go = new GameObject("[KlassMqttClient]");
+            go.AddComponent<KlassMqttClient>();
         }
-        else
+        var c = KlassMqttClient.Instance;
+        c.OnConnected      += HandleMqttConnected;
+        c.OnDisconnected   += HandleMqttDisconnected;
+        c.OnSessionControl += HandleSessionControl;
+        c.OnCommand        += HandleCommand;
+        c.Begin();
+    }
+
+    private void HandleMqttConnected()
+    {
+        isActiveDevice = true;
+        PublishStateIfChanged(force: true);
+    }
+
+    private void HandleMqttDisconnected()
+    {
+        isActiveDevice = false;
+    }
+
+    private void HandleSessionControl(JSONNode payload)
+    {
+        if (payload == null || payload.Count == 0)
         {
-            DebugUtil.Log("Success: " + request.downloadHandler.text);
-            string value = request.downloadHandler.text;
-
-
-           
-            Response response = JsonUtility.FromJson<Response>(value);
-            string message = response.message;
-            if(message== "Experience not yet started" && isLobby==false)
-            {
-                LoadScene();
-            }
-            isActiveDevice = response.data.isActive;
-            isSyncedDevice = response.data.isSynced;
-            isCompletedDevice = response.data.isCompleted;
-
+            if (!isLobby) LoadScene();
+            return;
         }
-        if (isCompletedDevice)
-            yield return null; 
-        // Dispose of the certificate handler
-        if (request.certificateHandler != null)
-        {
-            request.certificateHandler.Dispose();
-        }
-        if(isCompletedDevice)
-        {
-            DebugUtil.Log("over");
-           yield return null;
-        }
-        if (isActiveDevice && isOpenWelcomeScreen )
-        {
-            isLobby = false;
-            isOpenWelcomeScreen = false;
-            WelcomeScene.SetActive(true);
-            if (apiManager.isLoadedResponse == false)
-            {
-                apiManager.CallingClassVrExperiance();
-                // isOpenWelcomeScreen = true;
-            }
+        bool isStart = payload["isStart"].AsBool;
+        bool isStop  = payload["isStop"].AsBool;
 
+        if (isFirstTime && !string.IsNullOrEmpty(payload["gradeId"]))
+        {
+            string experianceID = payload["experienceId"];
+            string schoolId     = payload["schoolId"];
+            string sectionId    = payload["sectionId"];
+            string gradeId      = payload["gradeId"];
+            if (gamificationManager != null)
+                gamificationManager.StudentPerformance(experianceID, schoolId, sectionId, gradeId);
+            isFirstTime = false;
+        }
+
+        isStartButtonPressed = isStart;
+        if (isStart && !isOpenGame)
+        {
+            isOpening = true;
+            if (loadingBar != null) loadingBar.SynchDevice();
+            isOpenGame = true;
+        }
+        if (isStop && isOpening && !string.IsNullOrEmpty(payload["experienceId"]) && !isStopCalling)
+        {
+            isStopCalling = true;
         }
     }
+
+    private void HandleCommand(JSONNode cmd)
+    {
+        if (cmd == null) return;
+        string action = cmd["action"];
+        string msgId  = cmd["msgId"];
+        KlassMqttClient.Instance?.PublishCmdAck(msgId, ok: true);
+        if (action == "stop") LoadScene();
+    }
+
+    public void ActiveDeviceStatus()      => PublishStateIfChanged(force: false);
+
     public void SynDevice()
     {
-
-
         isSync = true;
         isStartGame = true;
-
-
+        isSyncedDevice = true;
+        PublishStateIfChanged(force: true);
+        TriggerWelcomeIfReady();
     }
 
-
-    public IEnumerator WebGetRequest(string api)
-    {
-
-        var apireq = api;
-        string jsonData;
-        var req = new UnityWebRequest(apireq, "GET");
-        //  byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(SystemInfo.deviceUniqueIdentifier);
-        // req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
-        req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        req.SetRequestHeader("Content-Type", "application/json");
-        //uncomment 
-         req.SetRequestHeader("device-id", SystemInfo.deviceUniqueIdentifier);
-        //req.SetRequestHeader("device-id", "aj4y");
-        //  req.SetRequestHeader("device-id", "axy");
-        //Send the request then wait here until it returns
-        req.certificateHandler = new BypassCertificateHandler();
-
-        req.downloadHandler = new DownloadHandlerBuffer();
-        yield return req.Send();
-        if (req.isNetworkError) // error in request
-        {
-            DebugUtil.Log("Error While Sending: " + req.error);
-        }
-        else
-        {
-
-
-            jsonData = req.downloadHandler.text;
-          
-            var spaceData = JSONNode.Parse(jsonData);
-            //uncomment
-       /*     if (spaceData["code"] != null && spaceData["code"].AsInt == 401)
-            {
-                string errorMessage = spaceData["message"];
-                DebugUtil.Log("Error: " + errorMessage);
-
-            }
-*/
-            if (spaceData!=null ||spaceData.Count>0)
-            {
-                string Start = spaceData[0]["isStart"];
-                string Stop = spaceData[0]["isStop"];
-                string sID = spaceData[0]["schoolId"];
-
-
-                bool.TryParse(spaceData[0]["isStart"], out bool isStart);
-                bool.TryParse(spaceData[0]["isStop"], out bool isStop);
-                isStartButtonPressed = isStart;
-                if(isFirstTime&& !string.IsNullOrEmpty(spaceData[0]["gradeId"]))
-                {
-                    string experianceID = spaceData[0]["experienceId"];
-                    string schoolId = spaceData[0]["schoolId"];
-                    string sectionId = spaceData[0]["sectionId"];
-                    string gradeId = spaceData[0]["gradeId"];
-                    SpaceData spaceDataObject = new SpaceData
-                    {
-                        experienceId = experianceID,
-                        schoolId = schoolId,
-                        sectionId = sectionId,
-                        gradeId = gradeId
-                    };
-                    gamificationManager.StudentPerformance(experianceID, schoolId, sectionId, gradeId);
-               //     text.text = ("experienceId " + experianceID + "\nschoolId" + schoolId + "\nsectionId" + sectionId + "\ngradeId" + gradeId);
-                    isFirstTime = false;
-                }
-                
-                if (isStart == true && isOpenGame != true)
-                {
-                    isOpening = true;
-                    loadingBar.SynchDevice();
-                    isOpenGame = true;
-                  
-
-
-                }
-                if (isStop && isOpening)
-                {
-                    if(!string.IsNullOrEmpty(spaceData[0]["experienceId"]))
-                    {
-                        if(!isStopCalling)
-                        {
-                            isStopCalling=true;
-                          /*  string experianceID = spaceData[0]["experienceId"];
-                            string schoolId = spaceData[0]["schoolId"];
-                            string sectionId = spaceData[0]["sectionId"];
-                            string gradeId = spaceData[0]["gradeId"];
-                            gamificationManager.StudentPerformance(experianceID, schoolId, sectionId, gradeId);*/
-                        }
-                      
-                       /* string currentSceneName = SceneManager.GetActiveScene().name;
-                        SceneManager.LoadScene(currentSceneName);*/
-                    }
-                    
-                    
-                }
-                if (isStop && !isStopCalling)
-                {
-                   // LoadScene();
-
-
-                }
-
-            }
-
-
-        }
-    }
     public void ApplicationStatus()
     {
         DebugUtil.Log("reg the account");
     }
+
     public void LoadScene()
     {
         isGameOver = true;
+        isCompletedDevice = true;
+        PublishStateIfChanged(force: true);
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }
-    
+
+    private void TriggerWelcomeIfReady()
+    {
+        if (!isActiveDevice || !isOpenWelcomeScreen) return;
+        isLobby = false;
+        isOpenWelcomeScreen = false;
+        if (WelcomeScene != null) WelcomeScene.SetActive(true);
+        if (apiManager != null && apiManager.isLoadedResponse == false)
+            apiManager.CallingClassVrExperiance();
+    }
+
+    private void PublishStateIfChanged(bool force)
+    {
+        var mqtt = KlassMqttClient.Instance;
+        if (mqtt == null || !mqtt.IsConnected) return;
+
+        bool active    = true;
+        bool synced    = isSync;
+        bool completed = isGameOver;
+
+        var fp = $"{active}|{synced}|{completed}";
+        if (!force && fp == _lastPublishedFingerprint) return;
+        _lastPublishedFingerprint = fp;
+
+        mqtt.PublishState(active, synced, completed);
+
+        isActiveDevice    = active;
+        isSyncedDevice    = synced;
+        isCompletedDevice = completed;
+    }
 }

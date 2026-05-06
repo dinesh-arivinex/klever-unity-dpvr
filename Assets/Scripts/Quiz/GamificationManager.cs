@@ -312,7 +312,7 @@ public class GamificationManager : MonoBehaviour
             }
 
         }
-        StartCoroutine(PostRequest("http://13.222.120.122/v1/performance", jsonData));
+        StartCoroutine(PostRequest(Klass.Net.KlassEndpoints.V1("performance"), jsonData));
         PlayerPrefs.SetString("PlayerStatus", "Completed");
         yield return new WaitForSeconds(3.5f);
       
@@ -408,16 +408,10 @@ public class GamificationManager : MonoBehaviour
     // Method to enable selected games based on data from API
     public void ActiveDeviceStatus()
     {
-
-        DeviceStatus status = new DeviceStatus
-        {
-           
-            
-            isCompleted = true
-        };
-        string jsonData = JsonUtility.ToJson(status);
-        StartCoroutine(SendPatchRequest("http://13.222.120.122/v1/device_sync/device_connecting", jsonData));
-
+        // Migrated from REST PATCH /device_sync to retained MQTT state publish.
+        var mqtt = Klass.Net.KlassMqttClient.Instance;
+        if (mqtt != null && mqtt.IsConnected)
+            mqtt.PublishState(isActive: true, isSynced: true, isCompleted: true);
     }
     IEnumerator SendPatchRequest(string api, string jsonPayload)
     {

@@ -133,7 +133,7 @@ public class DeviceIDManager : MonoBehaviour
         registration.deviceID = deviceID;
         registration.schoolID = inputText.text;
         string mydate = JsonUtility.ToJson(registration);
-      StartCoroutine(WebPostResponse("http://13.222.120.122/v1/devices", mydate));
+      StartCoroutine(WebPostResponse(Klass.Net.KlassEndpoints.V1("devices"), mydate));
 
     }
     public class BypassCertificateHandler : CertificateHandler
