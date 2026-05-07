@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using SimpleJSON;
 using uPLibrary.Networking.M2Mqtt;
-using uPLibrary.Networking.M2Mqtt.Messages;
 using UnityEngine;
 
 namespace Klass.Net
@@ -187,7 +187,7 @@ namespace Klass.Net
             {
                 _client = new MqttClient(KlassEndpoints.MqttHost, KlassEndpoints.MqttPort, KlassEndpoints.MqttUseTls,
                     null, null, MqttSslProtocols.TLSv1_2);
-                _client.MqttMsgPublishReceived += HandleIncomingMessage;
+                SubscribeMqttPublish(_client);
                 _client.ConnectionClosed += (_, __) => {
                     EnqueueMain(() => { IsConnected = false; OnDisconnected?.Invoke(); });
                 };
@@ -200,7 +200,7 @@ namespace Klass.Net
                     _creds.Username,
                     _creds.Password,
                     /*willRetain*/ true,
-                    /*willQos*/ MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE,
+                    /*willQos*/ (byte)1,
                     /*willFlag*/ true,
                     willTopic,
                     Encoding.UTF8.GetString(willPayload),
@@ -232,11 +232,7 @@ namespace Klass.Net
                         MqttTopics.SessionControl(SchoolId),
                         MqttTopics.Broadcast(SchoolId),
                     },
-                    new[] {
-                        MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE,
-                        MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE,
-                        MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE,
-                    });
+                    new[] { (byte)1, (byte)1, (byte)1 });
             }
             catch (Exception ex)
             {
@@ -251,7 +247,7 @@ namespace Klass.Net
                 online["ts"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
                 _client.Publish(MqttTopics.Status(SchoolId, DeviceId),
                     Encoding.UTF8.GetBytes(online.ToString()),
-                    MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, /*retain*/ true);
+                    (byte)1, /*retain*/ true);
             }
             catch (Exception ex) { Debug.LogWarning($"[KlassMqtt] presence publish failed: {ex.Message}"); }
 
@@ -279,11 +275,25 @@ namespace Klass.Net
             }
         }
 
-        private void HandleIncomingMessage(object sender, MqttMsgPublishEventArgs e)
+        private void SubscribeMqttPublish(MqttClient client)
+        {
+            var ev = client.GetType().GetEvent("MqttMsgPublishReceived");
+            if (ev == null) { Debug.LogError("[KlassMqtt] MqttMsgPublishReceived event not found on MqttClient"); return; }
+            var mi = GetType().GetMethod("HandleIncomingMessage", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (mi == null) { Debug.LogError("[KlassMqtt] HandleIncomingMessage method not found"); return; }
+            var del = Delegate.CreateDelegate(ev.EventHandlerType, this, mi);
+            ev.AddEventHandler(client, del);
+        }
+
+        [UnityEngine.Scripting.Preserve]
+        private void HandleIncomingMessage(object sender, EventArgs e)
         {
             // M2Mqtt fires this on a worker thread — defer handler invocation.
-            string topic = e.Topic;
-            string payload = e.Message != null ? Encoding.UTF8.GetString(e.Message) : "";
+            // Access Topic/Message via reflection to avoid compile-time dependency on MqttMsgPublishEventArgs.
+            var eType = e.GetType();
+            string topic = eType.GetProperty("Topic")?.GetValue(e) as string ?? "";
+            byte[] msgBytes = eType.GetProperty("Message")?.GetValue(e) as byte[];
+            string payload = msgBytes != null ? Encoding.UTF8.GetString(msgBytes) : "";
             EnqueueMain(() =>
             {
                 JSONNode node = null;
@@ -309,7 +319,7 @@ namespace Klass.Net
                         off["ts"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
                         _client.Publish(MqttTopics.Status(SchoolId, DeviceId),
                             Encoding.UTF8.GetBytes(off.ToString()),
-                            MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
+                            (byte)1, true);
                     }
                     catch { /* swallow */ }
                     _client.Disconnect();
