@@ -159,10 +159,12 @@ public class DeviceSynHandler : MonoBehaviour
         {
             isOpening = true;
             if (loadingBar != null) loadingBar.SynchDevice();
+            TriggerWelcomeIfReady();
             isOpenGame = true;
         }
         if (isStop && isOpening && !string.IsNullOrEmpty(payload["experienceId"]) && !isStopCalling)
         {
+            isStartButtonPressed = false;
             isStopCalling = true;
         }
     }
@@ -184,7 +186,7 @@ public class DeviceSynHandler : MonoBehaviour
         isStartGame = true;
         isSyncedDevice = true;
         PublishStateIfChanged(force: true);
-        TriggerWelcomeIfReady();
+        if (isStartButtonPressed) TriggerWelcomeIfReady();
     }
 
     public void ApplicationStatus()
@@ -203,10 +205,12 @@ public class DeviceSynHandler : MonoBehaviour
 
     private void TriggerWelcomeIfReady()
     {
-        if (!isActiveDevice || !isOpenWelcomeScreen) return;
+        if (!isStartButtonPressed || !isActiveDevice || !isSync || !isOpenWelcomeScreen) return;
         isLobby = false;
         isOpenWelcomeScreen = false;
         if (WelcomeScene != null) WelcomeScene.SetActive(true);
+        if (gamificationManager != null && gamificationManager.welcomeSessionScene != null && gamificationManager.welcomeSessionScene != WelcomeScene)
+            gamificationManager.welcomeSessionScene.SetActive(true);
         if (apiManager != null && apiManager.isLoadedResponse == false)
             apiManager.CallingClassVrExperiance();
     }
