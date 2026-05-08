@@ -185,8 +185,9 @@ namespace Klass.Net
             // 2. open TCP connection
             try
             {
+                var sslProtocol = KlassEndpoints.MqttUseTls ? MqttSslProtocols.TLSv1_2 : MqttSslProtocols.None;
                 _client = new MqttClient(KlassEndpoints.MqttHost, KlassEndpoints.MqttPort, KlassEndpoints.MqttUseTls,
-                    null, null, MqttSslProtocols.TLSv1_2);
+                    null, null, sslProtocol);
                 SubscribeMqttPublish(_client);
                 _client.ConnectionClosed += (_, __) => {
                     EnqueueMain(() => { IsConnected = false; OnDisconnected?.Invoke(); });
@@ -216,7 +217,7 @@ namespace Klass.Net
             }
             catch (Exception ex)
             {
-                Debug.LogWarning($"[KlassMqtt] connect threw: {ex.Message}");
+                Debug.LogWarning($"[KlassMqtt] connect threw: {ex.GetType().Name}: {ex.Message} (host={KlassEndpoints.MqttHost}:{KlassEndpoints.MqttPort} tls={KlassEndpoints.MqttUseTls})");
                 SafeDisconnect();
                 yield break;
             }
