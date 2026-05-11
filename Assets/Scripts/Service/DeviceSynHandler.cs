@@ -225,7 +225,7 @@ public class DeviceSynHandler : MonoBehaviour
         bool synced    = isSync;
         bool completed = isGameOver;
         int progress   = synced ? 100 : Mathf.Clamp(_downloadProgress, 0, 100);
-        string playState = completed ? "completed" : synced ? "ready" : "downloading";
+        string playState = completed ? "completed" : synced ? "ready" : (_downloadProgress > 0 ? "downloading" : "idle");
 
         // Include progress in the fingerprint so a changing % triggers a publish.
         var fp = $"{active}|{synced}|{completed}|{progress}|{playState}";
