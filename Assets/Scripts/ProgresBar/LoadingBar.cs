@@ -57,12 +57,15 @@ public class LoadingBar : MonoBehaviour
             float progress = Mathf.Clamp01((float)i / totalProgressSteps);
             sliderNew.fillAmount = progress;
             progressText.text = (progress * 100f).ToString("F0") + "%";
+            // Broadcast live download progress to the teacher dashboard via MQTT.
+            if (deviceSynHandler != null) deviceSynHandler.PublishDownloadProgress(progress);
             yield return new WaitForSeconds(waitTime); // Consistent, safe delay
         }
 
         // Complete the progress
         sliderNew.fillAmount = 1f;
         progressText.text = "100%";
+        if (deviceSynHandler != null) deviceSynHandler.PublishDownloadProgress(1f);
         isLoaded=true;
         DeviceSync();
     }

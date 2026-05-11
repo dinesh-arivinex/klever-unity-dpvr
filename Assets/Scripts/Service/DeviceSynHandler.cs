@@ -73,6 +73,7 @@ public class DeviceSynHandler : MonoBehaviour
     private string _lastPublishedFingerprint;
     private const float HeartbeatSeconds = 30f;
     private float _heartbeatTimer;
+    private int _downloadProgress; // 0..100, set by LoadingBar via PublishDownloadProgress
 
     void Start()
     {
@@ -223,15 +224,31 @@ public class DeviceSynHandler : MonoBehaviour
         bool active    = true;
         bool synced    = isSync;
         bool completed = isGameOver;
+        int progress   = synced ? 100 : Mathf.Clamp(_downloadProgress, 0, 100);
+        string playState = completed ? "completed" : synced ? "ready" : "downloading";
 
-        var fp = $"{active}|{synced}|{completed}";
+        // Include progress in the fingerprint so a changing % triggers a publish.
+        var fp = $"{active}|{synced}|{completed}|{progress}|{playState}";
         if (!force && fp == _lastPublishedFingerprint) return;
         _lastPublishedFingerprint = fp;
 
-        mqtt.PublishState(active, synced, completed);
+        mqtt.PublishStateWithProgress(active, synced, completed, progress, playState);
 
         isActiveDevice    = active;
         isSyncedDevice    = synced;
         isCompletedDevice = completed;
+    }
+
+    /// <summary>
+    /// Called by LoadingBar (and any other asset pipeline) every time the
+    /// download progress changes. Throttled internally: we only re-publish
+    /// when the integer percent changes, to avoid flooding the broker.
+    /// </summary>
+    public void PublishDownloadProgress(float percent01)
+    {
+        int p = Mathf.Clamp(Mathf.RoundToInt(percent01 * 100f), 0, 100);
+        if (p == _downloadProgress) return;
+        _downloadProgress = p;
+        PublishStateIfChanged(force: false);
     }
 }

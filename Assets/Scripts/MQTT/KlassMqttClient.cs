@@ -112,6 +112,27 @@ namespace Klass.Net
             PublishJson(MqttTopics.State(SchoolId, DeviceId), node, retain: true, qos: 1);
         }
 
+        /// <summary>
+        /// Publish a richer state payload that includes the live asset-download
+        /// progress (0-100). The teacher dashboard subscribes to retained state
+        /// messages, so even a freshly-opened browser tab sees the latest value.
+        /// </summary>
+        public void PublishStateWithProgress(bool isActive, bool isSynced, bool isCompleted,
+                                             int downloadProgress, string playState = null,
+                                             string experienceId = null)
+        {
+            if (!IsConnected) return;
+            var node = new JSONObject();
+            node["isActive"]         = isActive;
+            node["isSynced"]         = isSynced;
+            node["isCompleted"]      = isCompleted;
+            node["downloadProgress"] = Mathf.Clamp(downloadProgress, 0, 100);
+            if (!string.IsNullOrEmpty(playState))    node["playState"]    = playState;
+            if (!string.IsNullOrEmpty(experienceId)) node["experienceId"] = experienceId;
+            node["ts"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            PublishJson(MqttTopics.State(SchoolId, DeviceId), node, retain: true, qos: 1);
+        }
+
         public void PublishTelemetry(JSONObject node)
         {
             if (!IsConnected) return;
