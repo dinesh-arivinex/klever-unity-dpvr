@@ -160,20 +160,33 @@ public class DeviceSynHandler : MonoBehaviour
         if (isStart && !isOpenGame)
         {
             isOpening = true;
-            // Show the loading UI. Wrapped in try/catch so a UI error (e.g.
-            // LoadingBar misconfigured in the scene) never aborts the download.
+            isLobby = false;
+
+            // Step 1: Enable the Welcome Scene panel immediately when Start is pressed.
+            // This also sets isOpenWelcomeScreen = false, which is required by API.cs
+            // to allow processing the experience response (breaking the circular
+            // dependency where download couldn't start without the welcome screen
+            // being shown, and the welcome screen couldn't show without isSync=true).
+            isOpenWelcomeScreen = false;
+            if (WelcomeScene != null) WelcomeScene.SetActive(true);
+            if (gamificationManager != null
+                && gamificationManager.welcomeSessionScene != null
+                && gamificationManager.welcomeSessionScene != WelcomeScene)
+                gamificationManager.welcomeSessionScene.SetActive(true);
+
+            // Step 2: Show the loading bar UI (hides black sphere, reveals progress bar).
             if (loadingBar != null)
             {
                 try { loadingBar.SynchDevice(); }
                 catch (System.Exception e) { UnityEngine.Debug.LogWarning("[DeviceSynHandler] LoadingBar.SynchDevice error (non-fatal): " + e.Message); }
             }
-            // Directly trigger the experience download here so VR begins
-            // fetching assets as soon as the teacher presses "Start class".
-            // TriggerWelcomeIfReady() requires isSync=true (set after download
-            // completes) so it cannot start the download itself — we do it here.
+
+            // Step 3: Fetch experience data. Now allowed because isOpenWelcomeScreen=false.
+            // API.cs will process the response, trigger asset downloads, run the loading
+            // bar progress coroutine, then call SynDevice() → TTS → experience flow.
             if (apiManager != null && !apiManager.isLoadedResponse)
                 apiManager.CallingClassVrExperiance();
-            TriggerWelcomeIfReady();
+
             isOpenGame = true;
         }
 
