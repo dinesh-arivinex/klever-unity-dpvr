@@ -73,22 +73,21 @@ public class RuntimeImportBehaviour : MonoBehaviour
         }
 
         _model = importedModel;
-        
-        Debug.Log("Success!");
-        // _model.tag = tagName;
+
+        Debug.Log("[RuntimeImportBehaviour] Model loaded successfully: " + tagName);
         GameObject mainParentObject = new GameObject("ModelParent");
         _model.transform.SetParent(mainParentObject.transform);
         _model.transform.parent.tag = tagName;
+        mainParentObject.transform.position = gameObject.transform.position;
+        mainParentObject.transform.rotation = gameObject.transform.rotation;
+
+        // Mark complete and always fire the downloaded event.
+        // The previous guard (if isLoaded) could silently skip the event when
+        // the Download progress step arrived out-of-order or not at all,
+        // causing DownloadManager → LoadingBar → TTS chain to never trigger.
         isDownloadComplete = true;
-        if (isLoaded)
-            StartGame();
-        mainParentObject.transform.position= gameObject.transform.position;
-        mainParentObject.transform.rotation= gameObject.transform.rotation;
-
-
-
-
-
+        isLoaded = true;   // ensure consistent state
+        StartGame();
     }
     private void StartGame()
     {
@@ -126,9 +125,9 @@ public class RuntimeImportBehaviour : MonoBehaviour
                 isFirstTime = false;
             }
         }
-        if(step== GltfImportStep.Download)
+        if (step == GltfImportStep.Download)
         {
-            isLoaded=true;
+            isLoaded = true;
         }
     }
     public bool IsDownloadComplete()

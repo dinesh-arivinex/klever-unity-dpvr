@@ -54,15 +54,24 @@ public class ClassVrManager : MonoBehaviour
     {
         selectedModels.Clear();
 
-        // Add the GameObjects to the list based on modelDetailsCount
+        // Activate each model downloader object and subscribe to the global
+        // OnDownloadCompleted callback. We keep the LAST one in the list as the
+        // reference passed to LoadingBarSimulator — DownloadManager already
+        // checks that ALL downloads are done before calling LoadingBarSimulator,
+        // so any single valid reference works for the totalStep count.
+        runtimeImportBehaviour = null;
         for (int i = 0; i < modelDetailsCount; i++)
         {
+            if (i >= modelsDownloader.Length)
+            {
+                Debug.LogError("[ClassVrManager] modelsDownloader array too short for modelDetailsCount=" + modelDetailsCount);
+                break;
+            }
             selectedModels.Add(modelsDownloader[i]);
             modelsDownloader[i].SetActive(true);
-            runtimeImportBehaviour = modelsDownloader[i].gameObject.GetComponent<RuntimeImportBehaviour>();
+            runtimeImportBehaviour = modelsDownloader[i].GetComponent<RuntimeImportBehaviour>();
         }
         downloadManager.EnbleCallback();
-       // LoadingBarSimulator();
     }
     public void LoadingBarSimulator()
     {

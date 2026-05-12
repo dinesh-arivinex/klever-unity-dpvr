@@ -9,32 +9,50 @@ public class DownloadManager : MonoBehaviour
     public UnityEvent OnDownloadComplete;
     private ClassVrManager classVrManager;
 
+    // Track only the RuntimeImportBehaviours that were registered for this
+    // session, so the completion check is not confused by other inactive GOs.
+    private readonly List<RuntimeImportBehaviour> _registered = new List<RuntimeImportBehaviour>();
+    private int _completedCount;
+
     void Start()
     {
-      classVrManager = GameManager.Instance.vrManager;
+        classVrManager = GameManager.Instance.vrManager;
     }
+
     public void EnbleCallback()
     {
-        RuntimeImportBehaviour[] downloadManagers = FindObjectsOfType<RuntimeImportBehaviour>();
-        foreach (RuntimeImportBehaviour manager in downloadManagers)
+        _registered.Clear();
+        _completedCount = 0;
+
+        // Subscribe only to the currently active model downloaders.
+        RuntimeImportBehaviour[] allManagers = FindObjectsOfType<RuntimeImportBehaviour>();
+        foreach (RuntimeImportBehaviour manager in allManagers)
         {
-            manager.OnAssetDownloaded.AddListener(OnDownloadCompleted);
+            if (!manager.gameObject.activeSelf) continue;
+            _registered.Add(manager);
+            // Use a local capture so the lambda references the correct instance.
+            RuntimeImportBehaviour captured = manager;
+            manager.OnAssetDownloaded.AddListener(() => OnDownloadCompleted(captured));
         }
 
+        if (_registered.Count == 0)
+        {
+            Debug.LogWarning("[DownloadManager] No active RuntimeImportBehaviour found — triggering LoadingBar immediately.");
+            classVrManager.LoadingBarSimulator();
+        }
     }
 
-    void OnDownloadCompleted()
+    private void OnDownloadCompleted(RuntimeImportBehaviour source)
     {
-        // Check if all downloads are complete
-        RuntimeImportBehaviour[] downloadManagers = FindObjectsOfType<RuntimeImportBehaviour>();
-        foreach (RuntimeImportBehaviour manager in downloadManagers)
-        {
-            if (!manager.IsDownloadComplete())
-                return; // If any download is not complete, return early
-        }
+        if (!source.IsDownloadComplete()) return; // guard against spurious calls
 
+        _completedCount++;
+        Debug.Log($"[DownloadManager] {_completedCount}/{_registered.Count} models downloaded.");
+
+        if (_completedCount < _registered.Count) return; // still waiting for others
+
+        // All registered models done — start the loading bar simulation.
         classVrManager.LoadingBarSimulator();
-        // If all downloads are complete, enable the desired game objects
-
+        OnDownloadComplete?.Invoke();
     }
 }
