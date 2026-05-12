@@ -25,7 +25,7 @@ public class LoadingBar : MonoBehaviour
     {
         api=FindObjectOfType<API>();
       //  deviceSynHandler=FindObjectOfType<DeviceSynHandler>();
-        parentObject = transform.parent.gameObject;
+        parentObject = transform.parent != null ? transform.parent.gameObject : null;
         //importBehaviour =FindAnyObjectByType<RuntimeImportBehaviour>();
         // SimulateLoading();
         ToggleObject(false);
@@ -83,7 +83,7 @@ public class LoadingBar : MonoBehaviour
     }
     public void SynchDevice()
     {
-        blackSphere.SetActive(false);
+        if (blackSphere != null) blackSphere.SetActive(false);
         ToggleObject(true);
         if (IsmodelDownload)
             StartGame.Invoke();
@@ -98,9 +98,9 @@ public class LoadingBar : MonoBehaviour
         {
             foreach (var item in toggleItem)
             {
-                item.SetActive(true); 
+                if (item != null) item.SetActive(true);
             }
-            parentObject.SetActive(false);
+            if (parentObject != null) parentObject.SetActive(false);
 
         }
         else
@@ -108,7 +108,7 @@ public class LoadingBar : MonoBehaviour
             foreach (var item in toggleItem)
 
             {
-                item.SetActive(false);
+                if (item != null) item.SetActive(false);
             }
            
         }
