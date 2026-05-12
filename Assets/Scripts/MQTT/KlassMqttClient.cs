@@ -129,7 +129,28 @@ namespace Klass.Net
             node["downloadProgress"] = Mathf.Clamp(downloadProgress, 0, 100);
             if (!string.IsNullOrEmpty(playState))    node["playState"]    = playState;
             if (!string.IsNullOrEmpty(experienceId)) node["experienceId"] = experienceId;
+            // Explicitly clear any previous downloadError when publishing normal state.
+            node["downloadError"] = JSONNull.CreateOrGet();
             node["ts"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            PublishJson(MqttTopics.State(SchoolId, DeviceId), node, retain: true, qos: 1);
+        }
+
+        /// <summary>
+        /// Publish a download-error state so the teacher dashboard can show
+        /// a per-device error badge. The error is retained so page refreshes
+        /// still see it until the device recovers or is removed.
+        /// </summary>
+        public void PublishDownloadError(string errorMessage)
+        {
+            if (!IsConnected) return;
+            var node = new JSONObject();
+            node["isActive"]         = true;
+            node["isSynced"]         = false;
+            node["isCompleted"]      = false;
+            node["downloadProgress"] = 0;
+            node["playState"]        = "idle";
+            node["downloadError"]    = string.IsNullOrEmpty(errorMessage) ? "Unknown download error" : errorMessage;
+            node["ts"]               = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
             PublishJson(MqttTopics.State(SchoolId, DeviceId), node, retain: true, qos: 1);
         }
 

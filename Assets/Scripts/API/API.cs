@@ -110,6 +110,10 @@ public class API : MonoBehaviour
         if (req.isNetworkError) // error in request
         {
             DebugUtil.Log("Error While Sending: " + req.error);
+            // Report download failure to teacher dashboard via MQTT.
+            var synHandler = FindObjectOfType<DeviceSynHandler>();
+            if (synHandler != null)
+                synHandler.PublishDownloadError("Network error: " + req.error);
         }
         else
         {

@@ -68,6 +68,7 @@ public class DeviceSynHandler : MonoBehaviour
     private bool isStopCalling;
     private bool isFirstTime;
     private bool isLobby = true;
+    private bool _isPaused;
 
     private bool _mqttBooted;
     private string _lastPublishedFingerprint;
@@ -160,9 +161,34 @@ public class DeviceSynHandler : MonoBehaviour
         {
             isOpening = true;
             if (loadingBar != null) loadingBar.SynchDevice();
+            // Directly trigger the experience download here so VR begins
+            // fetching assets as soon as the teacher presses "Start class".
+            // TriggerWelcomeIfReady() requires isSync=true (set after download
+            // completes) so it cannot start the download itself — we do it here.
+            if (apiManager != null && !apiManager.isLoadedResponse)
+                apiManager.CallingClassVrExperiance();
             TriggerWelcomeIfReady();
             isOpenGame = true;
         }
+
+        // Handle play / pause for a running session.
+        bool isPaused = payload["isPaused"].AsBool;
+        if (isStart && isOpenGame)
+        {
+            if (isPaused && !_isPaused)
+            {
+                _isPaused = true;
+                _lastPublishedFingerprint = string.Empty; // force heartbeat republish
+                PublishStateIfChanged(force: true);
+            }
+            else if (!isPaused && _isPaused)
+            {
+                _isPaused = false;
+                _lastPublishedFingerprint = string.Empty;
+                PublishStateIfChanged(force: true);
+            }
+        }
+
         if (isStop && isOpening && !string.IsNullOrEmpty(payload["experienceId"]) && !isStopCalling)
         {
             isStartButtonPressed = false;
@@ -176,7 +202,9 @@ public class DeviceSynHandler : MonoBehaviour
         string action = cmd["action"];
         string msgId  = cmd["msgId"];
         KlassMqttClient.Instance?.PublishCmdAck(msgId, ok: true);
-        if (action == "stop") LoadScene();
+        // "stop" reloads the scene (returns to lobby); "disconnect" does the same
+        // and is sent when a teacher explicitly removes a device mid-session.
+        if (action == "stop" || action == "disconnect") LoadScene();
     }
 
     public void ActiveDeviceStatus()      => PublishStateIfChanged(force: false);
@@ -225,10 +253,15 @@ public class DeviceSynHandler : MonoBehaviour
         bool synced    = isSync;
         bool completed = isGameOver;
         int progress   = synced ? 100 : Mathf.Clamp(_downloadProgress, 0, 100);
-        string playState = completed ? "completed" : synced ? "ready" : (_downloadProgress > 0 ? "downloading" : "idle");
+        string playState;
+        if (completed)          playState = "completed";
+        else if (_isPaused)     playState = "paused";
+        else if (synced)        playState = "playing";
+        else if (progress > 0)  playState = "downloading";
+        else                    playState = "idle";
 
-        // Include progress in the fingerprint so a changing % triggers a publish.
-        var fp = $"{active}|{synced}|{completed}|{progress}|{playState}";
+        // Include pause + progress in the fingerprint so any change triggers a publish.
+        var fp = $"{active}|{synced}|{completed}|{progress}|{playState}|{_isPaused}";
         if (!force && fp == _lastPublishedFingerprint) return;
         _lastPublishedFingerprint = fp;
 
@@ -250,5 +283,15 @@ public class DeviceSynHandler : MonoBehaviour
         if (p == _downloadProgress) return;
         _downloadProgress = p;
         PublishStateIfChanged(force: false);
+    }
+
+    /// <summary>
+    /// Report a download failure to the teacher dashboard via MQTT.
+    /// The error badge on the device card will show the message.
+    /// </summary>
+    public void PublishDownloadError(string errorMessage)
+    {
+        _lastPublishedFingerprint = string.Empty; // force next call to re-publish
+        KlassMqttClient.Instance?.PublishDownloadError(errorMessage);
     }
 }
