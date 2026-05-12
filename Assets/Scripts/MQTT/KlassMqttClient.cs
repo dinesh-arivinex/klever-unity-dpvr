@@ -130,7 +130,7 @@ namespace Klass.Net
             if (!string.IsNullOrEmpty(playState))    node["playState"]    = playState;
             if (!string.IsNullOrEmpty(experienceId)) node["experienceId"] = experienceId;
             // Explicitly clear any previous downloadError when publishing normal state.
-            node["downloadError"] = JSONNull.CreateOrGet();
+            node["downloadError"] = new JSONNull();
             node["ts"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
             PublishJson(MqttTopics.State(SchoolId, DeviceId), node, retain: true, qos: 1);
         }

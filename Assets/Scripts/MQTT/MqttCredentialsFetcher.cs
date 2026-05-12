@@ -62,7 +62,7 @@ namespace Klass.Net
                     Username     = json["username"],
                     Password     = json["password"],
                     ClientId     = json["clientId"],
-                    ExpiresAt    = json["expiresAt"].AsLong,
+                    ExpiresAt    = (long)json["expiresAt"].AsDouble,
                 };
                 if (json["keepaliveSeconds"] != null) c.KeepaliveSeconds = json["keepaliveSeconds"].AsInt;
 
