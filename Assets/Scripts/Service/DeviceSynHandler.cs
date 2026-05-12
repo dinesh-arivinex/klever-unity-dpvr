@@ -160,7 +160,13 @@ public class DeviceSynHandler : MonoBehaviour
         if (isStart && !isOpenGame)
         {
             isOpening = true;
-            if (loadingBar != null) loadingBar.SynchDevice();
+            // Show the loading UI. Wrapped in try/catch so a UI error (e.g.
+            // LoadingBar misconfigured in the scene) never aborts the download.
+            if (loadingBar != null)
+            {
+                try { loadingBar.SynchDevice(); }
+                catch (System.Exception e) { UnityEngine.Debug.LogWarning("[DeviceSynHandler] LoadingBar.SynchDevice error (non-fatal): " + e.Message); }
+            }
             // Directly trigger the experience download here so VR begins
             // fetching assets as soon as the teacher presses "Start class".
             // TriggerWelcomeIfReady() requires isSync=true (set after download
