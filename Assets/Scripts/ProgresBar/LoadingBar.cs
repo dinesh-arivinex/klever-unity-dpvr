@@ -75,7 +75,8 @@ public class LoadingBar : MonoBehaviour
         // 2) Hide the loading UI — the user requirement: "Loading bar completes
         //    and needs to be disabled".
         if (loadingScreen != null) loadingScreen.SetActive(false);
-
+        if (blackSphere != null) blackSphere.SetActive(false);
+        ToggleObject(true);
         // 3) Fire the StartGame UnityEvent. In the KlassScene prefab this is
         //    wired to RuntimeImportBehaviourHelper.AssetDownloadCallback which
         //    runs FindingModel() + StartSpeaking() (Google TTS) and continues
@@ -114,8 +115,8 @@ public class LoadingBar : MonoBehaviour
     }
     public void SynchDevice()
     {
-        if (blackSphere != null) blackSphere.SetActive(false);
-        ToggleObject(true);
+        //if (blackSphere != null) blackSphere.SetActive(false);
+        //ToggleObject(true);
         if (IsmodelDownload && StartGame != null)
             StartGame.Invoke();
     }
