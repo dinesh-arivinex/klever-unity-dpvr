@@ -88,18 +88,22 @@ public class WebManager : MonoBehaviour
         simulationScript = script;
         url = newUrl;
         simulationTimer = ConvertTimeToSeconds(time);
-        // StartLoading();
-        //  InitializeAndLoadWebView("https://example.com");
 
+        if (_webViewPrefab != null)
+        {
+            _webViewPrefab.InitialUrl = url;
+        }
+
+        StartLoading();
 
         StartSimulation();
     }
     public void StartSimulation()
     {
-        if(!string.IsNullOrEmpty(url))
+        if (!string.IsNullOrEmpty(url))
         {
 
-            if (firstTime )
+            if (firstTime)
             {
                 ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);
                 GamificationControllerHandSwitcher.Instance.leftHandRaycast.SetActive(true);
@@ -127,44 +131,39 @@ public class WebManager : MonoBehaviour
                 canvasWebViewLoader.SetupWebView(url);
             }
             firstTime = true;
-           
+
         }
         else
         {
             CheckTheStatus();
         }
-       
+
     }
-   
+
     public void ToggleItem(bool value)
     {
-      
+
         foreach (GameObject item in disableitems)
         {
             item.SetActive(value);
         }
-       
-       
+
+
 
     }
-   
-    /*private async void StartLoading()
+
+    private async void StartLoading()
     {
+        if (_webViewPrefab != null)
+        {
+            await _webViewPrefab.WaitUntilInitialized();
+            _webViewPrefab.WebView.LoadUrl(url);
+        }
+    }
 
-        await _webViewPrefab.WaitUntilInitialized();
-        _webViewPrefab.WebView.LoadUrl("https://vuplex.com");
-
-        *//* await _webViewPrefab.WaitUntilInitialized();
-         _webViewPrefab.WebView.LoadUrl(url, new Dictionary<string, string>
-         {
-             ["Authorization"] = "Basic YWxhZGRpbjpvcGVuc2VzYW1l",
-             ["Cookie"] = "foo=bar"
-         });*//*
-    }*/
-    
     IEnumerator WebViewDuration(float duration)
     {
-       
+
         float timeRemaining = duration;
         while (timeRemaining > 0)
         {
@@ -179,7 +178,7 @@ public class WebManager : MonoBehaviour
             if (timeRemaining <= duration - 60f && !oneMinutePassed)
             {
                 oneMinutePassed = true;
-               buttonNext.SetActive(true);
+                buttonNext.SetActive(true);
             }
 
             yield return new WaitForSeconds(1f); // Wait for 1 second
@@ -193,16 +192,16 @@ public class WebManager : MonoBehaviour
 
     {
         endevent.Invoke();
-        if (timerCoroutine!=null)
+        if (timerCoroutine != null)
         {
-           StopCoroutine(timerCoroutine);
+            StopCoroutine(timerCoroutine);
         }
         StopWebViewAudio();
-       // webView.SetActive(false );
+        // webView.SetActive(false );
         Destroy(webView);
         service.AssignTaskBasedOnCondition(GameStatus.Mcq);
         gamificationManager.AssignGames();
     }
     // Update is called once per frame
-  
+
 }

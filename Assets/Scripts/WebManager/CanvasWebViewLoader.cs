@@ -12,9 +12,9 @@ public class CanvasWebViewLoader : MonoBehaviour
     void Start()
     {
         // Start the setup process
-      
+
     }
-    public  async void SetupWebView(string url)
+    public async void SetupWebView(string url)
     {
         if (_webViewPrefab == null)
         {
@@ -23,7 +23,7 @@ public class CanvasWebViewLoader : MonoBehaviour
         }
 
         // Adjust RectTransform to have valid dimensions
-      //  SetRectTransform();
+        //  SetRectTransform();
 
         // Wait until the prefab is initialized
         await _webViewPrefab.WaitUntilInitialized();
@@ -44,8 +44,8 @@ public class CanvasWebViewLoader : MonoBehaviour
     {
         if (_webViewPrefab.WebView != null)
         {
-           _webViewPrefab.WebView.LoadUrl(url);
-           
+            _webViewPrefab.WebView.LoadUrl(url);
+
         }
         else
         {
@@ -53,5 +53,5 @@ public class CanvasWebViewLoader : MonoBehaviour
         }
     }
 
-  
+
 }
