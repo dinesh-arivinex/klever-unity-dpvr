@@ -75,6 +75,10 @@ public class DeviceSynHandler : MonoBehaviour
     private const float HeartbeatSeconds = 30f;
     private float _heartbeatTimer;
     private int _downloadProgress; // 0..100, set by LoadingBar via PublishDownloadProgress
+    // Hand-raise / help button state. Set by HelpButton via RaiseHand()/LowerHand();
+    // cleared by the teacher dashboard via a `clearHand` MQTT command.
+    private bool _handRaised;
+    public bool IsHandRaised => _handRaised;
 
     void Start()
     {
@@ -226,6 +230,10 @@ public class DeviceSynHandler : MonoBehaviour
         // "stop" reloads the scene (returns to lobby); "disconnect" does the same
         // and is sent when a teacher explicitly removes a device mid-session.
         if (action == "stop" || action == "disconnect") LoadScene();
+        // "clearHand" is sent when the teacher acknowledges a hand raise from
+        // the live dashboard. Lower the hand locally and re-publish state so
+        // the retained MQTT message no longer carries handRaised:true.
+        else if (action == "clearHand") LowerHand();
     }
 
     public void ActiveDeviceStatus()      => PublishStateIfChanged(force: false);
@@ -336,11 +344,11 @@ public class DeviceSynHandler : MonoBehaviour
         else                    playState = "idle";
 
         // Include pause + progress in the fingerprint so any change triggers a publish.
-        var fp = $"{active}|{synced}|{completed}|{progress}|{playState}|{_isPaused}";
+        var fp = $"{active}|{synced}|{completed}|{progress}|{playState}|{_isPaused}|{_handRaised}";
         if (!force && fp == _lastPublishedFingerprint) return;
         _lastPublishedFingerprint = fp;
 
-        mqtt.PublishStateWithProgress(active, synced, completed, progress, playState);
+        mqtt.PublishStateWithProgress(active, synced, completed, progress, playState, null, _handRaised);
 
         isActiveDevice    = active;
         isSyncedDevice    = synced;
@@ -369,4 +377,28 @@ public class DeviceSynHandler : MonoBehaviour
         _lastPublishedFingerprint = string.Empty; // force next call to re-publish
         KlassMqttClient.Instance?.PublishDownloadError(errorMessage);
     }
+
+    // ── Hand-raise / Help button API ───────────────────────────────────────
+    /// <summary>
+    /// Set the hand-raised state and immediately republish device state so
+    /// the teacher dashboard sees the change in real time. No-op if the
+    /// state is already what was requested.
+    /// </summary>
+    public void SetHandRaised(bool raised)
+    {
+        if (_handRaised == raised) return;
+        _handRaised = raised;
+        // Force fingerprint reset so the next publish always goes out.
+        _lastPublishedFingerprint = string.Empty;
+        PublishStateIfChanged(force: true);
+    }
+
+    /// <summary>Raise the hand — called by HelpButton.</summary>
+    public void RaiseHand() => SetHandRaised(true);
+
+    /// <summary>Lower the hand — called by HelpButton or by the teacher's clearHand command.</summary>
+    public void LowerHand() => SetHandRaised(false);
+
+    /// <summary>Toggle the hand-raised state — convenient single-button wiring.</summary>
+    public void ToggleHand() => SetHandRaised(!_handRaised);
 }

@@ -16,12 +16,18 @@ public class ClassVrManager : MonoBehaviour
     private GamificationManager gamificationManager;
     void Start()
     {
-        gamificationManager = GameManager.Instance.gamificationManager;
-       
+        if (GameManager.Instance != null)
+        {
+            gamificationManager = GameManager.Instance.gamificationManager;
+            googleTextToSpeech = GameManager.Instance.googleTextToSpeech;
+        }
+        else
+        {
+            Debug.LogError("[ClassVrManager] GameManager.Instance is null in Start() — script order issue.");
+        }
+
         downloadManager = FindObjectOfType<DownloadManager>();
         videoManager = FindAnyObjectByType<VideoManager>();
-        googleTextToSpeech = GameManager.Instance.googleTextToSpeech;
-       
     }
     public void AssignValues(List<string> typeOfGame)
     {
@@ -67,14 +73,37 @@ public class ClassVrManager : MonoBehaviour
                 Debug.LogError("[ClassVrManager] modelsDownloader array too short for modelDetailsCount=" + modelDetailsCount);
                 break;
             }
+            if (modelsDownloader[i] == null) continue; // skip empty slots
             selectedModels.Add(modelsDownloader[i]);
             modelsDownloader[i].SetActive(true);
-            runtimeImportBehaviour = modelsDownloader[i].GetComponent<RuntimeImportBehaviour>();
+            var rib = modelsDownloader[i].GetComponent<RuntimeImportBehaviour>();
+            if (rib != null) runtimeImportBehaviour = rib;
+        }
+
+        // Re-resolve downloadManager if Start() hadn't run yet or it was lost
+        // on a reload — avoids NRE on cold boot / quick Start press.
+        if (downloadManager == null) downloadManager = FindObjectOfType<DownloadManager>();
+        if (downloadManager == null)
+        {
+            Debug.LogError("[ClassVrManager] DownloadManager missing in scene — invoking LoadingBar fallback directly.");
+            LoadingBarSimulator();
+            return;
         }
         downloadManager.EnbleCallback();
     }
     public void LoadingBarSimulator()
     {
+        if (loadingBar == null)
+        {
+            loadingBar = FindObjectOfType<LoadingBar>();
+            if (loadingBar == null)
+            {
+                Debug.LogError("[ClassVrManager] LoadingBar reference missing — cannot start loading UI.");
+                return;
+            }
+        }
+        // runtimeImportBehaviour may be null when the experience has no models;
+        // LoadingBar.SimulateLoading handles that null case safely.
         loadingBar.SimulateLoading(runtimeImportBehaviour);
     }
     void Update()

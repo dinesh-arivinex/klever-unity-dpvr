@@ -16,11 +16,24 @@ public class DownloadManager : MonoBehaviour
 
     void Start()
     {
-        classVrManager = GameManager.Instance.vrManager;
+        if (GameManager.Instance != null)
+            classVrManager = GameManager.Instance.vrManager;
+        if (classVrManager == null) classVrManager = FindObjectOfType<ClassVrManager>();
     }
 
     public void EnbleCallback()
     {
+        // Re-resolve classVrManager in case Start() hadn't run yet, or the
+        // GameManager wasn't ready on first frame after scene reload.
+        if (classVrManager == null && GameManager.Instance != null)
+            classVrManager = GameManager.Instance.vrManager;
+        if (classVrManager == null) classVrManager = FindObjectOfType<ClassVrManager>();
+        if (classVrManager == null)
+        {
+            Debug.LogError("[DownloadManager] ClassVrManager not found — cannot start loading bar.");
+            return;
+        }
+
         _registered.Clear();
         _completedCount = 0;
 
@@ -28,7 +41,7 @@ public class DownloadManager : MonoBehaviour
         RuntimeImportBehaviour[] allManagers = FindObjectsOfType<RuntimeImportBehaviour>();
         foreach (RuntimeImportBehaviour manager in allManagers)
         {
-            if (!manager.gameObject.activeSelf) continue;
+            if (manager == null || !manager.gameObject.activeSelf) continue;
             _registered.Add(manager);
             // Use a local capture so the lambda references the correct instance.
             RuntimeImportBehaviour captured = manager;
@@ -44,7 +57,7 @@ public class DownloadManager : MonoBehaviour
 
     private void OnDownloadCompleted(RuntimeImportBehaviour source)
     {
-        if (!source.IsDownloadComplete()) return; // guard against spurious calls
+        if (source == null || !source.IsDownloadComplete()) return; // guard against spurious calls
 
         _completedCount++;
         Debug.Log($"[DownloadManager] {_completedCount}/{_registered.Count} models downloaded.");
@@ -52,7 +65,7 @@ public class DownloadManager : MonoBehaviour
         if (_completedCount < _registered.Count) return; // still waiting for others
 
         // All registered models done — start the loading bar simulation.
-        classVrManager.LoadingBarSimulator();
+        if (classVrManager != null) classVrManager.LoadingBarSimulator();
         OnDownloadComplete?.Invoke();
     }
 }

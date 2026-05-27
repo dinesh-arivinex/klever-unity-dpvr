@@ -38,9 +38,16 @@ public class LoadingBar : MonoBehaviour
     }
     public void SimulateLoading(RuntimeImportBehaviour finalScript)
     {
-        importBehaviour=finalScript;
-        IsmodelDownload =true;
-        totalCount = importBehaviour.totalStep;
+        // Null-guard: when the current experience has no 3D models the caller
+        // (DownloadManager/ClassVrManager) may pass null because no
+        // RuntimeImportBehaviour was activated. Previously this caused an
+        // immediate NullReferenceException at `importBehaviour.totalStep`,
+        // crashing the VR app before the loading panel ever appeared.
+        importBehaviour = finalScript;
+        IsmodelDownload = finalScript != null;
+        totalCount = (finalScript != null && finalScript.totalStep > 0)
+            ? finalScript.totalStep
+            : 20; // fall back to a sane default so the bar still animates
         StartCoroutine(GenerateRandomProgress());
     }
 

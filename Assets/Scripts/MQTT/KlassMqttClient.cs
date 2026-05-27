@@ -119,7 +119,7 @@ namespace Klass.Net
         /// </summary>
         public void PublishStateWithProgress(bool isActive, bool isSynced, bool isCompleted,
                                              int downloadProgress, string playState = null,
-                                             string experienceId = null)
+                                             string experienceId = null, bool handRaised = false)
         {
             if (!IsConnected) return;
             var node = new JSONObject();
@@ -129,6 +129,9 @@ namespace Klass.Net
             node["downloadProgress"] = Mathf.Clamp(downloadProgress, 0, 100);
             if (!string.IsNullOrEmpty(playState))    node["playState"]    = playState;
             if (!string.IsNullOrEmpty(experienceId)) node["experienceId"] = experienceId;
+            // Always include handRaised so it is preserved across retained-state
+            // heartbeats and a refreshing teacher dashboard sees the latest value.
+            node["handRaised"]   = handRaised;
             // Explicitly clear any previous downloadError when publishing normal state.
             node["downloadError"] = new JSONNull();
             node["ts"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();

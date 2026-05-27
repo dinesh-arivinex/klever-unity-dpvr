@@ -134,15 +134,29 @@ public class API : MonoBehaviour
             {
                 if (DeviceSynHandler.isOpenWelcomeScreen == false && isLoadedResponse != true)
                 {
+                    // Defensive parse: bail early if the server returned anything
+                    // that isn't a JSON array with at least one experience entry.
+                    // Previously a malformed/empty body crashed the VR app at
+                    // `spaceData[0]["session"]` before the loading panel showed.
+                    JSONNode spaceData = null;
+                    try { spaceData = JSONNode.Parse(jsonData); } catch { spaceData = null; }
+                    if (spaceData == null || spaceData.Count == 0 || spaceData[0] == null)
+                    {
+                        DebugUtil.Log("[API] Experience response was empty or unparseable — aborting load.");
+                        var synHandler = FindObjectOfType<DeviceSynHandler>();
+                        if (synHandler != null)
+                            synHandler.PublishDownloadError("Empty experience response from server");
+                        yield break;
+                    }
+
                     isLoadedResponse = true;
                     DeviceIDManager deviceIDManager = DeviceID.GetComponent<DeviceIDManager>();
                     deviceIDManager.ToggleFunction(true);
                     deviceIDManager.gameObject.SetActive(false);
                     // LoadingScene.SetActive(true);
-                    var spaceData = JSONNode.Parse(jsonData);
                     JSONNode session = spaceData[0]["session"];
-                    string sessionId = session["_id"];
-                    string sessionTimeAndDate = session["sessionTimeAndDate"];
+                    string sessionId = session != null ? session["_id"].Value : "";
+                    string sessionTimeAndDate = session != null ? session["sessionTimeAndDate"].Value : "";
 
                     JSONArray assessments = spaceData[0]["assessments"].AsArray;
                     if (assessments != null && assessments.Count > 0)
@@ -161,6 +175,14 @@ public class API : MonoBehaviour
 
 
                     JSONArray contents = spaceData[0]["content"].AsArray;
+                    if (contents == null)
+                    {
+                        DebugUtil.Log("[API] No 'content' array in experience response — aborting load.");
+                        var synHandler2 = FindObjectOfType<DeviceSynHandler>();
+                        if (synHandler2 != null)
+                            synHandler2.PublishDownloadError("Experience has no content");
+                        yield break;
+                    }
 
 
                     foreach (JSONNode content in contents)
@@ -194,7 +216,7 @@ public class API : MonoBehaviour
                         {
 
                         }
-                        modelDetailsCount = modelDetails.Count;
+                        modelDetailsCount = modelDetails != null ? modelDetails.Count : 0;
                         VrManager.AddDownloadManager(modelDetailsCount);
                         List<string> allAnnotations = new List<string>();
                         JSONArray simulationDetails = content["simulationDetails"].AsArray;
@@ -231,7 +253,7 @@ public class API : MonoBehaviour
                             }
                         }
                         // Iterate over the modelDetails array
-                        foreach (JSONNode modelDetail in modelDetails)
+                        if (modelDetails != null) foreach (JSONNode modelDetail in modelDetails)
                         {
                             string modelTimer = modelDetail["displayTime"];
                             if (modelTimer != null)
