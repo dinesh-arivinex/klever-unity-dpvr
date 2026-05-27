@@ -525,14 +525,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: DragMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: InitialUrl
-      value: https://d3vdjegbtyvp.cloudfront.net/Parts_of_Flower/index.html
+      value: https://d3vdjegbtyvp.cloudfront.net/density_en/index.html
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: KeyboardEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
+      propertyPath: NativeOnScreenKeyboardEnabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 222163621197708754, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
@@ -1047,7 +1051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bad9aebb942ca4b809bc97e711df55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radius: 2
+  _radius: 4
 --- !u!4 &1408281988
 Transform:
   m_ObjectHideFlags: 0
@@ -1077,8 +1081,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cylinder: {fileID: 1408281987}
-  _facing: 1
-  _height: 0
+  _facing: 0
+  _height: 8
 --- !u!4 &1450524999 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6570971039455433360, guid: afb1615dd3b243a449003594175d971a, type: 3}
@@ -1557,6 +1561,10 @@ PrefabInstance:
       value: Underlay
       objectReference: {fileID: 0}
     - target: {fileID: 2658043153824157781, guid: afb1615dd3b243a449003594175d971a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658043153824157781, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: m_SizeDelta.y
       value: 600
       objectReference: {fileID: 0}
@@ -1632,6 +1640,14 @@ PrefabInstance:
       propertyPath: _cylinder
       value: 
       objectReference: {fileID: 1408281987}
+    - target: {fileID: 4655634074587381481, guid: afb1615dd3b243a449003594175d971a, type: 3}
+      propertyPath: _meshGeneration.MaxVerticalResolution
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 4655634074587381481, guid: afb1615dd3b243a449003594175d971a, type: 3}
+      propertyPath: _meshGeneration.MaxHorizontalResolution
+      value: 782
+      objectReference: {fileID: 0}
     - target: {fileID: 4699454948535304040, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
