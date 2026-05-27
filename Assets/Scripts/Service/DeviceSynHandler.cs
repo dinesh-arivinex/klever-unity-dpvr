@@ -199,12 +199,14 @@ public class DeviceSynHandler : MonoBehaviour
                 _isPaused = true;
                 _lastPublishedFingerprint = string.Empty; // force heartbeat republish
                 PublishStateIfChanged(force: true);
+                PauseVR();
             }
             else if (!isPaused && _isPaused)
             {
                 _isPaused = false;
                 _lastPublishedFingerprint = string.Empty;
                 PublishStateIfChanged(force: true);
+                ResumeVR();
             }
         }
 
@@ -228,12 +230,66 @@ public class DeviceSynHandler : MonoBehaviour
 
     public void ActiveDeviceStatus()      => PublishStateIfChanged(force: false);
 
+    private void PauseVR()
+    {
+        Time.timeScale = 0f;
+        AudioListener.pause = true;
+
+        if (VideoManager.Instance != null)
+        {
+            if (VideoManager.Instance.mediaPlayer != null && VideoManager.Instance.mediaPlayer.Control != null)
+            {
+                if (VideoManager.Instance.mediaPlayer.Control.IsPlaying())
+                {
+                    VideoManager.Instance.mediaPlayer.Control.Pause();
+                }
+            }
+
+            if (VideoManager.Instance.youtubePlayer != null)
+            {
+                var vp = VideoManager.Instance.youtubePlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
+                if (vp != null && vp.isPlaying)
+                {
+                    vp.Pause();
+                }
+            }
+        }
+    }
+
+    private void ResumeVR()
+    {
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
+
+        if (VideoManager.Instance != null)
+        {
+            if (VideoManager.Instance.mediaPlayer != null && VideoManager.Instance.mediaPlayer.Control != null)
+            {
+                if (VideoManager.Instance.mediaPlayer.Control.IsPaused())
+                {
+                    VideoManager.Instance.mediaPlayer.Control.Play();
+                }
+            }
+
+            if (VideoManager.Instance.youtubePlayer != null)
+            {
+                var vp = VideoManager.Instance.youtubePlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
+                if (vp != null && vp.isPaused)
+                {
+                    vp.Play();
+                }
+            }
+        }
+    }
     public void SynDevice()
     {
         isSync = true;
         isStartGame = true;
         isSyncedDevice = true;
         PublishStateIfChanged(force: true);
+        // Ensure timeScale and audio are reset when returning to lobby
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
         if (isStartButtonPressed) TriggerWelcomeIfReady();
     }
 
