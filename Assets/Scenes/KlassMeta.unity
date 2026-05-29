@@ -4934,7 +4934,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1077352107545268, guid: 8f67f2d646b0a4cc58c56790b3f53ef4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224209101858263596, guid: 8f67f2d646b0a4cc58c56790b3f53ef4, type: 3}
       propertyPath: m_Pivot.x
@@ -14704,7 +14704,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967263
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -21209,6 +21209,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
+      propertyPath: Native2DModeEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: NativeOnScreenKeyboardEnabled
       value: 0
       objectReference: {fileID: 0}
@@ -26572,7 +26576,7 @@ MonoBehaviour:
   - {fileID: 1606305716}
   - {fileID: 421610452}
   _webViewPrefab: {fileID: 709994622}
-  canvasWebViewLoader: {fileID: 2031239540}
+  canvasWebViewLoader: {fileID: 709994625}
   timer: {fileID: 1663742045}
   buttonNext: {fileID: 439908309}
   startingevent:
@@ -28447,11 +28451,11 @@ PrefabInstance:
       objectReference: {fileID: 1604551772}
     - target: {fileID: 4655634074587381481, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: _meshGeneration.MaxVerticalResolution
-      value: 600
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 4655634074587381481, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: _meshGeneration.MaxHorizontalResolution
-      value: 782
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 4699454948535304040, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -37858,11 +37862,11 @@ Transform:
   m_GameObject: {fileID: 1232195093}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.2053201, y: -2.2341392, z: -1.7986538}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 124.91066, y: -35.17196, z: -183.58302}
+  m_LocalScale: {x: 47.92683, y: 47.92683, z: 47.92683}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2066138754}
+  m_Father: {fileID: 1494054917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1232977742
 GameObject:
@@ -45772,12 +45776,13 @@ Transform:
   m_GameObject: {fileID: 1494054916}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.64, y: -8475, z: 1.148}
+  m_LocalPosition: {x: -1.64, y: 2000, z: 1.047}
   m_LocalScale: {x: 0.012999699, y: 0.012999699, z: 0.012999699}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 224179540295783375}
   - {fileID: 634861621}
+  - {fileID: 1232195096}
   - {fileID: 439908310}
   m_Father: {fileID: 861389448}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48430,7 +48435,7 @@ Transform:
   m_GameObject: {fileID: 1604551769}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000020182, y: -163, z: -795}
+  m_LocalPosition: {x: 0.0000020182, y: -163, z: -1177}
   m_LocalScale: {x: 413.99088, y: 413.99088, z: 413.99088}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -48450,8 +48455,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cylinder: {fileID: 1604551772}
-  _facing: 0
-  _height: 8
+  _facing: 1
+  _height: 3.15
 --- !u!114 &1604551772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48464,7 +48469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bad9aebb942ca4b809bc97e711df55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radius: 4
+  _radius: 1.95
 --- !u!1 &1606305716
 GameObject:
   m_ObjectHideFlags: 0
@@ -61228,7 +61233,6 @@ Transform:
   - {fileID: 1873881284}
   - {fileID: 335287831}
   - {fileID: 1899531395}
-  - {fileID: 1232195096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2066841469
@@ -64027,7 +64031,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967263
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -64078,7 +64082,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967263
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

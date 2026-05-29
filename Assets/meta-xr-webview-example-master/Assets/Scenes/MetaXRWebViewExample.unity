@@ -1363,6 +1363,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 196171129606039282, guid: afb1615dd3b243a449003594175d971a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 315254417069531506, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: m_text
       value: '<i><color=red>Note</color>: Improvements from Underlay rendering can
@@ -1582,6 +1586,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3057393802434418605, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090228010827261959, guid: afb1615dd3b243a449003594175d971a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090228010827261959, guid: afb1615dd3b243a449003594175d971a, type: 3}
+      propertyPath: m_Convex
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3281200013509369541, guid: afb1615dd3b243a449003594175d971a, type: 3}
