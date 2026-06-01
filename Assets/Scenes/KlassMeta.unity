@@ -3871,6 +3871,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -75
       objectReference: {fileID: 0}
+    - target: {fileID: 7136603337544840879, guid: afb1615dd3b243a449003594175d971a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7557103694410060634, guid: afb1615dd3b243a449003594175d971a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -4033,7 +4037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 222163621197708754, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: m_CullTransparentMesh
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224179541092979990, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: m_Pivot.x
@@ -27567,7 +27571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bad9aebb942ca4b809bc97e711df55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radius: 4
+  _radius: 1.88
 --- !u!4 &822701196
 Transform:
   m_ObjectHideFlags: 0
@@ -27577,7 +27581,7 @@ Transform:
   m_GameObject: {fileID: 822701193}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000020182, y: -157.1, z: -1585}
+  m_LocalPosition: {x: 0.0000020182, y: -157.1, z: -733}
   m_LocalScale: {x: 399.9, y: 399.9, z: 399.9}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -28919,7 +28923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &861389448
 Transform:
   m_ObjectHideFlags: 0
@@ -63301,7 +63305,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1991874327}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!1 &1992103395
 GameObject:
   m_ObjectHideFlags: 0
