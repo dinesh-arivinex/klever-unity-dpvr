@@ -4,6 +4,7 @@ using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -120,9 +121,9 @@ public class API : MonoBehaviour
 
 
             jsonData = req.downloadHandler.text;
+            bool parseAsArray = false;
             try
             {
-
                 // Attempt to parse the response JSON as an object
                 var responseData = JsonUtility.FromJson<ApiResponse>(req.downloadHandler.text);
                 DebugUtil.Log("Response Data: " + responseData);
@@ -132,6 +133,11 @@ public class API : MonoBehaviour
             }
             catch (Exception)
             {
+                parseAsArray = true;
+            }
+
+            if (parseAsArray)
+            {
                 if (DeviceSynHandler.isOpenWelcomeScreen == false && isLoadedResponse != true)
                 {
                     // Defensive parse: bail early if the server returned anything
@@ -139,7 +145,12 @@ public class API : MonoBehaviour
                     // Previously a malformed/empty body crashed the VR app at
                     // `spaceData[0]["session"]` before the loading panel showed.
                     JSONNode spaceData = null;
-                    try { spaceData = JSONNode.Parse(jsonData); } catch { spaceData = null; }
+                    bool isParsingDone = false;
+                    Task.Run(() => {
+                        try { spaceData = JSONNode.Parse(jsonData); } catch { spaceData = null; }
+                        isParsingDone = true;
+                    });
+                    yield return new WaitUntil(() => isParsingDone);
                     if (spaceData == null || spaceData.Count == 0 || spaceData[0] == null)
                     {
                         DebugUtil.Log("[API] Experience response was empty or unparseable — aborting load.");
@@ -395,7 +406,8 @@ public class API : MonoBehaviour
                             }
                         }
                         
-
+                        // Yield to the main thread to render the VR frame before processing the next content
+                        yield return null;
                     }
 
                     serviceScript.QueryApiAndPassResult(teacherCharacterGender);
