@@ -219,20 +219,54 @@ public class API : MonoBehaviour
                         modelDetailsCount = modelDetails != null ? modelDetails.Count : 0;
                         VrManager.AddDownloadManager(modelDetailsCount);
                         List<string> allAnnotations = new List<string>();
+                        JSONArray selectedSimulationDetails = null;
+
                         JSONArray simulationDetails = content["simulationDetails"].AsArray;
-                        if(simulationDetails!=null && simulationDetails.Count > 0)
+                        JSONArray scholarLabSimulationDetails = content["scholarlabSimulationDetails"].AsArray;
+
+                        // Priority:
+                        // 1. simulationDetails
+                        // 2. scholarlabSimulationDetails
+
+                        if (simulationDetails != null && simulationDetails.Count > 0)
                         {
-                            foreach (JSONNode simulationDetail in simulationDetails)
+                            selectedSimulationDetails = simulationDetails;
+                        }
+                        else if (scholarLabSimulationDetails != null && scholarLabSimulationDetails.Count > 0)
+                        {
+                            selectedSimulationDetails = scholarLabSimulationDetails;
+                        }
+
+                        if (selectedSimulationDetails != null)
+                        {
+                            foreach (JSONNode simulationDetail in selectedSimulationDetails)
                             {
                                 string simulationScript = simulationDetail["script"];
-                                string simulationURL = simulationDetail["simulationId"]["simulationURL"];
                                 string displayTime = simulationDetail["displayTime"];
-                                webManager.AssignSimulationAsync(displayTime,simulationURL, simulationScript);
-                                DebugUtil.Log("Simulation URL: " + simulationURL);
-                                DebugUtil.Log("Display Time: " + displayTime);
+                                string simulationURL = string.Empty;
+
+                                // Normal Simulation
+                                if (simulationDetail["simulationId"] != null &&
+                                    !string.IsNullOrEmpty(simulationDetail["simulationId"]["simulationURL"]))
+                                {
+                                    simulationURL = simulationDetail["simulationId"]["simulationURL"];
+                                }
+                                // ScholarLab Simulation
+                                else if (!string.IsNullOrEmpty(simulationDetail["simulationURL"]))
+                                {
+                                    simulationURL = simulationDetail["simulationURL"];
+                                }
+
+                                if (!string.IsNullOrEmpty(simulationURL))
+                                {
+                                    webManager.AssignSimulationAsync(displayTime, simulationURL, simulationScript);
+
+                                    DebugUtil.Log("Simulation URL: " + simulationURL);
+                                    DebugUtil.Log("Display Time: " + displayTime);
+                                }
                             }
                         }
-                      
+
                         JSONArray imageDetails = content["imageDetails"].AsArray;
                         
 
