@@ -14,38 +14,18 @@ using UnityEngine.UI;
 [DisallowMultipleComponent]
 public class HelpButton : MonoBehaviour
 {
-    [Tooltip("Optional — visual that turns RED while hand is raised.")]
-    public Image visualTarget;
-    public Color raisedColor = new Color(0.94f, 0.27f, 0.27f); // red
-    public Color loweredColor = new Color(0.85f, 0.85f, 0.85f); // light gray
-
     private DeviceSynHandler _handler;
 
     void OnEnable()
     {
         ResolveHandler();
-        ApplyVisual();
-    }
-
-    void Update()
-    {
-        // Cheap polling so visual state stays in sync if the teacher clears
-        // the hand remotely (MQTT clearHand). The DeviceSynHandler controls
-        // the source of truth.
-        ApplyVisual();
+        //OnHelpButtonClicked();
     }
 
     private void ResolveHandler()
     {
         if (_handler != null) return;
         _handler = FindObjectOfType<DeviceSynHandler>();
-    }
-
-    private void ApplyVisual()
-    {
-        if (visualTarget == null) return;
-        if (_handler == null) { ResolveHandler(); if (_handler == null) return; }
-        visualTarget.color = _handler.IsHandRaised ? raisedColor : loweredColor;
     }
 
     /// <summary>Toggle the hand-raise state — wire to a Button.onClick.</summary>
@@ -58,6 +38,5 @@ public class HelpButton : MonoBehaviour
             return;
         }
         _handler.ToggleHand();
-        ApplyVisual();
     }
 }

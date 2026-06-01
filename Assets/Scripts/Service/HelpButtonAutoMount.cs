@@ -99,9 +99,6 @@ public class HelpButtonAutoMount : MonoBehaviour
         img.color = loweredColor;
 
         var helpButton = buttonGo.GetComponent<HelpButton>();
-        helpButton.visualTarget = img;
-        helpButton.raisedColor = buttonColor;
-        helpButton.loweredColor = loweredColor;
 
         var btn = buttonGo.GetComponent<Button>();
         btn.targetGraphic = img;
