@@ -168,23 +168,28 @@ public class ElevenLabsTTS_Manager : MonoBehaviour
 
     private void playAudio()
     {
-        // Replace this with the actual file path
         string filePath = Application.persistentDataPath + "/output.mp3";
+        StartCoroutine(PlayAudioCoroutine(filePath));
+    }
 
-        // Check if the file exists
+    private IEnumerator PlayAudioCoroutine(string filePath)
+    {
         if (System.IO.File.Exists(filePath))
         {
-            // Use WWW to load the file
-            WWW www = new WWW("file://" + filePath);
+            using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://" + filePath, AudioType.MPEG))
+            {
+                yield return www.SendWebRequest();
 
-            // Wait until the file is loaded
-            while (!www.isDone) { }
-
-            // Assign the audio clip to the AudioSource
-            Audio.clip = www.GetAudioClip();
-
-            // Play the audio
-            Audio.Play();
+                if (www.result == UnityWebRequest.Result.Success)
+                {
+                    Audio.clip = DownloadHandlerAudioClip.GetContent(www);
+                    Audio.Play();
+                }
+                else
+                {
+                    DebugUtil.LogError("Error loading audio file: " + www.error);
+                }
+            }
         }
         else
         {

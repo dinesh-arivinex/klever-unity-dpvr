@@ -446,7 +446,14 @@ public class VideoManager : MonoBehaviour
     }
     public class ChangeSkyBox
     {
-        public static Material[] skyBoxMaterialNew = ChangeClassRoom.Instance.skyBoxMaterials;
+        public static Material[] skyBoxMaterialNew
+        {
+            get
+            {
+                if (ChangeClassRoom.Instance == null) return null;
+                return ChangeClassRoom.Instance.skyBoxMaterials;
+            }
+        }
 
         public static void SetSkybox(Material newSkybox)
         {

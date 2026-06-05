@@ -49,21 +49,41 @@ namespace Klass.Net
                     yield break;
                 }
 
-                var json = JSONNode.Parse(req.downloadHandler.text);
+                JSONNode json = null;
+                try
+                {
+                    json = JSONNode.Parse(req.downloadHandler.text);
+                }
+                catch (Exception ex)
+                {
+                    onFailure?.Invoke($"JSON parsing failed: {ex.Message}");
+                    yield break;
+                }
+
                 if (json == null)
                 {
                     onFailure?.Invoke("invalid JSON from credential endpoint");
                     yield break;
                 }
-                var c = new Credentials
+                
+                Credentials c;
+                try
                 {
-                    BrokerWsUrl  = json["brokerWsUrl"],
-                    BrokerTcpUrl = json["brokerTcpUrl"],
-                    Username     = json["username"],
-                    Password     = json["password"],
-                    ClientId     = json["clientId"],
-                    ExpiresAt    = (long)json["expiresAt"].AsDouble,
-                };
+                    c = new Credentials
+                    {
+                        BrokerWsUrl  = json["brokerWsUrl"],
+                        BrokerTcpUrl = json["brokerTcpUrl"],
+                        Username     = json["username"],
+                        Password     = json["password"],
+                        ClientId     = json["clientId"],
+                        ExpiresAt    = (long)json["expiresAt"].AsDouble,
+                    };
+                }
+                catch (Exception ex)
+                {
+                    onFailure?.Invoke($"Failed to extract credential fields: {ex.Message}");
+                    yield break;
+                }
                 if (json["keepaliveSeconds"] != null) c.KeepaliveSeconds = json["keepaliveSeconds"].AsInt;
 
                 // Username pattern: device:{deviceId}@{schoolId}
