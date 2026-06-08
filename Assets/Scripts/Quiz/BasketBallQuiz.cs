@@ -164,7 +164,7 @@ public class BasketBallQuiz : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadImageCoroutine(string url, Action<Texture2D> onSuccess)
+    private IEnumerator LoadImageCoroutine(string url, System.Action<Texture2D> onSuccess)
     {
         if (string.IsNullOrEmpty(url)) yield break;
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
