@@ -20,6 +20,8 @@ public class LoadingBar : MonoBehaviour
     private bool isLoaded;
     public GameObject blackSphere;
     private API api;
+    private System.Collections.Generic.List<Behaviour> trackers = new System.Collections.Generic.List<Behaviour>();
+    private bool trackingEnabledAt30 = false;
   
     private void Start()
     {
@@ -29,6 +31,31 @@ public class LoadingBar : MonoBehaviour
         //importBehaviour =FindAnyObjectByType<RuntimeImportBehaviour>();
         // SimulateLoading();
         ToggleObject(false);
+
+        if (Camera.main != null)
+        {
+            var componentsToDisable = new string[] { "TrackedPoseDriver", "OVRCameraRig" };
+            Transform current = Camera.main.transform;
+            while (current != null)
+            {
+                foreach (var comp in current.GetComponents<Behaviour>())
+                {
+                    if (comp != null)
+                    {
+                        string compName = comp.GetType().Name;
+                        foreach (var target in componentsToDisable)
+                        {
+                            if (compName.Contains(target))
+                            {
+                                trackers.Add(comp);
+                                comp.enabled = false;
+                            }
+                        }
+                    }
+                }
+                current = current.parent;
+            }
+        }
     }
   
     public void CustomSumulatedLoading()
@@ -66,6 +93,16 @@ public class LoadingBar : MonoBehaviour
             if (progressText != null) progressText.text = (progress * 100f).ToString("F0") + "%";
             // Broadcast live download progress to the teacher dashboard via MQTT.
             if (deviceSynHandler != null) deviceSynHandler.PublishDownloadProgress(progress);
+            
+            if (!trackingEnabledAt30 && progress >= 0.30f)
+            {
+                foreach (var tracker in trackers)
+                {
+                    if (tracker != null) tracker.enabled = true;
+                }
+                trackingEnabledAt30 = true;
+            }
+
             yield return new WaitForSeconds(waitTime); // Consistent, safe delay
         }
 

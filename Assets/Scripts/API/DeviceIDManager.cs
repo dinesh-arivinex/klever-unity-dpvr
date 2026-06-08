@@ -43,6 +43,10 @@ public class DeviceIDManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
