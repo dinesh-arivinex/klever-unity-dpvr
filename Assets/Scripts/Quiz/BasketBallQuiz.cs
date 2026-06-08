@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class BasketBallQuiz : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class BasketBallQuiz : MonoBehaviour
         public string createdBy;
         public string sessionId;
         public string id;
+        public string questionImageUrl;
     }
 
    
@@ -85,23 +87,115 @@ public class BasketBallQuiz : MonoBehaviour
         }
     }
 
-    public void DisplayQuestion(List<string>heading, List<AnswerData> answerOptions,string actualQuestion)
+    }
+
+    private void DisplayQuestionImage(string url)
+    {
+        Transform parentTransform = questionText != null ? questionText.transform.parent : transform;
+        if (parentTransform == null) return;
+        Transform existing = parentTransform.Find("DynamicQuestionImage");
+        RawImage rawImg = null;
+        if (existing != null)
+        {
+            rawImg = existing.GetComponent<RawImage>();
+        }
+        else
+        {
+            GameObject go = new GameObject("DynamicQuestionImage");
+            go.transform.SetParent(parentTransform, false);
+            rawImg = go.AddComponent<RawImage>();
+            
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(1.2f, 0.8f); // set size in world space scale, since it's on a VR Canvas
+            rect.anchoredPosition = new Vector3(0f, 150f, 0f); // adjust offset relative to question text parent
+        }
+
+        if (rawImg != null)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                rawImg.gameObject.SetActive(false);
+            }
+            else
+            {
+                rawImg.gameObject.SetActive(true);
+                StartCoroutine(LoadImageCoroutine(url, texture => {
+                    rawImg.texture = texture;
+                }));
+            }
+        }
+    }
+
+    private void SetOptionImage(Button button, string url)
+    {
+        Transform existing = button.transform.Find("DynamicOptionImage");
+        RawImage rawImg = null;
+        if (existing != null)
+        {
+            rawImg = existing.GetComponent<RawImage>();
+        }
+        else
+        {
+            GameObject imgGo = new GameObject("DynamicOptionImage");
+            imgGo.transform.SetParent(button.transform, false);
+            imgGo.transform.SetSiblingIndex(0); // Draw behind text
+            rawImg = imgGo.AddComponent<RawImage>();
+            
+            RectTransform rect = imgGo.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0, 0);
+            rect.anchorMax = new Vector2(1, 1);
+            rect.offsetMin = new Vector2(5, 5);
+            rect.offsetMax = new Vector2(-5, -5);
+        }
+
+        if (rawImg != null)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                rawImg.gameObject.SetActive(false);
+            }
+            else
+            {
+                rawImg.gameObject.SetActive(true);
+                StartCoroutine(LoadImageCoroutine(url, texture => {
+                    rawImg.texture = texture;
+                }));
+            }
+        }
+    }
+
+    private IEnumerator LoadImageCoroutine(string url, Action<Texture2D> onSuccess)
+    {
+        if (string.IsNullOrEmpty(url)) yield break;
+        using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return webRequest.SendWebRequest();
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                Texture2D texture = DownloadHandlerTexture.GetContent(webRequest);
+                onSuccess?.Invoke(texture);
+            }
+            else
+            {
+                DebugUtil.LogError("Failed to load image from: " + url + " Error: " + webRequest.error);
+            }
+        }
+    }
+
+    public void DisplayQuestion(List<string> heading, List<AnswerData> answerOptions, string actualQuestion, string questionImageUrl)
     {
         answers = answerOptions;
         questionText.text = actualQuestion;
+        DisplayQuestionImage(questionImageUrl);
+
         if (questionText != null && currentQuestionIndex < 1)
         {
-            // MCQquestionText.text = $"MCQ{currentQuestionIndex + 1}";
-           //  MCQquestionText.text = heading[0];
-           // questionPanelText.text = $"Question{currentQuestionIndex + 1}";
             questionPanelText.text = heading[1];
-            //questionText.text = $"{questions[currentQuestionIndex].question}";
-           
         }
 
         for (int i = 0; i < answerButtons.Length; i++)
         {
-            if (i < answerButtons.Length)
+            if (i < answerOptions.Count)
             {
                 var wrappers = answerButtons[i].GetComponents<InteractableUnityEventWrapper>();
                 interactableWrappers.AddRange(wrappers);
@@ -119,6 +213,8 @@ public class BasketBallQuiz : MonoBehaviour
                     {
                         DebugUtil.LogError("TextMeshProUGUI component not found on the button.");
                     }
+
+                    SetOptionImage(answerButtons[i], answerOptions[i].imageUrl);
 
                     int answerIndex = i;
                     answerButtons[i].onClick.AddListener(() => OnAnswerClick(answerIndex));

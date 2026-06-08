@@ -157,6 +157,14 @@ public class WebManager : MonoBehaviour
         if (_webViewPrefab != null)
         {
             await _webViewPrefab.WaitUntilInitialized();
+            _webViewPrefab.WebView.UrlChanged += (sender, eventArgs) => {
+                Debug.Log("[WebManager] URL changed: " + eventArgs.Url);
+                if (!string.IsNullOrEmpty(eventArgs.Url) && eventArgs.Url.Contains("klever://"))
+                {
+                    Debug.Log("[WebManager] Deep link 'klever://' detected. Closing simulation.");
+                    CheckTheStatus();
+                }
+            };
             _webViewPrefab.WebView.LoadUrl(url);
         }
     }

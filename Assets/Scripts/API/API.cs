@@ -232,51 +232,62 @@ public class API : MonoBehaviour
                         List<string> allAnnotations = new List<string>();
                         JSONArray selectedSimulationDetails = null;
 
-                        JSONArray simulationDetails = content["simulationDetails"].AsArray;
-                        JSONArray scholarLabSimulationDetails = content["scholarlabSimulationDetails"].AsArray;
-
-                        // Priority:
-                        // 1. simulationDetails
-                        // 2. scholarlabSimulationDetails
-
-                        if (simulationDetails != null && simulationDetails.Count > 0)
-                        {
-                            selectedSimulationDetails = simulationDetails;
-                        }
-                        else if (scholarLabSimulationDetails != null && scholarLabSimulationDetails.Count > 0)
-                        {
-                            selectedSimulationDetails = scholarLabSimulationDetails;
-                        }
-
-                        if (selectedSimulationDetails != null)
-                        {
-                            foreach (JSONNode simulationDetail in selectedSimulationDetails)
-                            {
-                                string simulationScript = simulationDetail["script"];
-                                string displayTime = simulationDetail["displayTime"];
-                                string simulationURL = string.Empty;
-
-                                // Normal Simulation
-                                if (simulationDetail["simulationId"] != null &&
-                                    !string.IsNullOrEmpty(simulationDetail["simulationId"]["simulationURL"]))
-                                {
-                                    simulationURL = simulationDetail["simulationId"]["simulationURL"];
-                                }
-                                // ScholarLab Simulation
-                                else if (!string.IsNullOrEmpty(simulationDetail["simulationURL"]))
-                                {
-                                    simulationURL = simulationDetail["simulationURL"];
-                                }
-
-                                if (!string.IsNullOrEmpty(simulationURL))
-                                {
-                                    webManager.AssignSimulationAsync(displayTime, simulationURL, simulationScript);
-
-                                    DebugUtil.Log("Simulation URL: " + simulationURL);
-                                    DebugUtil.Log("Display Time: " + displayTime);
-                                }
-                            }
-                        }
+                         JSONArray simulationDetails = content["simulationDetails"].AsArray;
+                         JSONArray scholarLabSimulationDetails = content["scholarlabSimulationDetails"].AsArray;
+                         JSONArray objectXRDetails = content["objectXRDetails"].AsArray;
+ 
+                         // Priority:
+                         // 1. simulationDetails
+                         // 2. scholarlabSimulationDetails
+                         // 3. objectXRDetails
+ 
+                         if (simulationDetails != null && simulationDetails.Count > 0)
+                         {
+                             selectedSimulationDetails = simulationDetails;
+                         }
+                         else if (scholarLabSimulationDetails != null && scholarLabSimulationDetails.Count > 0)
+                         {
+                             selectedSimulationDetails = scholarLabSimulationDetails;
+                         }
+                         else if (objectXRDetails != null && objectXRDetails.Count > 0)
+                         {
+                             selectedSimulationDetails = objectXRDetails;
+                         }
+ 
+                         if (selectedSimulationDetails != null)
+                         {
+                             foreach (JSONNode simulationDetail in selectedSimulationDetails)
+                             {
+                                 string simulationScript = simulationDetail["script"];
+                                 string displayTime = simulationDetail["displayTime"];
+                                 string simulationURL = string.Empty;
+ 
+                                 // Normal Simulation
+                                 if (simulationDetail["simulationId"] != null &&
+                                     !string.IsNullOrEmpty(simulationDetail["simulationId"]["simulationURL"]))
+                                 {
+                                     simulationURL = simulationDetail["simulationId"]["simulationURL"];
+                                 }
+                                 // ScholarLab Simulation
+                                 else if (!string.IsNullOrEmpty(simulationDetail["simulationURL"]))
+                                 {
+                                     simulationURL = simulationDetail["simulationURL"];
+                                 }
+                                 // Object XR Simulation (direct url)
+                                 else if (!string.IsNullOrEmpty(simulationDetail["simulationUrl"]))
+                                 {
+                                     simulationURL = simulationDetail["simulationUrl"];
+                                 }
+ 
+                                 if (!string.IsNullOrEmpty(simulationURL))
+                                 {
+                                     webManager.AssignSimulationAsync(displayTime, simulationURL, simulationScript);
+ 
+                                     DebugUtil.Log("Simulation URL: " + simulationURL);
+                                     DebugUtil.Log("Display Time: " + displayTime);
+                                 }
+                             }
+                         }
 
                         JSONArray imageDetails = content["imageDetails"].AsArray;
                         
