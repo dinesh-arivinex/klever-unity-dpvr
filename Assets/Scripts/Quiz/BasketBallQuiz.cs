@@ -87,8 +87,7 @@ public class BasketBallQuiz : MonoBehaviour
         }
     }
 
-    }
-
+    
     private void DisplayQuestionImage(string url)
     {
         Transform parentTransform = questionText != null ? questionText.transform.parent : transform;

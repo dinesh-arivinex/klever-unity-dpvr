@@ -84,7 +84,7 @@ public class QuizManagers : MonoBehaviour
         }
     }
 
-    }
+    
 
     private void DisplayQuestionImage(string url)
     {
