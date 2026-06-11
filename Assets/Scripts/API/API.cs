@@ -390,30 +390,37 @@ public class API : MonoBehaviour
                         PlayerPrefs.SetString("Speak", script);
                         PlayerPrefs.SetString("ImageScript", content["imageScript"]); // Check if this is correct
                                                                                       //  StartCoroutine(WaitUntil(allAnnotations));
-                        if (!isPlayingVideo && !isModelDownload)
+                        if (DeepLinkManager.isResumingFromDeepLink)
                         {
-                            serviceScript.AssignTaskBasedOnCondition(GameStatus.SkipVideoAndModel);
+                            DeepLinkManager.ResumeExperience();
                         }
                         else
                         {
-                            if (isModelDownload)
+                            if (!isPlayingVideo && !isModelDownload)
                             {
-                                GameManager.Instance.isModelSkip = true;
-                                serviceScript.AssignAnnotation(allAnnotations, modelCoordinateCount);
+                                serviceScript.AssignTaskBasedOnCondition(GameStatus.SkipVideoAndModel);
                             }
                             else
                             {
-                                GameManager.Instance.isModelSkip = false;
-                                serviceScript.AssignTaskBasedOnCondition(GameStatus.DisbleModelScript);
-                            }
+                                if (isModelDownload)
+                                {
+                                    GameManager.Instance.isModelSkip = true;
+                                    serviceScript.AssignAnnotation(allAnnotations, modelCoordinateCount);
+                                }
+                                else
+                                {
+                                    GameManager.Instance.isModelSkip = false;
+                                    serviceScript.AssignTaskBasedOnCondition(GameStatus.DisbleModelScript);
+                                }
 
-                            if (isPlayingVideo)
-                            {
-                                serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsNotSkip);
-                            }
-                            else
-                            {
-                                serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsSkip);
+                                if (isPlayingVideo)
+                                {
+                                    serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsNotSkip);
+                                }
+                                else
+                                {
+                                    serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsSkip);
+                                }
                             }
                         }
                         
