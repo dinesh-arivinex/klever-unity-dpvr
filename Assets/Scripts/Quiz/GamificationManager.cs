@@ -101,7 +101,15 @@ public class GamificationManager : MonoBehaviour
   
     public void AssignGames()
     {
-        googleTextToSpeech.StopAudio();
+        if (googleTextToSpeech == null && GameManager.Instance != null)
+        {
+            googleTextToSpeech = GameManager.Instance.googleTextToSpeech;
+        }
+
+        if (googleTextToSpeech != null)
+        {
+            googleTextToSpeech.StopAudio();
+        }
         if (string.IsNullOrEmpty(apiManager.assessmentsString))
         {
             CallingThankyouOutSide();
