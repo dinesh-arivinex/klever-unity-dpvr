@@ -48,7 +48,7 @@ public class DeepLinkManager : MonoBehaviour
             // and the API has already loaded the experience
             if (GameManager.Instance != null && GameManager.Instance.api != null && GameManager.Instance.api.isLoadedResponse)
             {
-                ResumeExperience();
+                //ResumeExperience();
             }
         }
     }

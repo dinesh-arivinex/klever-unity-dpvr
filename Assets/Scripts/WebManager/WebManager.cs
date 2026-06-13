@@ -102,8 +102,7 @@ public class WebManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(url))
         {
-            PlayerPrefs.SetInt("InSimulation", 1);
-            PlayerPrefs.Save();
+
 
             if (firstTime)
             {
@@ -123,7 +122,8 @@ public class WebManager : MonoBehaviour
                 {
                     googleTextToSpeech.StartTalking(simulationScript);
                 }
-
+                PlayerPrefs.SetInt("InSimulation", 1);
+                PlayerPrefs.Save();
 
             }
             else
@@ -201,7 +201,7 @@ public class WebManager : MonoBehaviour
     public void CheckTheStatus()
 
     {
-        PlayerPrefs.SetInt("InSimulation", 0);
+        //PlayerPrefs.SetInt("InSimulation", 0);
         PlayerPrefs.Save();
 
         endevent.Invoke();
