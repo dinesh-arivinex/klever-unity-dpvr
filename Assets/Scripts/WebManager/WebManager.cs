@@ -124,7 +124,7 @@ public class WebManager : MonoBehaviour
                 }
                 PlayerPrefs.SetInt("InSimulation", 1);
                 PlayerPrefs.Save();
-
+                Application.OpenURL(url);
             }
             else
             {
