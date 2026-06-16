@@ -103,6 +103,7 @@ public class WebManager : MonoBehaviour
         if (!string.IsNullOrEmpty(url))
         {
 
+
             if (firstTime)
             {
                 ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);
@@ -121,8 +122,9 @@ public class WebManager : MonoBehaviour
                 {
                     googleTextToSpeech.StartTalking(simulationScript);
                 }
-
-
+                PlayerPrefs.SetInt("InSimulation", 1);
+                PlayerPrefs.Save();
+                Application.OpenURL(url);
             }
             else
             {
@@ -157,6 +159,14 @@ public class WebManager : MonoBehaviour
         if (_webViewPrefab != null)
         {
             await _webViewPrefab.WaitUntilInitialized();
+            _webViewPrefab.WebView.UrlChanged += (sender, eventArgs) => {
+                Debug.Log("[WebManager] URL changed: " + eventArgs.Url);
+                if (!string.IsNullOrEmpty(eventArgs.Url) && eventArgs.Url.Contains("klever://"))
+                {
+                    Debug.Log("[WebManager] Deep link 'klever://' detected. Closing simulation.");
+                    CheckTheStatus();
+                }
+            };
             _webViewPrefab.WebView.LoadUrl(url);
         }
     }
@@ -191,6 +201,9 @@ public class WebManager : MonoBehaviour
     public void CheckTheStatus()
 
     {
+        //PlayerPrefs.SetInt("InSimulation", 0);
+        PlayerPrefs.Save();
+
         endevent.Invoke();
         if (timerCoroutine != null)
         {

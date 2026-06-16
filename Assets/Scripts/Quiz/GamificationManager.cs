@@ -15,6 +15,7 @@ public struct AnswerData
     public string text;
     public bool isCorrect;
     public string _id;
+    public string imageUrl;
 }
 public class GamificationManager : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class GamificationManager : MonoBehaviour
         public string sessionId;
         public string id;
         public string typeOfGame;
+        public string questionImageUrl;
     }
 
 
@@ -68,6 +70,7 @@ public class GamificationManager : MonoBehaviour
     public List<QuestionData> questions;
     public List<List<AnswerData>> allOptions = new List<List<AnswerData>>();
     private List<string> typeOfGame = new List<string>();
+    private List<string> questionImageUrlList = new List<string>();
     private int gameCount;
     //public  BasketBallQuiz[] gameType;
     private List<string> headingDetails = new List<string>();
@@ -98,7 +101,15 @@ public class GamificationManager : MonoBehaviour
   
     public void AssignGames()
     {
-        googleTextToSpeech.StopAudio();
+        if (googleTextToSpeech == null && GameManager.Instance != null)
+        {
+            googleTextToSpeech = GameManager.Instance.googleTextToSpeech;
+        }
+
+        if (googleTextToSpeech != null)
+        {
+            googleTextToSpeech.StopAudio();
+        }
         if (string.IsNullOrEmpty(apiManager.assessmentsString))
         {
             CallingThankyouOutSide();
@@ -138,6 +149,7 @@ public class GamificationManager : MonoBehaviour
             allOptions.Add(questionData.options);
             typeOfGame.Add(questionData.typeOfGame);
             questionlist.Add(questionData.question);
+            questionImageUrlList.Add(questionData.questionImageUrl);
 
 
         }
@@ -174,7 +186,7 @@ public class GamificationManager : MonoBehaviour
                     arrowCollider4.enabled = true;
                     arrowGame.SetActive(true);
                     gamificationCollider.SetActive(true);
-                    arrowGame.GetComponent<BasketBallQuiz>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount]);
+                    arrowGame.GetComponent<BasketBallQuiz>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
                     if (rightcontroller1 != null && rightcontroller2 != null)
                     {
                         rightcontroller1.GetComponent<SkinnedMeshRenderer>().enabled = false;
@@ -189,26 +201,9 @@ public class GamificationManager : MonoBehaviour
                     arrowVisualizeHandMode.GetComponent<MeshRenderer>().enabled = true;
                     crossbowHandMode.SetActive(true); 
                     GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
-                    //if (!GamificationControllerHandSwitcher.Instance.isHandMode)
-                    //{
-                    //    ballVisualize.SetActive(false);
-                    //    arrowVisualize.SetActive(true);
-                    //    arrowVisualize.GetComponent<MeshRenderer>().enabled = true;
-                    //    crossbow.SetActive(true);
-                    //    crossbowHandMode.SetActive(false);
-                    //}
-                    //else
-                    //{
-                    //    ballVisualizeHandMode.SetActive(false);
-                    //    arrowVisualizeHandMode.SetActive(true);
-                    //    arrowVisualizeHandMode.GetComponent<MeshRenderer>().enabled = true;
-                    //    crossbow.SetActive(false);
-                    //    crossbowHandMode.SetActive(true);
-                    //}
-
                     break;
                 case "Basketball":
-                  //  basketBallScore++;
+                   //  basketBallScore++;
                     basketballGame.SetActive(true);
                     if(rightcontroller1 != null && rightcontroller2!=null)
                     {
@@ -220,38 +215,16 @@ public class GamificationManager : MonoBehaviour
                     ballVisualize.SetActive(true);
                     ballVisualizeHandMode.SetActive(true);
                     GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
-                    //if (!GamificationControllerHandSwitcher.Instance.isHandMode)
-                    //{
-                    //    ballVisualize.SetActive(true);
-                    //}
-                    //else
-                    //{
-                    //    ballVisualizeHandMode.SetActive(true);
-                    //}
                     gamificationCollider.SetActive(true);
-                    basketballGame.GetComponent<BasketBallQuiz>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount]);
+                    basketballGame.GetComponent<BasketBallQuiz>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
                     break;
                 case "MCQ":
-                    // mcqScore++;
-                    //if (rightcontroller1 != null && rightcontroller2 != null)
-                    //{
-                    //    rightcontroller1.GetComponent<SkinnedMeshRenderer>().enabled = false;
-                    //    rightcontroller2.GetComponent<SkinnedMeshRenderer>().enabled = false;
-                    //}
                     crossbow.SetActive(false);
                     crossbowHandMode.SetActive(false);
                     ballVisualize.SetActive(false);
                     ballVisualizeHandMode.SetActive(false);
                     GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
-                    //if (!GamificationControllerHandSwitcher.Instance.isHandMode)
-                    //{
-                    //    ballVisualize.SetActive(false);
-                    //}
-                    //else
-                    //{
-                    //    ballVisualizeHandMode.SetActive(false);
-                    //}
-                    mcqGame.GetComponent<QuizManagers>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount]);
+                    mcqGame.GetComponent<QuizManagers>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
                     mcqGame.SetActive(true);
                     break;
                 default:

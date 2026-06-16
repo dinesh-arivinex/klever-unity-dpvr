@@ -49,7 +49,7 @@ public class API : MonoBehaviour
     private VideoManager videoManager;
     public VideoPlayer youtubevideoPlayer;
     public bool is360Image;
-
+   
     public string youtubeURL;
     private AddingImage addingImage;
     private List<float> modelDisplayTime = new List<float>();
@@ -101,9 +101,9 @@ public class API : MonoBehaviour
         req.SetRequestHeader("Content-Type", "application/json");
 
         //uncomment device id
-        req.SetRequestHeader("device-id", SystemInfo.deviceUniqueIdentifier);
-        // req.SetRequestHeader("device-id","aj4y");
-
+         req.SetRequestHeader("device-id", SystemInfo.deviceUniqueIdentifier);
+       // req.SetRequestHeader("device-id","aj4y");
+       
         req.certificateHandler = new BypassCertificateHandler();
 
         req.downloadHandler = new DownloadHandlerBuffer();
@@ -232,116 +232,127 @@ public class API : MonoBehaviour
                         List<string> allAnnotations = new List<string>();
                         JSONArray selectedSimulationDetails = null;
 
-                        JSONArray simulationDetails = content["simulationDetails"].AsArray;
-                        JSONArray scholarLabSimulationDetails = content["scholarlabSimulationDetails"].AsArray;
-
-                        // Priority:
-                        // 1. simulationDetails
-                        // 2. scholarlabSimulationDetails
-
-                        if (simulationDetails != null && simulationDetails.Count > 0)
-                        {
-                            selectedSimulationDetails = simulationDetails;
-                        }
-                        else if (scholarLabSimulationDetails != null && scholarLabSimulationDetails.Count > 0)
-                        {
-                            selectedSimulationDetails = scholarLabSimulationDetails;
-                        }
-
-                        if (selectedSimulationDetails != null)
-                        {
-                            foreach (JSONNode simulationDetail in selectedSimulationDetails)
-                            {
-                                string simulationScript = simulationDetail["script"];
-                                string displayTime = simulationDetail["displayTime"];
-                                string simulationURL = string.Empty;
-
-                                // Normal Simulation
-                                if (simulationDetail["simulationId"] != null &&
-                                    !string.IsNullOrEmpty(simulationDetail["simulationId"]["simulationURL"]))
-                                {
-                                    simulationURL = simulationDetail["simulationId"]["simulationURL"];
-                                }
-                                // ScholarLab Simulation
-                                else if (!string.IsNullOrEmpty(simulationDetail["simulationURL"]))
-                                {
-                                    simulationURL = simulationDetail["simulationURL"];
-                                }
-
-                                if (!string.IsNullOrEmpty(simulationURL))
-                                {
-                                    webManager.AssignSimulationAsync(displayTime, simulationURL, simulationScript);
-
-                                    DebugUtil.Log("Simulation URL: " + simulationURL);
-                                    DebugUtil.Log("Display Time: " + displayTime);
-                                }
-                            }
-                        }
+                         JSONArray simulationDetails = content["simulationDetails"].AsArray;
+                         JSONArray scholarLabSimulationDetails = content["scholarlabSimulationDetails"].AsArray;
+                         JSONArray objectXRDetails = content["objectXRDetails"].AsArray;
+ 
+                         // Priority:
+                         // 1. simulationDetails
+                         // 2. scholarlabSimulationDetails
+                         // 3. objectXRDetails
+ 
+                         if (simulationDetails != null && simulationDetails.Count > 0)
+                         {
+                             selectedSimulationDetails = simulationDetails;
+                         }
+                         else if (scholarLabSimulationDetails != null && scholarLabSimulationDetails.Count > 0)
+                         {
+                             selectedSimulationDetails = scholarLabSimulationDetails;
+                         }
+                         else if (objectXRDetails != null && objectXRDetails.Count > 0)
+                         {
+                             selectedSimulationDetails = objectXRDetails;
+                         }
+ 
+                         if (selectedSimulationDetails != null)
+                         {
+                             foreach (JSONNode simulationDetail in selectedSimulationDetails)
+                             {
+                                 string simulationScript = simulationDetail["script"];
+                                 string displayTime = simulationDetail["displayTime"];
+                                 string simulationURL = string.Empty;
+ 
+                                 // Normal Simulation
+                                 if (simulationDetail["simulationId"] != null &&
+                                     !string.IsNullOrEmpty(simulationDetail["simulationId"]["simulationURL"]))
+                                 {
+                                     simulationURL = simulationDetail["simulationId"]["simulationURL"];
+                                 }
+                                 // ScholarLab Simulation
+                                 else if (!string.IsNullOrEmpty(simulationDetail["simulationURL"]))
+                                 {
+                                     simulationURL = simulationDetail["simulationURL"];
+                                 }
+                                 // Object XR Simulation (direct url)
+                                 else if (!string.IsNullOrEmpty(simulationDetail["simulationUrl"]))
+                                 {
+                                     simulationURL = simulationDetail["simulationUrl"];
+                                 }
+ 
+                                 if (!string.IsNullOrEmpty(simulationURL))
+                                 {
+                                     webManager.AssignSimulationAsync(displayTime, simulationURL, simulationScript);
+ 
+                                     DebugUtil.Log("Simulation URL: " + simulationURL);
+                                     DebugUtil.Log("Display Time: " + displayTime);
+                                 }
+                             }
+                         }
 
                         JSONArray imageDetails = content["imageDetails"].AsArray;
-
+                        
 
                         // Check if imageDetails is not null and has elements
                         if (imageDetails != null && imageDetails.Count > 0)
                         {
-                            isThreeSixty = true;
+                            isThreeSixty=true;
                             GameManager.Instance.isImageSkip = false;
                             // Access the imageURL field from the first element of imageDetails
-                            string imageTime = imageDetails[0]["displayTime"];
+                            string imageTime  = imageDetails[0]["displayTime"];
                             string imageUrl = imageDetails[0]["ImageId"]["imageURL"];
                             string imageScript = imageDetails[0]["script"];
                             DebugUtil.Log("Image URL: " + imageUrl);
-                            if (!string.IsNullOrEmpty(imageUrl))
+                            if(!string.IsNullOrEmpty(imageUrl))
                             {
                                 is360Image = true;
-                                addingImage.LoadAndAssignImage(imageUrl, imageScript, imageTime);
+                                addingImage.LoadAndAssignImage(imageUrl, imageScript,imageTime);
                             }
                         }
                         // Iterate over the modelDetails array
                         if (modelDetails != null) foreach (JSONNode modelDetail in modelDetails)
+                        {
+                            string modelTimer = modelDetail["displayTime"];
+                            if (modelTimer != null)
                             {
-                                string modelTimer = modelDetail["displayTime"];
-                                if (modelTimer != null)
-                                {
-                                    string[] timeParts = modelTimer.Split(':');
+                                string[] timeParts = modelTimer.Split(':');
 
-                                    int minutes = int.Parse(timeParts[0]);
-                                    int seconds = int.Parse(timeParts[1]);
+                                int minutes = int.Parse(timeParts[0]);
+                                int seconds = int.Parse(timeParts[1]);
 
 
-                                    int totalSeconds = minutes * 60 + seconds;
-                                    float totalSecondsFloat = (float)totalSeconds;
-                                    modelDisplayTime.Add(totalSecondsFloat);
-                                    PlayerPrefs.SetFloat("totslTime", totalSecondsFloat);
+                                int totalSeconds = minutes * 60 + seconds;
+                                float totalSecondsFloat = (float)totalSeconds;
+                                modelDisplayTime.Add(totalSecondsFloat);
+                                PlayerPrefs.SetFloat("totslTime", totalSecondsFloat);
 
-                                }
-                                //   float floatTimer = float.Parse(modelTimer);
-                                // PlayerPrefs.SetFloat(floatTimer);
-                                if (modelDetail["modelId"] != null)
-                                {
-                                    string url = modelDetail["modelId"]["modelUrl"];
-                                    allUrl.Add(url);
-                                }
-                                // Check if modelCoordinates exists and is not null
-                                if (modelDetail["modelCoordinates"] != null)
-                                {
-                                    // Now check if annotations exist within modelCoordinates
-                                    JSONNode annotationsNode = modelDetail["modelCoordinates"];
-                                    if (annotationsNode != null && annotationsNode.AsArray.Count > 0) // Making sure annotations is not null and has elements
-                                    {
-                                        string annotationsJson = annotationsNode.ToString();
-                                        modelCoordinateCount.Add(annotationIncrimenter);
-                                        allAnnotations.Add(annotationsJson);
-                                    }
-                                }
-                                annotationIncrimenter++;
                             }
+                            //   float floatTimer = float.Parse(modelTimer);
+                            // PlayerPrefs.SetFloat(floatTimer);
+                            if (modelDetail["modelId"] != null)
+                            {
+                                string url = modelDetail["modelId"]["modelUrl"];
+                                allUrl.Add(url);
+                            }
+                            // Check if modelCoordinates exists and is not null
+                            if (modelDetail["modelCoordinates"] != null)
+                            {
+                                // Now check if annotations exist within modelCoordinates
+                                JSONNode annotationsNode = modelDetail["modelCoordinates"];
+                                if (annotationsNode != null && annotationsNode.AsArray.Count > 0) // Making sure annotations is not null and has elements
+                                {
+                                    string annotationsJson = annotationsNode.ToString();
+                                    modelCoordinateCount.Add(annotationIncrimenter);
+                                    allAnnotations.Add(annotationsJson);
+                                }
+                            }
+                            annotationIncrimenter++;
+                        }
                         assetDownloader.FetchingTimer(modelDisplayTime);
 
 
                         if (modelDetails != null && modelDetails.Count > 0)
                         {
-
+                           
                             isModelDownload = true;
                             threesixtyImageManager.ModelStatus(isModelDownload);
                             allModelDetails = modelDetails;
@@ -360,14 +371,14 @@ public class API : MonoBehaviour
                             isPlayingVideo = true;
                             UpdateVideoPreferences(videoDetail);
                         }
-                        else if (!string.IsNullOrEmpty(youTubeUrl) && !string.IsNullOrEmpty(youTubeDownloadableUrl))
+                        else if(!string.IsNullOrEmpty(youTubeUrl)&& !string.IsNullOrEmpty(youTubeDownloadableUrl))
                         {
                             isPlayingVideo = true;
-
-
-                            //  youTubeUrl = youtubevideoPlayer.url;
-                            UpdateYoutubePreferance(youTubeVideoAudio, youTubeVideoScript, youTubeStartTimer, youTubeEndTimer, youTubeUrl, youTubeDownloadableUrl, youTubeVideoStatus);
-
+                           
+                            
+                          //  youTubeUrl = youtubevideoPlayer.url;
+                            UpdateYoutubePreferance(youTubeVideoAudio, youTubeVideoScript, youTubeStartTimer, youTubeEndTimer,youTubeUrl, youTubeDownloadableUrl, youTubeVideoStatus);
+                         
                         }
                         else
                         {
@@ -379,33 +390,44 @@ public class API : MonoBehaviour
                         PlayerPrefs.SetString("Speak", script);
                         PlayerPrefs.SetString("ImageScript", content["imageScript"]); // Check if this is correct
                                                                                       //  StartCoroutine(WaitUntil(allAnnotations));
-                        if (!isPlayingVideo && !isModelDownload)
+                        int value = PlayerPrefs.GetInt("InSimulation", 0);
+                        bool isResuming = DeepLinkManager.isResumingFromDeepLink || (PlayerPrefs.GetInt("InSimulation", 0) == 1);
+                        if (isResuming)
                         {
-                            serviceScript.AssignTaskBasedOnCondition(GameStatus.SkipVideoAndModel);
+                            PlayerPrefs.SetInt("InSimulation", 0);
+                            PlayerPrefs.Save();
+                            DeepLinkManager.ResumeExperience();
                         }
                         else
                         {
-                            if (isModelDownload)
+                            if (!isPlayingVideo && !isModelDownload)
                             {
-                                GameManager.Instance.isModelSkip = true;
-                                serviceScript.AssignAnnotation(allAnnotations, modelCoordinateCount);
+                                serviceScript.AssignTaskBasedOnCondition(GameStatus.SkipVideoAndModel);
                             }
                             else
                             {
-                                GameManager.Instance.isModelSkip = false;
-                                serviceScript.AssignTaskBasedOnCondition(GameStatus.DisbleModelScript);
-                            }
+                                if (isModelDownload)
+                                {
+                                    GameManager.Instance.isModelSkip = true;
+                                    serviceScript.AssignAnnotation(allAnnotations, modelCoordinateCount);
+                                }
+                                else
+                                {
+                                    GameManager.Instance.isModelSkip = false;
+                                    serviceScript.AssignTaskBasedOnCondition(GameStatus.DisbleModelScript);
+                                }
 
-                            if (isPlayingVideo)
-                            {
-                                serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsNotSkip);
-                            }
-                            else
-                            {
-                                serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsSkip);
+                                if (isPlayingVideo)
+                                {
+                                    serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsNotSkip);
+                                }
+                                else
+                                {
+                                    serviceScript.AssignTaskBasedOnCondition(GameStatus.AssignVideoStatusAsSkip);
+                                }
                             }
                         }
-
+                        
                         // Yield to the main thread to render the VR frame before processing the next content
                         yield return null;
                     }
@@ -430,7 +452,7 @@ public class API : MonoBehaviour
     }
 
 
-
+   
     private void UpdateModelPreferences(List<Dictionary<string, string>> modelIds)
     {
         string modelScript = modelDetail["script"];
@@ -510,14 +532,14 @@ public class API : MonoBehaviour
         PlayerPrefs.SetString(StaticStrings.videoScript, videoScript);
         PlayerPrefs.SetString(StaticStrings.videoSound, videoSound);
     }
-    public void UpdateYoutubePreferance(bool youTubeVideoAudio, string youTubeVideoScript, string youTubeStartTimer, string youTubeEndTimer, string youTubeUrl, string youTubeDownloadableUrl, string status)
+    public void UpdateYoutubePreferance(bool youTubeVideoAudio, string youTubeVideoScript, string youTubeStartTimer, string youTubeEndTimer,string youTubeUrl,string youTubeDownloadableUrl,string status)
     {
         PlayerPrefs.SetString(StaticStrings.videoUrl, youTubeDownloadableUrl);
         PlayerPrefs.SetString(StaticStrings.videoScript, youTubeVideoScript);
-        videoManager.AssignYoutubeProperty(youTubeStartTimer, youTubeEndTimer, youTubeVideoAudio, youTubeUrl, youTubeDownloadableUrl, youTubeVideoScript, status);
+        videoManager.AssignYoutubeProperty(youTubeStartTimer, youTubeEndTimer, youTubeVideoAudio, youTubeUrl, youTubeDownloadableUrl, youTubeVideoScript,status);
 
     }
-
+  
 }
 public class BypassCertificateHandler : CertificateHandler
 {

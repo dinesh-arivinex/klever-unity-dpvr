@@ -234,9 +234,7 @@ namespace Klass.Net
                 _client = new MqttClient(KlassEndpoints.MqttHost, KlassEndpoints.MqttPort, KlassEndpoints.MqttUseTls,
                     null, null, sslProtocol);
                 SubscribeMqttPublish(_client);
-                _client.ConnectionClosed += (_, __) => {
-                    EnqueueMain(() => { IsConnected = false; OnDisconnected?.Invoke(); });
-                };
+                _client.ConnectionClosed += HandleConnectionClosed;
 
                 // Last Will: broker auto-publishes when this client drops/keepalive-times-out
                 var willTopic   = MqttTopics.Status(SchoolId, DeviceId);
@@ -323,39 +321,105 @@ namespace Klass.Net
 
         private void SubscribeMqttPublish(MqttClient client)
         {
-            var ev = client.GetType().GetEvent("MqttMsgPublishReceived");
-            if (ev == null) { Debug.LogError("[KlassMqtt] MqttMsgPublishReceived event not found on MqttClient"); return; }
-            var mi = GetType().GetMethod("HandleIncomingMessage", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (mi == null) { Debug.LogError("[KlassMqtt] HandleIncomingMessage method not found"); return; }
-            var del = Delegate.CreateDelegate(ev.EventHandlerType, this, mi);
-            ev.AddEventHandler(client, del);
+            try
+            {
+                var ev = client.GetType().GetEvent("MqttMsgPublishReceived");
+                if (ev == null) { Debug.LogError("[KlassMqtt] MqttMsgPublishReceived event not found on MqttClient"); return; }
+                var mi = GetType().GetMethod("HandleIncomingMessage", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (mi == null) { Debug.LogError("[KlassMqtt] HandleIncomingMessage method not found"); return; }
+                var del = Delegate.CreateDelegate(ev.EventHandlerType, this, mi);
+                ev.AddEventHandler(client, del);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[KlassMqtt] SubscribeMqttPublish threw: {ex.Message}");
+            }
+        }
+
+        private void UnsubscribeMqttEvents(MqttClient client)
+        {
+            if (client == null) return;
+            try
+            {
+                client.ConnectionClosed -= HandleConnectionClosed;
+                UnsubscribeMqttPublish(client);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[KlassMqtt] Failed to unsubscribe connection event: {ex.Message}");
+            }
+        }
+
+        private void UnsubscribeMqttPublish(MqttClient client)
+        {
+            if (client == null) return;
+            try
+            {
+                var ev = client.GetType().GetEvent("MqttMsgPublishReceived");
+                if (ev == null) return;
+                var mi = GetType().GetMethod("HandleIncomingMessage", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (mi == null) return;
+                var del = Delegate.CreateDelegate(ev.EventHandlerType, this, mi);
+                ev.RemoveEventHandler(client, del);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[KlassMqtt] Failed to unsubscribe publish event: {ex.Message}");
+            }
+        }
+
+        private void HandleConnectionClosed(object sender, EventArgs e)
+        {
+            try
+            {
+                EnqueueMain(() => { IsConnected = false; OnDisconnected?.Invoke(); });
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[KlassMqtt] Error in ConnectionClosed handler: {ex.Message}");
+            }
         }
 
         [UnityEngine.Scripting.Preserve]
         private void HandleIncomingMessage(object sender, EventArgs e)
         {
-            // M2Mqtt fires this on a worker thread — defer handler invocation.
-            // Access Topic/Message via reflection to avoid compile-time dependency on MqttMsgPublishEventArgs.
-            var eType = e.GetType();
-            string topic = eType.GetProperty("Topic")?.GetValue(e) as string ?? "";
-            byte[] msgBytes = eType.GetProperty("Message")?.GetValue(e) as byte[];
-            string payload = msgBytes != null ? Encoding.UTF8.GetString(msgBytes) : "";
-            EnqueueMain(() =>
-            {
-                JSONNode node = null;
-                try { node = JSONNode.Parse(payload); } catch { /* not JSON */ }
-
-                if (topic == MqttTopics.SessionControl(SchoolId))      OnSessionControl?.Invoke(node);
-                else if (topic == MqttTopics.Broadcast(SchoolId))      OnBroadcast?.Invoke(node);
-                else if (topic == MqttTopics.Cmd(SchoolId, DeviceId))  OnCommand?.Invoke(node);
-            });
-        }
-
-        private void DisconnectInternal(string reason)
-        {
+            // M2Mqtt fires this on a worker thread — wrap in try-catch to prevent application crash on background thread exception.
             try
             {
-                if (_client != null && _client.IsConnected)
+                if (e == null) return;
+                var eType = e.GetType();
+                var topicProp = eType.GetProperty("Topic");
+                var msgProp = eType.GetProperty("Message");
+                if (topicProp == null || msgProp == null) return;
+
+                string topic = topicProp.GetValue(e) as string ?? "";
+                byte[] msgBytes = msgProp.GetValue(e) as byte[];
+                string payload = msgBytes != null ? Encoding.UTF8.GetString(msgBytes) : "";
+
+                EnqueueMain(() =>
+                {
+                    JSONNode node = null;
+                    try { node = JSONNode.Parse(payload); } catch { /* not JSON */ }
+
+                    if (topic == MqttTopics.SessionControl(SchoolId))      OnSessionControl?.Invoke(node);
+                    else if (topic == MqttTopics.Broadcast(SchoolId))      OnBroadcast?.Invoke(node);
+                    else if (topic == MqttTopics.Cmd(SchoolId, DeviceId))  OnCommand?.Invoke(node);
+                });
+            }
+            catch (Exception ex)
+            {
+                // Background thread exceptions MUST be caught to prevent crash!
+                Debug.LogWarning($"[KlassMqtt] HandleIncomingMessage exception: {ex.Message}");
+            }
+        }
+
+        private void CleanupClient(MqttClient client)
+        {
+            if (client == null) return;
+            UnsubscribeMqttEvents(client);
+            try
+            {
+                if (client.IsConnected)
                 {
                     // best-effort offline status before clean disconnect
                     try
@@ -363,26 +427,28 @@ namespace Klass.Net
                         var off = new JSONObject();
                         off["online"] = false;
                         off["ts"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-                        _client.Publish(MqttTopics.Status(SchoolId, DeviceId),
+                        client.Publish(MqttTopics.Status(SchoolId, DeviceId),
                             Encoding.UTF8.GetBytes(off.ToString()),
                             (byte)1, true);
                     }
                     catch { /* swallow */ }
-                    _client.Disconnect();
+                    client.Disconnect();
                 }
             }
             catch { /* swallow */ }
-            finally
-            {
-                IsConnected = false;
-                _client = null;
-            }
+        }
+
+        private void DisconnectInternal(string reason)
+        {
+            CleanupClient(_client);
+            _client = null;
+            IsConnected = false;
             Debug.Log($"[KlassMqtt] disconnected: {reason}");
         }
 
         private void SafeDisconnect()
         {
-            try { if (_client != null && _client.IsConnected) _client.Disconnect(); } catch { /* swallow */ }
+            CleanupClient(_client);
             _client = null;
             IsConnected = false;
         }
