@@ -121,6 +121,7 @@ public class API : MonoBehaviour
 
 
             jsonData = req.downloadHandler.text;
+            Debug.Log("JsonData:"+jsonData);
             bool parseAsArray = false;
             try
             {
@@ -234,7 +235,7 @@ public class API : MonoBehaviour
 
                          JSONArray simulationDetails = content["simulationDetails"].AsArray;
                          JSONArray scholarLabSimulationDetails = content["scholarlabSimulationDetails"].AsArray;
-                         JSONArray objectXRDetails = content["objectXRDetails"].AsArray;
+                         JSONArray objectXRDetails = content["objectxrSimulationDetails"].AsArray;
  
                          // Priority:
                          // 1. simulationDetails
@@ -243,15 +244,18 @@ public class API : MonoBehaviour
  
                          if (simulationDetails != null && simulationDetails.Count > 0)
                          {
+                             webManager.isobjectXR = false;
                              selectedSimulationDetails = simulationDetails;
                          }
                          else if (scholarLabSimulationDetails != null && scholarLabSimulationDetails.Count > 0)
                          {
-                             selectedSimulationDetails = scholarLabSimulationDetails;
+                            webManager.isobjectXR = false;
+                            selectedSimulationDetails = scholarLabSimulationDetails;
                          }
                          else if (objectXRDetails != null && objectXRDetails.Count > 0)
                          {
-                             selectedSimulationDetails = objectXRDetails;
+                            webManager.isobjectXR = true;
+                            selectedSimulationDetails = objectXRDetails;
                          }
  
                          if (selectedSimulationDetails != null)

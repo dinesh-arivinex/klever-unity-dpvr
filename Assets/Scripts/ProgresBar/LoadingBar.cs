@@ -63,6 +63,8 @@ public class LoadingBar : MonoBehaviour
         StartCoroutine(GenerateRandomProgress());
         totalCount = 20;
     }
+
+
     public void SimulateLoading(RuntimeImportBehaviour finalScript)
     {
         // Null-guard: when the current experience has no 3D models the caller

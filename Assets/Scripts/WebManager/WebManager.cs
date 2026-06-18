@@ -30,6 +30,7 @@ public class WebManager : MonoBehaviour
     public GameObject simulation;
     public GameObject temp;
     private bool firstTime;
+    public bool isobjectXR;
     // Start is called before the first frame update
     void Start()
     {
@@ -122,9 +123,12 @@ public class WebManager : MonoBehaviour
                 {
                     googleTextToSpeech.StartTalking(simulationScript);
                 }
-                PlayerPrefs.SetInt("InSimulation", 1);
-                PlayerPrefs.Save();
-                Application.OpenURL(url);
+                if (isobjectXR)
+                {
+                    PlayerPrefs.SetInt("InSimulation", 1);
+                    PlayerPrefs.Save();
+                    Application.OpenURL(url);
+                }
             }
             else
             {

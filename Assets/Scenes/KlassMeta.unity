@@ -19084,7 +19084,6 @@ GameObject:
   - component: {fileID: 627722849}
   - component: {fileID: 627722850}
   - component: {fileID: 627722851}
-  - component: {fileID: 627722852}
   m_Layer: 0
   m_Name: API
   m_TagString: Untagged
@@ -19939,19 +19938,6 @@ MonoBehaviour:
     "teacherCharacterGender": "male",         "createdBy": "65eeb294bc53f2c64e01e274",        
     "createdAt": "2024-03-15T16:14:01.665Z",         "updatedAt": "2024-03-20T18:22:53.967Z",        
     "__v": 0       }     ]   } ]'
---- !u!114 &627722852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 627722846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee895f12ce6ce4541bfe4894425411b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: 
 --- !u!4 &628430464 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4574527821592105548, guid: af3467ecf1a7ab8428e0ef8e746be06a, type: 3}

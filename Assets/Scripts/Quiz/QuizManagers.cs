@@ -154,6 +154,7 @@ public class QuizManagers : MonoBehaviour
             else
             {
                 rawImg.gameObject.SetActive(true);
+                this.gameObject.SetActive(true);
                 StartCoroutine(LoadImageCoroutine(url, texture => {
                     rawImg.texture = texture;
                 }));

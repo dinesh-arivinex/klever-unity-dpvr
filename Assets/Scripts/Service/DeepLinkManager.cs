@@ -66,6 +66,8 @@ public class DeepLinkManager : MonoBehaviour
                 // Has assessments -> trigger MCQ and Gamification
                 GameManager.Instance.serviceScript.AssignTaskBasedOnCondition(GameStatus.Mcq);
                 GameManager.Instance.gamificationManager.AssignGames();
+                var loadingbar = FindAnyObjectByType<LoadingBar>();
+                loadingbar.CustomSumulatedLoading();
             }
             else
             {
