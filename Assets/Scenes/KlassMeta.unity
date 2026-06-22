@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 17818497}
   - component: {fileID: 17818496}
   - component: {fileID: 17818495}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: "\uF702UICanvas (1)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2067,7 +2067,7 @@ GameObject:
   - component: {fileID: 89007273}
   - component: {fileID: 89007272}
   - component: {fileID: 89007271}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: "\uF702UICanvas (1)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9777,7 +9777,7 @@ GameObject:
   - component: {fileID: 335287829}
   - component: {fileID: 335287828}
   - component: {fileID: 335287832}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: NumPad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12112,7 +12112,7 @@ GameObject:
   - component: {fileID: 421610457}
   - component: {fileID: 421610456}
   - component: {fileID: 421610455}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Model Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12800,7 +12800,7 @@ GameObject:
   - component: {fileID: 434888236}
   - component: {fileID: 434888235}
   - component: {fileID: 434888234}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: AdminPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16935,7 +16935,7 @@ GameObject:
   - component: {fileID: 571343903}
   - component: {fileID: 571343902}
   - component: {fileID: 571343901}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Bg Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24015,6 +24015,10 @@ PrefabInstance:
       value: ModelInteractiontimer
       objectReference: {fileID: 0}
     - target: {fileID: 4047586195927336499, guid: 2528886d067c6424f8ecf93fcb11cae9, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047586195927336499, guid: 2528886d067c6424f8ecf93fcb11cae9, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -26663,7 +26667,7 @@ GameObject:
   - component: {fileID: 857122313}
   - component: {fileID: 857122315}
   - component: {fileID: 857122314}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27046,7 +27050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &861389448
 Transform:
   m_ObjectHideFlags: 0
@@ -27082,8 +27086,8 @@ MonoBehaviour:
   disableitems:
   - {fileID: 1606305716}
   - {fileID: 421610452}
-  _webViewPrefab: {fileID: 1945798195}
-  canvasWebViewLoader: {fileID: 1945798197}
+  _webViewPrefab: {fileID: 1368261055}
+  canvasWebViewLoader: {fileID: 1368261057}
   timer: {fileID: 1663742045}
   buttonNext: {fileID: 439908309}
   startingevent:
@@ -38539,7 +38543,7 @@ Transform:
   m_GameObject: {fileID: 1274686778}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.367796, y: -34.751938, z: -633.4608}
+  m_LocalPosition: {x: 18.367796, y: -25.75, z: -633.4608}
   m_LocalScale: {x: 165.76259, y: 165.76259, z: 165.76259}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -40824,7 +40828,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: InitialUrl
-      value: https://d3vdjegbtyvp.cloudfront.net/Burning_of_Magnesium_in_Air/index.html
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
+      propertyPath: Resolution
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: KeyboardEnabled
@@ -46045,7 +46053,7 @@ Transform:
   m_GameObject: {fileID: 1494054916}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.64, y: 0.37, z: 1.047}
+  m_LocalPosition: {x: -1.64, y: 2000, z: 1.047}
   m_LocalScale: {x: 0.012999699, y: 0.012999699, z: 0.012999699}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -46598,6 +46606,10 @@ PrefabInstance:
     - target: {fileID: 7196909242368588369, guid: deed4559f0d6360479b8356efb931f0b, type: 3}
       propertyPath: m_Name
       value: ModelInteractiontimer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196909242368588369, guid: deed4559f0d6360479b8356efb931f0b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7196909242368588369, guid: deed4559f0d6360479b8356efb931f0b, type: 3}
       propertyPath: m_IsActive
@@ -52525,7 +52537,7 @@ GameObject:
   - component: {fileID: 1744234507}
   - component: {fileID: 1744234506}
   - component: {fileID: 1744234505}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Internetchecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57644,7 +57656,7 @@ GameObject:
   - component: {fileID: 1899531393}
   - component: {fileID: 1899531392}
   - component: {fileID: 1899531390}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: 'SucessfullyRegistread '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63188,31 +63200,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.017200306
+      value: 0.0032569128
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.055141464
+      value: -0.046436403
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.3211104
+      value: -0.29367727
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.83603776
+      value: -0.79256153
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5349141
+      value: 0.5920828
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.017698068
+      value: 0.009075438
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.1208083
+      value: 0.14560798
       objectReference: {fileID: 0}
     - target: {fileID: 5054374844314730088, guid: a577701db3e23d8489feb76cd34e2336, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -65478,7 +65490,7 @@ GameObject:
   - component: {fileID: 1753113734262914686}
   - component: {fileID: 1717602406731816762}
   - component: {fileID: 2784353634757632873}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Board UI elements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99759,7 +99771,7 @@ GameObject:
   - component: {fileID: 587824878642810396}
   - component: {fileID: 5835393125851719682}
   - component: {fileID: 5047650013264534858}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: "\uF702UICanvas (1)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113394,7 +113406,7 @@ GameObject:
   - component: {fileID: 7486506882317554646}
   - component: {fileID: 4811396710079685433}
   - component: {fileID: 6234166911882914219}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: "\uF702UICanvas"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
