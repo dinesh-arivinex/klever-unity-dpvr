@@ -26260,7 +26260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: InitialUrl
-      value: 
+      value: https://d3vdjegbtyvp.cloudfront.net/Burning_of_Magnesium_in_Air/index.html
       objectReference: {fileID: 0}
     - target: {fileID: 114949863196309792, guid: 3e10f3b6a733e441c8352020cff2f1f6, type: 3}
       propertyPath: Resolution
@@ -110125,6 +110125,7 @@ MonoBehaviour:
         m_CallState: 2
   simulation: {fileID: 753453033}
   temp: {fileID: 522243369}
+  isobjectXR: 0
 --- !u!1 &1959161605
 GameObject:
   m_ObjectHideFlags: 0
