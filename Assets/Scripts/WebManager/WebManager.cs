@@ -90,7 +90,7 @@ public class WebManager : MonoBehaviour
         url = newUrl;
         simulationTimer = ConvertTimeToSeconds(time);
 
-        if (_webViewPrefab != null)
+        if (_webViewPrefab != null&&!isobjectXR)
         {
             _webViewPrefab.InitialUrl = url;
         }
@@ -112,7 +112,7 @@ public class WebManager : MonoBehaviour
                 GamificationControllerHandSwitcher.Instance.rightHandRaycast.SetActive(true);
                 GamificationControllerHandSwitcher.Instance.leftControllerRaycast.SetActive(true);
                 GamificationControllerHandSwitcher.Instance.rightControllerRaycast.SetActive(true);
-                canvasWebViewLoader.SetupWebView(url);
+                
                 simulation.transform.position = temp.transform.position;
                 simulation.transform.rotation = temp.transform.rotation;
                 startingevent.Invoke();
@@ -124,17 +124,26 @@ public class WebManager : MonoBehaviour
                     googleTextToSpeech.StartTalking(simulationScript);
                 }
                 if (isobjectXR)
-                {
+                {                   
                     PlayerPrefs.SetInt("InSimulation", 1);
                     PlayerPrefs.Save();
                     Application.OpenURL(url);
+                    webView.gameObject.SetActive(false);
+                }
+                else
+                {
+                    canvasWebViewLoader.SetupWebView(url);
                 }
             }
             else
             {
                 ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);
                 webView.SetActive(true);
-                canvasWebViewLoader.SetupWebView(url);
+                if (!isobjectXR)
+                {
+                    canvasWebViewLoader.SetupWebView(url);
+                }
+                   
             }
             firstTime = true;
 

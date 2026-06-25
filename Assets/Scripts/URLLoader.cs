@@ -11,6 +11,6 @@ public class URLLoader : MonoBehaviour
     }
     public void OpenURL(string url)
     {
-        Application.OpenURL(url);
+        //Application.OpenURL(url);
     }
 }
