@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/meta-xr-webview-example-master/Assets/Scenes/MetaXRWebViewExample
       1.unity
     guid: 7213c6ee13b1e57439560dd91706d4f9
+  - enabled: 0
+    path: "Assets/Samples/Meta XR Interaction \u200BSDK/72.0.0/Example Scenes/DistanceGrabExamples.unity"
+    guid: e1c1f1d4144ac8849ac1833b99bdfd23
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: d5d6653c4cd42e647a63fe96c61dbe40, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 9126716748dcb834580209c3d1900869, type: 2}

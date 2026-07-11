@@ -26,6 +26,25 @@ TagManager:
   - notAChild
   - Cursor
   - CursorHand
+  - QDSUIToggleButton
+  - QDSUIToggleSwitch
+  - QDSUISharedThemeColor
+  - QDSUIAccentColor
+  - QDSUIIcon
+  - QDSUITextSecondaryColor
+  - QDSUIBorderlessButton
+  - QDSUISecondaryButton
+  - QDSUITooltip
+  - QDSUIToggleBorderlessButton
+  - QDSUISection
+  - QDSUIToggleCheckboxRadio
+  - QDSUITextInputField
+  - QDSUIPrimaryButton
+  - QDSUIDestructiveButton
+  - Answer2
+  - Answer1
+  - Answer3
+  - Answer4
   layers:
   - Default
   - TransparentFX
@@ -34,7 +53,7 @@ TagManager:
   - Water
   - UI
   - Skin
-  - 
+  - Answer2
   - 
   - 
   - 
