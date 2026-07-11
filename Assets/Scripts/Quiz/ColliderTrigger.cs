@@ -11,6 +11,8 @@ public class ColliderTrigger : MonoBehaviour
 
     public GameObject AnswerPlacePos;
     public List<GameObject> GrabInteractable;
+    public string correctAnswerTag;
+
     private void OnTriggerEnter(Collider other)
     {
         foreach (string targetName in targetObjects)
@@ -23,6 +25,24 @@ public class ColliderTrigger : MonoBehaviour
                 {
                     snapTarget.GetComponent<BoxCollider>().enabled = false;
                     GameObject grandParent = snapTarget.transform.parent.parent.gameObject;
+                    
+                    // --- ASSIGN COLOR BASED ON CORRECTNESS ---
+                    Image answerImage = grandParent.GetComponentInChildren<Image>();
+                    if (answerImage != null)
+                    {
+                        // Check if this specific object's tag matches the correct answer
+                        if (other.gameObject.tag == correctAnswerTag)
+                        {
+                            // CORRECT -> GREEN
+                            answerImage.color = new Color(Color.green.r, Color.green.g, Color.green.b, 95f / 255f);
+                        }
+                        else
+                        {
+                            // WRONG -> RED
+                            answerImage.color = new Color(Color.red.r, Color.red.g, Color.red.b, 255f / 255f);
+                        }
+                    }
+                    
                     grandParent.GetComponent<Grabbable>().enabled = false;
                     Transform handGrabInteractable = snapTarget.transform.parent.parent.Find("HandGrabInteractable");
 
@@ -37,7 +57,10 @@ public class ColliderTrigger : MonoBehaviour
 
                     foreach(var items in GrabInteractable)
                     {
-                        items.gameObject.SetActive(false);
+                        if (items != null && items != grandParent)
+                        {
+                            items.gameObject.SetActive(false);
+                        }
                     }
                 }
 

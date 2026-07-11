@@ -10573,6 +10573,12 @@ MonoBehaviour:
   fillItManager: {fileID: 867836454}
   answerIndex: 1
   isCorrect: 0
+  originalPosition: {x: 0, y: 0, z: 0}
+  fixedZ: 0
+  isGrabbed: 0
+  hasSnapped: 0
+  isInsideDropZone: 0
+  currentDropZone: {fileID: 0}
 --- !u!1 &320129554
 GameObject:
   m_ObjectHideFlags: 0
@@ -13945,6 +13951,12 @@ MonoBehaviour:
   fillItManager: {fileID: 867836454}
   answerIndex: 1
   isCorrect: 0
+  originalPosition: {x: 0, y: 0, z: 0}
+  fixedZ: 0
+  isGrabbed: 0
+  hasSnapped: 0
+  isInsideDropZone: 0
+  currentDropZone: {fileID: 0}
 --- !u!1 &428208206
 GameObject:
   m_ObjectHideFlags: 0
@@ -16003,6 +16015,12 @@ MonoBehaviour:
   fillItManager: {fileID: 867836454}
   answerIndex: 3
   isCorrect: 0
+  originalPosition: {x: 0, y: 0, z: 0}
+  fixedZ: 0
+  isGrabbed: 0
+  hasSnapped: 0
+  isInsideDropZone: 0
+  currentDropZone: {fileID: 0}
 --- !u!1 &486988715
 GameObject:
   m_ObjectHideFlags: 0
@@ -20068,6 +20086,12 @@ MonoBehaviour:
   fillItManager: {fileID: 867836454}
   answerIndex: 2
   isCorrect: 0
+  originalPosition: {x: 0, y: 0, z: 0}
+  fixedZ: 0
+  isGrabbed: 0
+  hasSnapped: 0
+  isInsideDropZone: 0
+  currentDropZone: {fileID: 0}
 --- !u!1 &605143497
 GameObject:
   m_ObjectHideFlags: 0
@@ -28492,6 +28516,8 @@ GameObject:
   - component: {fileID: 847159221}
   - component: {fileID: 847159223}
   - component: {fileID: 847159222}
+  - component: {fileID: 847159224}
+  - component: {fileID: 847159225}
   m_Layer: 5
   m_Name: Stone-AnchorAtHand
   m_TagString: Untagged
@@ -28612,7 +28638,7 @@ MonoBehaviour:
         Min: 0
         Max: 0
   _scaleConstraints:
-    ConstraintsAreRelative: 1
+    ConstraintsAreRelative: 0
     XAxis:
       ConstrainAxis: 1
       AxisRange:
@@ -28652,6 +28678,73 @@ MonoBehaviour:
   _defaultInteractable: {fileID: 0}
   _timeOutInteractable: {fileID: 187514870}
   _timeOut: 2
+--- !u!114 &847159224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847159218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f09c22907a7afd49bb2c23d539a42a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCorrect: 1
+  targetImage: {fileID: 950556928}
+  targetMeshRenderer: {fileID: 0}
+  OnCorrectAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWrongAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &847159225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847159218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f8f6e9e6f3e114b9bf9a57c2160615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointable: {fileID: 847159221}
+  _whenRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 847159224}
+        m_TargetAssemblyTypeName: FillInTheBlanksAnswerChecker, Assembly-CSharp
+        m_MethodName: CheckAnswer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenMove:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenCancel:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &851732604
 GameObject:
   m_ObjectHideFlags: 0
@@ -29267,7 +29360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &857122313
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30245,9 +30338,16 @@ MonoBehaviour:
   StartEvent:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   reloadSceneEvent:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
+  gamificationManager: {fileID: 0}
+  apiManager: {fileID: 0}
+  currentAnswers: []
+  currentQuestionIndex: 0
+  gameCompleted: 0
 --- !u!1 &869800662
 GameObject:
   m_ObjectHideFlags: 0
@@ -32161,6 +32261,7 @@ MonoBehaviour:
   - {fileID: 715272192}
   - {fileID: 149950883}
   - {fileID: 34495152}
+  correctAnswerTag: Answer2
 --- !u!1 &952048917
 GameObject:
   m_ObjectHideFlags: 0
@@ -37708,6 +37809,8 @@ GameObject:
   - component: {fileID: 1128752120}
   - component: {fileID: 1128752122}
   - component: {fileID: 1128752121}
+  - component: {fileID: 1128752123}
+  - component: {fileID: 1128752124}
   m_Layer: 5
   m_Name: Stone-AnchorAtHand
   m_TagString: Untagged
@@ -37868,6 +37971,73 @@ MonoBehaviour:
   _defaultInteractable: {fileID: 0}
   _timeOutInteractable: {fileID: 1525851113}
   _timeOut: 2
+--- !u!114 &1128752123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128752117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f09c22907a7afd49bb2c23d539a42a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCorrect: 0
+  targetImage: {fileID: 950556928}
+  targetMeshRenderer: {fileID: 0}
+  OnCorrectAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWrongAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1128752124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128752117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f8f6e9e6f3e114b9bf9a57c2160615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointable: {fileID: 1128752120}
+  _whenRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1128752123}
+        m_TargetAssemblyTypeName: FillInTheBlanksAnswerChecker, Assembly-CSharp
+        m_MethodName: CheckAnswer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenMove:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenCancel:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1129754517
 GameObject:
   m_ObjectHideFlags: 0
@@ -38511,6 +38681,12 @@ MonoBehaviour:
   fillItManager: {fileID: 867836454}
   answerIndex: 3
   isCorrect: 0
+  originalPosition: {x: 0, y: 0, z: 0}
+  fixedZ: 0
+  isGrabbed: 0
+  hasSnapped: 0
+  isInsideDropZone: 0
+  currentDropZone: {fileID: 0}
 --- !u!4 &1149168146 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5419937293532398301, guid: 424c2298facd2bf419beffd69e8cc855, type: 3}
@@ -59433,6 +59609,8 @@ GameObject:
   - component: {fileID: 1813236038}
   - component: {fileID: 1813236040}
   - component: {fileID: 1813236039}
+  - component: {fileID: 1813236041}
+  - component: {fileID: 1813236042}
   m_Layer: 5
   m_Name: Stone-AnchorAtHand
   m_TagString: Untagged
@@ -59593,6 +59771,73 @@ MonoBehaviour:
   _defaultInteractable: {fileID: 0}
   _timeOutInteractable: {fileID: 1375815095}
   _timeOut: 2
+--- !u!114 &1813236041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813236035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f09c22907a7afd49bb2c23d539a42a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCorrect: 0
+  targetImage: {fileID: 950556928}
+  targetMeshRenderer: {fileID: 0}
+  OnCorrectAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWrongAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1813236042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813236035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f8f6e9e6f3e114b9bf9a57c2160615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointable: {fileID: 1813236038}
+  _whenRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1813236041}
+        m_TargetAssemblyTypeName: FillInTheBlanksAnswerChecker, Assembly-CSharp
+        m_MethodName: CheckAnswer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenMove:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenCancel:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1816056037
 GameObject:
   m_ObjectHideFlags: 0
@@ -63872,6 +64117,8 @@ GameObject:
   - component: {fileID: 1958378399}
   - component: {fileID: 1958378401}
   - component: {fileID: 1958378400}
+  - component: {fileID: 1958378402}
+  - component: {fileID: 1958378403}
   m_Layer: 5
   m_Name: Stone-AnchorAtHand
   m_TagString: Untagged
@@ -64032,6 +64279,73 @@ MonoBehaviour:
   _defaultInteractable: {fileID: 0}
   _timeOutInteractable: {fileID: 1047958585}
   _timeOut: 2
+--- !u!114 &1958378402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958378396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f09c22907a7afd49bb2c23d539a42a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCorrect: 0
+  targetImage: {fileID: 950556928}
+  targetMeshRenderer: {fileID: 0}
+  OnCorrectAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWrongAnswer:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1958378403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958378396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f8f6e9e6f3e114b9bf9a57c2160615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointable: {fileID: 1958378399}
+  _whenRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1958378402}
+        m_TargetAssemblyTypeName: FillInTheBlanksAnswerChecker, Assembly-CSharp
+        m_MethodName: CheckAnswer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenMove:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenCancel:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1959559285
 GameObject:
   m_ObjectHideFlags: 0
@@ -70254,7 +70568,6 @@ MonoBehaviour:
   arrowGame: {fileID: 3491404941863803799}
   basketballGame: {fileID: 7788946197867871915}
   mcqGame: {fileID: 1728956040296472638}
-  fillItGame: {fileID: 0}
   gamificationCollider: {fileID: 6827677711741187105}
   thankyouCanvas: {fileID: 210506409}
   scoreText:
@@ -70278,7 +70591,6 @@ MonoBehaviour:
   arrowScore: 0
   basketBallScore: 0
   mcqScore: 0
-  fillItScore: 0
   disableObjects:
   - {fileID: 1728956040296472638}
   - {fileID: 6827677711741187105}

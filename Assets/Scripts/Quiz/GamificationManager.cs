@@ -36,7 +36,6 @@ public class GamificationManager : MonoBehaviour
     public GameObject arrowGame;
     public GameObject basketballGame;
     public GameObject mcqGame;
-    public GameObject fillItGame;
     public GameObject gamificationCollider;
     private List<string> selectedGames = new List<string>(); // Array to store selected game names
     private int currentGameIndex = 0;
@@ -83,7 +82,6 @@ public class GamificationManager : MonoBehaviour
     public  int arrowScore;
     public  int basketBallScore;
     public  int mcqScore;
-    public  int fillItScore;
 
     public GameObject[] disableObjects;
     public GameObject classRoom;
@@ -229,15 +227,7 @@ public class GamificationManager : MonoBehaviour
                     mcqGame.GetComponent<QuizManagers>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
                     mcqGame.SetActive(true);
                     break;
-                case "FillIt":
-                    crossbow.SetActive(false);
-                    crossbowHandMode.SetActive(false);
-                    ballVisualize.SetActive(false);
-                    ballVisualizeHandMode.SetActive(false);
-                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
-                    fillItGame.GetComponent<FillItManager>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
-                    fillItGame.SetActive(true);
-                    break;
+               
                 default:
                     DebugUtil.LogWarning("Unknown game name: " + currentGameName);
                     break;
@@ -276,7 +266,7 @@ public class GamificationManager : MonoBehaviour
             schoolId = schoolId,
             sectionID = sectionID,
             gradeID = gradeID,
-            score = arrowScore + basketBallScore + mcqScore + fillItScore,
+            score = arrowScore + basketBallScore + mcqScore,
             // optional, defaults to 60
         };
         string jsonData = JsonUtility.ToJson(student);
@@ -363,9 +353,6 @@ public class GamificationManager : MonoBehaviour
                 break;
             case "MCQ":
                 mcqGame.SetActive(false);
-                break;
-            case "FillIt":
-                fillItGame.SetActive(false);
                 break;
             default:
                 DebugUtil.LogWarning("Unknown game name: " + currentGameName);
