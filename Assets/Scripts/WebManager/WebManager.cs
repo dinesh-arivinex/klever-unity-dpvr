@@ -90,7 +90,7 @@ public class WebManager : MonoBehaviour
         url = newUrl;
         simulationTimer = ConvertTimeToSeconds(time);
 
-        if (_webViewPrefab != null&&!isobjectXR)
+        if (_webViewPrefab != null)
         {
             _webViewPrefab.InitialUrl = url;
         }
@@ -127,22 +127,14 @@ public class WebManager : MonoBehaviour
                 {                   
                     PlayerPrefs.SetInt("InSimulation", 1);
                     PlayerPrefs.Save();
-                    Application.OpenURL(url);
-                    webView.gameObject.SetActive(false);
                 }
-                else
-                {
-                    canvasWebViewLoader.SetupWebView(url);
-                }
+                canvasWebViewLoader.SetupWebView(url);
             }
             else
             {
                 ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);
                 webView.SetActive(true);
-                if (!isobjectXR)
-                {
-                    canvasWebViewLoader.SetupWebView(url);
-                }
+                canvasWebViewLoader.SetupWebView(url);
                    
             }
             firstTime = true;
