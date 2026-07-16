@@ -61,7 +61,7 @@ public class QuizManagers : MonoBehaviour
     {
         gamificationManager=FindAnyObjectByType<GamificationManager>();
         apiManager =FindAnyObjectByType<API>(); 
-         Wrapper wrapper = JsonUtility.FromJson<Wrapper>("{\"questions\":" + apiManager.assessmentsString + "}");
+         //Wrapper wrapper = JsonUtility.FromJson<Wrapper>("{\"questions\":" + apiManager.assessmentsString + "}");
         //questions = wrapper.questions;
 
      //   DisplayQuestion();

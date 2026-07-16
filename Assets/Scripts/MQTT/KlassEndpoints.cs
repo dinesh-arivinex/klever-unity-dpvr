@@ -12,7 +12,7 @@ namespace Klass.Net
     /// </summary>
     public static class KlassEndpoints
     {
-        // ---- Compile-time defaults (override per build via PlayerPrefs) ----
+        // ---- Compile-time defaults (override per build via PlayerPrefs) ---- //https://api.klever-edu.com
         private const string DefaultBackendBase = "https://api.klever-edu.com";
         private const string DefaultMqttHost = "api.klever-edu.com"; // resolves to 3.219.190.49
         private const int DefaultMqttPort = 1883;
