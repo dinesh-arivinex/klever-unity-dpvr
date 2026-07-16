@@ -90,12 +90,13 @@ public class WebManager : MonoBehaviour
         url = newUrl;
         simulationTimer = ConvertTimeToSeconds(time);
 
-        if (_webViewPrefab != null)
+        // ObjectX launches an immersive WebXR session, which Vuplex 3D WebView
+        // doesn't support. Keep the WebView path only for non-WebXR simulations.
+        if (_webViewPrefab != null && !isobjectXR)
         {
             _webViewPrefab.InitialUrl = url;
+            StartLoading();
         }
-
-        StartLoading();
 
         StartSimulation();
     }
@@ -124,18 +125,32 @@ public class WebManager : MonoBehaviour
                     googleTextToSpeech.StartTalking(simulationScript);
                 }
                 if (isobjectXR)
-                {                   
+                {
                     PlayerPrefs.SetInt("InSimulation", 1);
                     PlayerPrefs.Save();
+                    webView.SetActive(false);
+                    Application.OpenURL(url);
                 }
-                canvasWebViewLoader.SetupWebView(url);
+                else
+                {
+                    canvasWebViewLoader.SetupWebView(url);
+                }
             }
             else
             {
                 ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);
-                webView.SetActive(true);
-                canvasWebViewLoader.SetupWebView(url);
-                   
+                if (isobjectXR)
+                {
+                    // AssignSimulationAsync() preloads normal simulations. ObjectX
+                    // must wait until StartSimulation() is called for the real step,
+                    // then it is opened by the Quest browser above.
+                    webView.SetActive(false);
+                }
+                else
+                {
+                    webView.SetActive(true);
+                    canvasWebViewLoader.SetupWebView(url);
+                }
             }
             firstTime = true;
 
