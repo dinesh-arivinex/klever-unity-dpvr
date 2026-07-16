@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="origin">
+  <title>Klever Immersive Lab</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #05070a;
+    }
+
+    #simulation {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #05070a;
+    }
+
+    #return-to-klever {
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top));
+      right: max(16px, env(safe-area-inset-right));
+      z-index: 10;
+      padding: 12px 18px;
+      border: 1px solid rgb(255 255 255 / 35%);
+      border-radius: 999px;
+      color: #fff;
+      background: rgb(5 7 10 / 75%);
+      font: inherit;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    #error {
+      display: none;
+      min-height: 100%;
+      padding: 32px;
+      place-items: center;
+      text-align: center;
+    }
+
+    #error.visible {
+      display: grid;
+    }
+  </style>
+</head>
+<body>
+  <button id="return-to-klever" type="button">Return to Klever</button>
+  <iframe
+    id="simulation"
+    title="ObjectX 3D simulation"
+    allow="autoplay; fullscreen; xr-spatial-tracking"
+    allowfullscreen
+    referrerpolicy="origin">
+  </iframe>
+  <main id="error" role="alert">
+    <div>
+      <h1>Unable to open the immersive lab</h1>
+      <p>The supplied ObjectX simulation URL is missing or invalid.</p>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const OBJECTX_HOST = "api.objectx.in";
+      const params = new URLSearchParams(window.location.search);
+      const source = params.get("src");
+      const iframe = document.getElementById("simulation");
+      const error = document.getElementById("error");
+
+      document.getElementById("return-to-klever").addEventListener("click", () => {
+        window.location.href = "klever://webtest";
+      });
+
+      try {
+        const sourceUrl = new URL(source);
+        const isAuthorizedObjectXUrl =
+          sourceUrl.protocol === "https:" &&
+          sourceUrl.hostname === OBJECTX_HOST &&
+          sourceUrl.pathname.startsWith("/gcl/embed");
+
+        if (!isAuthorizedObjectXUrl) {
+          throw new Error("Invalid ObjectX embed URL");
+        }
+
+        iframe.src = sourceUrl.href;
+      } catch (exception) {
+        iframe.remove();
+        error.classList.add("visible");
+        console.error(exception);
+      }
+    })();
+  </script>
+</body>
+</html>

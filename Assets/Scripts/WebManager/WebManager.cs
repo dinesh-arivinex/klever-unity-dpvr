@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
@@ -11,6 +12,8 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class WebManager : MonoBehaviour
 {
+    private const string ObjectXLauncherUrl = "https://klever-edu.com/objectx-launcher.html";
+
     private GamificationManager gamificationManager;
     public GameObject webView;
     public GameObject[] disableitems;
@@ -129,7 +132,7 @@ public class WebManager : MonoBehaviour
                     PlayerPrefs.SetInt("InSimulation", 1);
                     PlayerPrefs.Save();
                     webView.SetActive(false);
-                    Application.OpenURL(url);
+                    Application.OpenURL(BuildObjectXBrowserUrl(url));
                 }
                 else
                 {
@@ -160,6 +163,11 @@ public class WebManager : MonoBehaviour
             CheckTheStatus();
         }
 
+    }
+
+    private string BuildObjectXBrowserUrl(string embedUrl)
+    {
+        return ObjectXLauncherUrl + "?src=" + Uri.EscapeDataString(embedUrl);
     }
 
     public void ToggleItem(bool value)
