@@ -30634,6 +30634,9 @@ MonoBehaviour:
   elementWantToDelete: {fileID: 620243128368652379}
   interactableWrappers: []
   audioSource: {fileID: 806322210}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
 --- !u!1 &779247904
 GameObject:
   m_ObjectHideFlags: 0
@@ -34991,6 +34994,9 @@ MonoBehaviour:
   elementWantToDelete: {fileID: 620243128368652379}
   interactableWrappers: []
   audioSource: {fileID: 806322210}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
 --- !u!114 &867836454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56348,7 +56354,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -127.5, y: -33.5}
-  m_SizeDelta: {x: 500.69, y: 66.91}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1479578150
 MonoBehaviour:
@@ -57378,8 +57384,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 836762390}
-  - {fileID: 1014953656}
   - {fileID: 138813247}
+  - {fileID: 1014953656}
   - {fileID: 825980077}
   - {fileID: 596576900}
   - {fileID: 1298051288}
@@ -63932,14 +63938,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1694401760}
   - component: {fileID: 1694401761}
-  - component: {fileID: 1694401762}
   m_Layer: 0
   m_Name: FillIt (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1694401760
 Transform:
   m_ObjectHideFlags: 0
@@ -64049,18 +64054,24 @@ MonoBehaviour:
   elementWantToDelete: {fileID: 620243128368652379}
   interactableWrappers: []
   audioSource: {fileID: 806322210}
---- !u!114 &1694401762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694401759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea5335a8ac590bf42b0ed07913ef219d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  questionsFillIt:
+  - {fileID: 1479578148}
+  - {fileID: 1397148871}
+  - {fileID: 1451910878}
+  - {fileID: 1841724034}
+  - {fileID: 1624267261}
+  answersFillIt:
+  - {fileID: 824136009}
+  - {fileID: 1093381561}
+  - {fileID: 277660165}
+  - {fileID: 928995172}
+  - {fileID: 218401119}
+  answerPlacedTextFillIt:
+  - {fileID: 684149525}
+  - {fileID: 1612471617}
+  - {fileID: 1345149795}
+  - {fileID: 129346543}
+  - {fileID: 131725662}
 --- !u!1 &1710225469
 GameObject:
   m_ObjectHideFlags: 0

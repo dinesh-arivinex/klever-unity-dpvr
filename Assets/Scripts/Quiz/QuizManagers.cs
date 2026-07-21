@@ -26,6 +26,7 @@ public class QuizManagers : MonoBehaviour
     public List<InteractableUnityEventWrapper> interactableWrappers = new List<InteractableUnityEventWrapper>();
     public AudioSource audioSource;
 
+    public TextMeshProUGUI[] questionsFillIt, answersFillIt, answerPlacedTextFillIt;
 
     [System.Serializable]
     private class Wrapper
