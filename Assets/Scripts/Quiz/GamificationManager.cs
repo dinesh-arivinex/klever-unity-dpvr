@@ -36,12 +36,14 @@ public class GamificationManager : MonoBehaviour
     public GameObject arrowGame;
     public GameObject basketballGame;
     public GameObject mcqGame;
+    public GameObject FillIt;
     public GameObject gamificationCollider;
     private List<string> selectedGames = new List<string>(); // Array to store selected game names
     private int currentGameIndex = 0;
     public GameObject thankyouCanvas;
     public TextMeshProUGUI[] scoreText;
     public GameObject[] yourScoreText;
+    [System.Serializable]
     private class Wrapper
     {
         public List<QuestionData> questions;
@@ -52,6 +54,7 @@ public class GamificationManager : MonoBehaviour
     {
         public string question;
         public List<AnswerData> options;
+        public List<AnswerData> answer;
         public string createdBy;
         public string sessionId;
         public string id;
@@ -69,6 +72,7 @@ public class GamificationManager : MonoBehaviour
     private string answer;
     public List<QuestionData> questions;
     public List<List<AnswerData>> allOptions = new List<List<AnswerData>>();
+    public List<List<AnswerData>> allAnswers = new List<List<AnswerData>>();
     private List<string> typeOfGame = new List<string>();
     private List<string> questionImageUrlList = new List<string>();
     private int gameCount;
@@ -147,6 +151,7 @@ public class GamificationManager : MonoBehaviour
         {
 
             allOptions.Add(questionData.options);
+            allAnswers.Add(questionData.answer);
             typeOfGame.Add(questionData.typeOfGame);
             questionlist.Add(questionData.question);
             questionImageUrlList.Add(questionData.questionImageUrl);
@@ -224,8 +229,24 @@ public class GamificationManager : MonoBehaviour
                     ballVisualize.SetActive(false);
                     ballVisualizeHandMode.SetActive(false);
                     GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
-                    mcqGame.GetComponent<QuizManagers>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
+                    mcqGame.GetComponent<QuizManagers>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount], currentGameName, allAnswers[gameCount]);
                     mcqGame.SetActive(true);
+                    break;
+                case "FillInTheBlanks":
+                    crossbow.SetActive(false);
+                    crossbowHandMode.SetActive(false);
+                    ballVisualize.SetActive(false);
+                    ballVisualizeHandMode.SetActive(false);
+                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
+                    FillIt.GetComponent<QuizManagers>().DisplayAllFillInTheBlanks(questionlist, allAnswers, typeOfGame);
+                    FillIt.SetActive(true);
+                    
+                    // Since all FillInTheBlanks are displayed at once, skip the remaining ones in the sequence.
+                    while (gameCount + 1 < typeOfGame.Count && typeOfGame[gameCount + 1] == "FillInTheBlanks")
+                    {
+                        gameCount++;
+                        currentGameIndex++;
+                    }
                     break;
                
                 default:
@@ -353,6 +374,9 @@ public class GamificationManager : MonoBehaviour
                 break;
             case "MCQ":
                 mcqGame.SetActive(false);
+                break;
+            case "FillInTheBlanks":
+                FillIt.SetActive(false);
                 break;
             default:
                 DebugUtil.LogWarning("Unknown game name: " + currentGameName);

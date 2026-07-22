@@ -26,7 +26,7 @@ public class QuizManagers : MonoBehaviour
     public List<InteractableUnityEventWrapper> interactableWrappers = new List<InteractableUnityEventWrapper>();
     public AudioSource audioSource;
 
-    public TextMeshProUGUI[] questionsFillIt, answersFillIt, answerPlacedTextFillIt;
+    public GameObject[] questionsFillIt, answersFillIt, answerPlacedTextFillIt;
 
     [System.Serializable]
     private class Wrapper
@@ -39,6 +39,7 @@ public class QuizManagers : MonoBehaviour
     {
         public string question;
         public List<AnswerData> options;
+        public List<AnswerData> answer;
         public string createdBy;
         public string sessionId;
         public string id;
@@ -181,8 +182,69 @@ public class QuizManagers : MonoBehaviour
         }
     }
 
-    public void DisplayQuestion(List<string> heading, List<AnswerData> answerOptions, string actualQuestion, string questionImageUrl)
+    public void DisplayAllFillInTheBlanks(List<string> allQuestions, List<List<AnswerData>> allAnswersList, List<string> typeOfGames)
     {
+        try 
+        {
+            DebugUtil.Log($"[QuizManagers] DisplayAllFillInTheBlanks called with {allQuestions?.Count} questions.");
+            if (allQuestions == null) return;
+            
+            int uiIndex = 0;
+            for (int i = 0; i < allQuestions.Count; i++)
+            {
+                if (typeOfGames != null && i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks")
+                {
+                    DebugUtil.Log($"[QuizManagers] Found FillInTheBlanks at index {i}. Target uiIndex={uiIndex}");
+                    
+                    if (questionsFillIt != null)
+                    {
+                        if (uiIndex < questionsFillIt.Length)
+                        {
+                            if (questionsFillIt[uiIndex] != null)
+                            {
+                                questionsFillIt[uiIndex].GetComponent<TextMeshProUGUI>().text = allQuestions[i];
+                                DebugUtil.Log($"[QuizManagers] Success assigning Question to uiIndex {uiIndex}: {allQuestions[i]}");
+                            }
+                            else DebugUtil.Log($"[QuizManagers] FAILED Question at uiIndex {uiIndex}: questionsFillIt[{uiIndex}] is NULL (not assigned in Inspector).");
+                        }
+                        else DebugUtil.Log($"[QuizManagers] FAILED Question at uiIndex {uiIndex}: questionsFillIt array length is only {questionsFillIt.Length}!");
+                    }
+                    
+                    if (allAnswersList != null && i < allAnswersList.Count && allAnswersList[i] != null && allAnswersList[i].Count > 0)
+                    {
+                        if (answersFillIt != null && uiIndex < answersFillIt.Length && answersFillIt[uiIndex] != null)
+                        {
+                            answersFillIt[uiIndex].GetComponent<TextMeshProUGUI>().text = allAnswersList[i][0].text;
+                        }
+                        else DebugUtil.Log($"[QuizManagers] FAILED Answer at uiIndex {uiIndex}: answersFillIt[{uiIndex}] is missing or out of bounds.");
+
+                        if (answerPlacedTextFillIt != null && uiIndex < answerPlacedTextFillIt.Length && answerPlacedTextFillIt[uiIndex] != null)
+                        {
+                            answerPlacedTextFillIt[uiIndex].GetComponent<TextMeshProUGUI>().text = allAnswersList[i][0].text;
+                        }
+                        else DebugUtil.Log($"[QuizManagers] FAILED AnswerPlacedText at uiIndex {uiIndex}: missing or out of bounds.");
+                    }
+                    else DebugUtil.Log($"[QuizManagers] NO ANSWER DATA for question {i}");
+
+                    uiIndex++;
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            DebugUtil.LogError($"[QuizManagers] ERROR in DisplayAllFillInTheBlanks: {e.Message}\n{e.StackTrace}");
+        }
+    }
+
+    public void DisplayQuestion(List<string> heading, List<AnswerData> answerOptions, string actualQuestion, string questionImageUrl, string typeOfGame = "", List<AnswerData> answerList = null)
+    {
+        DebugUtil.Log($"[QuizManagers] DisplayQuestion called. typeOfGame: '{typeOfGame}', question: '{actualQuestion}'");
+        if (answerList != null) {
+            DebugUtil.Log($"[QuizManagers] answerList count: {answerList.Count}");
+        } else {
+            DebugUtil.Log("[QuizManagers] answerList is NULL");
+        }
+
         answers = answerOptions;
         questionText.text = actualQuestion;
         DisplayQuestionImage(questionImageUrl);
