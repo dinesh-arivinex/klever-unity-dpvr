@@ -353,10 +353,58 @@ MonoBehaviour:
       m_Calls: []
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
@@ -5187,7 +5235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &138813247
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8551,10 +8599,58 @@ MonoBehaviour:
       m_Calls: []
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
@@ -16845,7 +16941,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &444672317
 Transform:
   m_ObjectHideFlags: 0
@@ -17795,8 +17891,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 253.8, y: 48.4, z: 83.4}
-  m_Center: {x: 0.28336516, y: 0.20046382, z: -11.668228}
+  m_Size: {x: 178.04184, y: 12.423099, z: 83.40008}
+  m_Center: {x: 17.424833, y: 1.2918421, z: -11.66823}
 --- !u!114 &471081887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17854,6 +17950,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1910600711}
   textfromRes: {fileID: 1345149797}
+  fillItQuizManagers: {fileID: 1694401761}
 --- !u!1 &473551068
 GameObject:
   m_ObjectHideFlags: 0
@@ -18130,10 +18227,58 @@ MonoBehaviour:
       m_Calls: []
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
@@ -19287,7 +19432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &511379916
 Transform:
   m_ObjectHideFlags: 0
@@ -21790,7 +21935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &580387186
 Transform:
   m_ObjectHideFlags: 0
@@ -22419,7 +22564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &596576900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23211,8 +23356,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 253.8, y: 48.4, z: 83.4}
-  m_Center: {x: 0.28336516, y: 0.20046382, z: -11.668228}
+  m_Size: {x: 178.04184, y: 12.423099, z: 83.40008}
+  m_Center: {x: 17.424833, y: 1.2918421, z: -11.66823}
 --- !u!114 &607740813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23270,6 +23415,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1939063136}
   textfromRes: {fileID: 129346545}
+  fillItQuizManagers: {fileID: 1694401761}
 --- !u!1 &615333176
 GameObject:
   m_ObjectHideFlags: 0
@@ -27984,7 +28130,31 @@ MonoBehaviour:
   _interactableView: {fileID: 720263857}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
       m_Calls: []
@@ -27996,7 +28166,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1694401761}
         m_TargetAssemblyTypeName: QuizManagers, Assembly-CSharp
-        m_MethodName: NextButtonClick
+        m_MethodName: NextButtonClickFillIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -28119,7 +28289,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1694401761}
         m_TargetAssemblyTypeName: QuizManagers, Assembly-CSharp
-        m_MethodName: NextButtonClick
+        m_MethodName: NextButtonClickFillIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30540,6 +30710,9 @@ MonoBehaviour:
   questionsFillIt: []
   answersFillIt: []
   answerPlacedTextFillIt: []
+  answerPlacedCount: 0
+  totQuestionFillItCount: 0
+  fillItReferenceManager: {fileID: 0}
 --- !u!1 &779247904
 GameObject:
   m_ObjectHideFlags: 0
@@ -30607,10 +30780,58 @@ MonoBehaviour:
       m_Calls: []
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls: []
@@ -32552,7 +32773,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &825980077
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32718,7 +32939,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &836762388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34888,6 +35109,9 @@ MonoBehaviour:
   questionsFillIt: []
   answersFillIt: []
   answerPlacedTextFillIt: []
+  answerPlacedCount: 0
+  totQuestionFillItCount: 0
+  fillItReferenceManager: {fileID: 0}
 --- !u!114 &867836454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36968,10 +37192,58 @@ MonoBehaviour:
       m_Calls: []
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
@@ -38548,7 +38820,31 @@ MonoBehaviour:
   _interactableView: {fileID: 1011664285}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
       m_Calls: []
@@ -38814,7 +39110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1014953656
 RectTransform:
   m_ObjectHideFlags: 0
@@ -43907,7 +44203,31 @@ MonoBehaviour:
   _interactableView: {fileID: 1139977142}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
       m_Calls: []
@@ -46080,7 +46400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1203972062
 Transform:
   m_ObjectHideFlags: 0
@@ -52492,8 +52812,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 253.8, y: 48.4, z: 83.4}
-  m_Center: {x: 0.28336516, y: 0.20046382, z: -11.668228}
+  m_Size: {x: 178.04184, y: 12.423099, z: 83.40008}
+  m_Center: {x: 17.424833, y: 1.2918421, z: -11.66823}
 --- !u!114 &1409306494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52551,6 +52871,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 775641077}
   textfromRes: {fileID: 1612471619}
+  fillItQuizManagers: {fileID: 1694401761}
 --- !u!1 &1412636345
 GameObject:
   m_ObjectHideFlags: 0
@@ -55951,7 +56272,6 @@ GameObject:
   - component: {fileID: 1479578149}
   - component: {fileID: 1479578151}
   - component: {fileID: 1479578150}
-  - component: {fileID: 1479578152}
   m_Layer: 5
   m_Name: Question-1
   m_TagString: Untagged
@@ -55967,7 +56287,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479578148}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55975,8 +56295,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -127.5, y: -33.5}
-  m_SizeDelta: {x: 500.69, y: 66.91}
+  m_AnchoredPosition: {x: 168, y: -37}
+  m_SizeDelta: {x: 1103.1, y: 63.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1479578150
 MonoBehaviour:
@@ -56061,7 +56381,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.5865479, y: 0, z: -4.2977905, w: 0}
+  m_margin: {x: 0.5865479, y: 0, z: -451.37305, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -56075,20 +56395,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479578148}
   m_CullTransparentMesh: 1
---- !u!114 &1479578152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1479578148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
 --- !u!1 &1480366688
 GameObject:
   m_ObjectHideFlags: 0
@@ -60110,7 +60416,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1613672301
 Transform:
   m_ObjectHideFlags: 0
@@ -61344,7 +61650,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1636272107
 Transform:
   m_ObjectHideFlags: 0
@@ -61933,8 +62239,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 253.8, y: 48.4, z: 83.4}
-  m_Center: {x: 0.28336516, y: 0.20046382, z: -11.668228}
+  m_Size: {x: 178.04184, y: 12.423099, z: 83.40008}
+  m_Center: {x: 17.424833, y: 1.2918421, z: -11.66823}
 --- !u!114 &1654975491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61992,6 +62298,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1874270555}
   textfromRes: {fileID: 131725664}
+  fillItQuizManagers: {fileID: 1694401761}
 --- !u!4 &1658545988
 Transform:
   m_ObjectHideFlags: 0
@@ -63352,8 +63659,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 253.8, y: 48.4, z: 83.4}
-  m_Center: {x: 0.28336516, y: 0.20046382, z: -11.668228}
+  m_Size: {x: 178.04184, y: 12.423099, z: 83.40008}
+  m_Center: {x: 17.424833, y: 1.2918421, z: -11.66823}
 --- !u!114 &1678067847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63411,6 +63718,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1631350509}
   textfromRes: {fileID: 684149527}
+  fillItQuizManagers: {fileID: 1694401761}
 --- !u!1 &1678219629
 GameObject:
   m_ObjectHideFlags: 0
@@ -63580,6 +63888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1694401760}
   - component: {fileID: 1694401761}
+  - component: {fileID: 1694401762}
   m_Layer: 0
   m_Name: FillIt (1)
   m_TagString: Untagged
@@ -63618,11 +63927,7 @@ MonoBehaviour:
   questionText: {fileID: 836762388}
   MCQquestionText: {fileID: 1816521528}
   questionPanelText: {fileID: 587813366}
-  answerButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  answerButtons: []
   nextButton: {fileID: 720263860}
   reloadSceneEvent:
     m_PersistentCalls:
@@ -63714,6 +64019,39 @@ MonoBehaviour:
   - {fileID: 1345149795}
   - {fileID: 129346543}
   - {fileID: 131725662}
+  answerPlacedCount: 0
+  totQuestionFillItCount: 0
+  fillItReferenceManager: {fileID: 1694401762}
+--- !u!114 &1694401762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694401759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 275701952248f2b48bde5f36f70643db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Questions:
+  - {fileID: 836762387}
+  - {fileID: 138813246}
+  - {fileID: 1014953655}
+  - {fileID: 825980076}
+  - {fileID: 596576899}
+  Answer:
+  - {fileID: 1613672300}
+  - {fileID: 444672316}
+  - {fileID: 2074005558}
+  - {fileID: 580387185}
+  - {fileID: 511379915}
+  AnswerPlacement:
+  - {fileID: 1203972061}
+  - {fileID: 1773514384}
+  - {fileID: 1943938739}
+  - {fileID: 1636272106}
+  - {fileID: 1899768148}
 --- !u!1 &1710225469
 GameObject:
   m_ObjectHideFlags: 0
@@ -65391,7 +65729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1773514385
 Transform:
   m_ObjectHideFlags: 0
@@ -70310,7 +70648,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1874924641
 RectTransform:
   m_ObjectHideFlags: 0
@@ -70328,7 +70666,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -97.3, y: 242.1}
+  m_AnchoredPosition: {x: -97.3, y: 280.3}
   m_SizeDelta: {x: 1265, y: 76.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1874924642
@@ -70351,7 +70689,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Assessment
+  m_text: Fill In The Blanks
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c8639c5ab8f734c4781bcb0b4e7eb3c0, type: 2}
   m_sharedMaterial: {fileID: 7541333260836017891, guid: c8639c5ab8f734c4781bcb0b4e7eb3c0, type: 2}
@@ -70378,8 +70716,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 62.2
-  m_fontSizeBase: 62.2
+  m_fontSize: 39.5
+  m_fontSizeBase: 39.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -71076,7 +71414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1899768149
 Transform:
   m_ObjectHideFlags: 0
@@ -72283,7 +72621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1943938740
 Transform:
   m_ObjectHideFlags: 0
@@ -73304,7 +73642,31 @@ MonoBehaviour:
   _interactableView: {fileID: 1966004445}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
       m_Calls: []
@@ -77091,7 +77453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2074005559
 Transform:
   m_ObjectHideFlags: 0
@@ -78211,7 +78573,31 @@ MonoBehaviour:
   _interactableView: {fileID: 2102558394}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1341183042}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+      - m_Target: {fileID: 512418606}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
   _whenUnhover:
     m_PersistentCalls:
       m_Calls: []

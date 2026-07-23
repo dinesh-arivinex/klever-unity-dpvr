@@ -1,12 +1,12 @@
-using Oculus.Interaction;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class QuizManagers : MonoBehaviour
 {
@@ -27,7 +27,14 @@ public class QuizManagers : MonoBehaviour
     public AudioSource audioSource;
 
     public GameObject[] questionsFillIt, answersFillIt, answerPlacedTextFillIt;
+    [HideInInspector]
+    public int answerPlacedCount;
+    [HideInInspector]
+    public int totQuestionFillItCount;
 
+    private bool hasDisplayedAllFillInTheBlanks = false;
+
+    public FillItReferenceManager fillItReferenceManager;
     [System.Serializable]
     private class Wrapper
     {
@@ -86,7 +93,10 @@ public class QuizManagers : MonoBehaviour
         }
     }
 
-    
+    private void Start()
+    {
+        answerPlacedCount = 0;
+    }
 
     private void DisplayQuestionImage(string url)
     {
@@ -184,11 +194,38 @@ public class QuizManagers : MonoBehaviour
 
     public void DisplayAllFillInTheBlanks(List<string> allQuestions, List<List<AnswerData>> allAnswersList, List<string> typeOfGames)
     {
+        if (hasDisplayedAllFillInTheBlanks) return;
+
+        // Set the flag to true so it never runs again
+        hasDisplayedAllFillInTheBlanks = true;
         try 
         {
             DebugUtil.Log($"[QuizManagers] DisplayAllFillInTheBlanks called with {allQuestions?.Count} questions.");
             if (allQuestions == null) return;
+            totQuestionFillItCount = allQuestions.Count;
+
+            GameObject[] questions = null;
+            GameObject[] answers = null;
+            GameObject[] answersPlacement = null;
             
+            if (fillItReferenceManager != null)
+            {
+                questions = fillItReferenceManager.Questions;
+                answers = fillItReferenceManager.Answer;
+                answersPlacement = fillItReferenceManager.AnswerPlacement;
+            }
+            else
+            {
+                DebugUtil.LogError("[QuizManagers] FillItReferenceManager.Instance is null! Cannot display FillInTheBlanks.");
+                return;
+            }
+
+            for (int i = 0; i < totQuestionFillItCount; i++)
+            {
+                questions[i].SetActive(i < totQuestionFillItCount);
+                answers[i].SetActive(i < totQuestionFillItCount);
+                answersPlacement[i].SetActive(i < totQuestionFillItCount);
+            }
             int uiIndex = 0;
             for (int i = 0; i < allQuestions.Count; i++)
             {
@@ -355,6 +392,24 @@ public class QuizManagers : MonoBehaviour
 
 
         }
+    }
+
+    public void NextButtonClickFillIt()
+    {
+        nextButton.enabled = false;
+        nextButton.gameObject.GetComponent<BoxCollider>().enabled = false;
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            Color newColor = new Color(150f / 255f, 150f / 255f, 150f / 255f, 255f / 255f);
+            StartCoroutine(RestoreButtonColor(answerButtons[i], newColor));
+        }
+        ToggleButtonActivation(true);
+        buttonClicked = false;
+        reloadSceneEvent.Invoke();
+        DebugUtil.Log("Your score is" + MCQstudetScore);
+        gamificationManager.OnGameCompleted();
+
+
     }
 
     private void ChangeButtonColor(Button button, Color color)

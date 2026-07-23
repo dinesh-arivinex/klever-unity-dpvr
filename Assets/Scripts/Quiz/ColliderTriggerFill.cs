@@ -16,6 +16,14 @@ public class ColliderTriggerFill : MonoBehaviour
     private Image targetImage;
     private Color correctColor = new Color(Color.green.r, Color.green.g, Color.green.b, 95f / 255f);
     private Color wrongColor = new Color(Color.red.r, Color.red.g, Color.red.b, 255f / 255f);
+
+    public QuizManagers fillItQuizManagers;
+    private GamificationManager gamificationManager;
+
+    private void Start()
+    {
+        gamificationManager = FindAnyObjectByType<GamificationManager>();
+    }
     private void OnTriggerEnter(Collider other)
     {
 
@@ -40,6 +48,7 @@ public class ColliderTriggerFill : MonoBehaviour
 
                 Debug.Log("Correct");
                 ApplyColor(correctColor, targetImage);
+                gamificationManager.mcqScore++;
             }
             else
             {
@@ -61,9 +70,15 @@ public class ColliderTriggerFill : MonoBehaviour
                 Debug.Log("Wrong");
                 ApplyColor(wrongColor, targetImage);
             }
-
+            Answer1.GetComponent<BoxCollider>().enabled = false;
             grandParent.transform.localPosition = PositionGetter.transform.localPosition;
+            fillItQuizManagers.answerPlacedCount++;
 
+            if (fillItQuizManagers.answerPlacedCount == fillItQuizManagers.totQuestionFillItCount)
+            {
+               fillItQuizManagers.nextButton.enabled = true;
+               fillItQuizManagers.nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
+            }
         }
 
         if (other.gameObject == Answer2)
@@ -88,6 +103,7 @@ public class ColliderTriggerFill : MonoBehaviour
 
                 Debug.Log("Correct");
                 ApplyColor(correctColor, targetImage);
+                gamificationManager.mcqScore++;
             }
             else
             {
@@ -109,7 +125,14 @@ public class ColliderTriggerFill : MonoBehaviour
             }
 
             grandParent.transform.localPosition = PositionGetter.transform.localPosition;
+            Answer2.GetComponent<BoxCollider>().enabled = false;
+            fillItQuizManagers.answerPlacedCount++;
 
+            if (fillItQuizManagers.answerPlacedCount == fillItQuizManagers.totQuestionFillItCount)
+            {
+                fillItQuizManagers.nextButton.enabled = true;
+                fillItQuizManagers.nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
+            }
         }
 
         if (other.gameObject == Answer3)
@@ -133,6 +156,7 @@ public class ColliderTriggerFill : MonoBehaviour
 
                 Debug.Log("Correct");
                 ApplyColor(correctColor, targetImage);
+                gamificationManager.mcqScore++;
             }
             else
             {
@@ -156,6 +180,13 @@ public class ColliderTriggerFill : MonoBehaviour
 
             grandParent.transform.localPosition = PositionGetter.transform.localPosition;
             Answer3.GetComponent<BoxCollider>().enabled = false;
+            fillItQuizManagers.answerPlacedCount++;
+
+            if (fillItQuizManagers.answerPlacedCount == fillItQuizManagers.totQuestionFillItCount)
+            {
+                fillItQuizManagers.nextButton.enabled = true;
+                fillItQuizManagers.nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
+            }
         }
 
         if (other.gameObject == Answer4)
@@ -179,6 +210,7 @@ public class ColliderTriggerFill : MonoBehaviour
 
                 Debug.Log("Correct");
                 ApplyColor(correctColor, targetImage);
+                gamificationManager.mcqScore++;
             }
             else
             {
@@ -188,6 +220,13 @@ public class ColliderTriggerFill : MonoBehaviour
 
             grandParent.transform.localPosition = PositionGetter.transform.localPosition;
             Answer4.GetComponent<BoxCollider>().enabled = false;
+            fillItQuizManagers.answerPlacedCount++;
+
+            if (fillItQuizManagers.answerPlacedCount == fillItQuizManagers.totQuestionFillItCount)
+            {
+                fillItQuizManagers.nextButton.enabled = true;
+                fillItQuizManagers.nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
+            }
         }
 
         if (other.gameObject == Answer5)
@@ -211,6 +250,7 @@ public class ColliderTriggerFill : MonoBehaviour
 
                 Debug.Log("Correct");
                 ApplyColor(correctColor,targetImage);
+                gamificationManager.mcqScore++;
             }
             else
             {
@@ -220,6 +260,13 @@ public class ColliderTriggerFill : MonoBehaviour
 
             grandParent.transform.localPosition = PositionGetter.transform.localPosition;
             Answer5.GetComponent<BoxCollider>().enabled = false;
+            fillItQuizManagers.answerPlacedCount++;
+
+            if (fillItQuizManagers.answerPlacedCount == fillItQuizManagers.totQuestionFillItCount)
+            {
+                fillItQuizManagers.nextButton.enabled = true;
+                fillItQuizManagers.nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
+            }
         }
     }
 
