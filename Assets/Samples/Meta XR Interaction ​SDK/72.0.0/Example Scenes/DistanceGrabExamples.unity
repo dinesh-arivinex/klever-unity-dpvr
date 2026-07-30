@@ -11035,6 +11035,7 @@ GameObject:
   - component: {fileID: 8798734392570499686}
   - component: {fileID: 6825967643511521826}
   - component: {fileID: 1371851132791483886}
+  - component: {fileID: 9007023290143343785}
   m_Layer: 4
   m_Name: Stone-AnchorAtHand
   m_TagString: Untagged
@@ -14411,7 +14412,7 @@ MonoBehaviour:
   _transferOnSecondSelection: 1
   _addNewPointsToFront: 0
   _forwardElement: {fileID: 0}
-  _oneGrabTransformer: {fileID: 0}
+  _oneGrabTransformer: {fileID: 9007023290143343785}
   _twoGrabTransformer: {fileID: 0}
   _targetTransform: {fileID: 0}
   _maxGrabPoints: 1
@@ -15749,6 +15750,38 @@ Transform:
   - {fileID: 1249651278}
   m_Father: {fileID: 959539483}
   m_LocalEulerAnglesHint: {x: 0, y: -22.45, z: 0}
+--- !u!114 &9007023290143343785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371851132791483885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9597e632dfbca247bcf65e49c67078e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _constraints:
+    ConstraintsAreRelative: 0
+    MinX:
+      Constrain: 0
+      Value: 0
+    MaxX:
+      Constrain: 0
+      Value: 0
+    MinY:
+      Constrain: 0
+      Value: 0
+    MaxY:
+      Constrain: 0
+      Value: 0
+    MinZ:
+      Constrain: 1
+      Value: 1.843
+    MaxZ:
+      Constrain: 1
+      Value: 1.843
 --- !u!1001 &9216228415606353713
 PrefabInstance:
   m_ObjectHideFlags: 0
