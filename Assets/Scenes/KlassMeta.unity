@@ -58737,11 +58737,11 @@ MonoBehaviour:
   Answer3Pos: {fileID: 150195074}
   Answer4Pos: {fileID: 1970079690}
   Answer5Pos: {fileID: 1453195646}
-  Answer1HandGrab: {fileID: 151828258}
-  Answer2HandGrab: {fileID: 44623444}
-  Answer3HandGrab: {fileID: 1537069552}
-  Answer4HandGrab: {fileID: 1052408644}
-  Answer5HandGrab: {fileID: 1726860755}
+  Answer1HandGrab: {fileID: 151828252}
+  Answer2HandGrab: {fileID: 44623438}
+  Answer3HandGrab: {fileID: 1537069546}
+  Answer4HandGrab: {fileID: 1052408638}
+  Answer5HandGrab: {fileID: 1726860749}
 --- !u!65 &1453195657
 BoxCollider:
   m_ObjectHideFlags: 0
