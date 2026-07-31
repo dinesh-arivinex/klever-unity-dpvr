@@ -27,14 +27,18 @@ public class QuizManagers : MonoBehaviour
     public AudioSource audioSource;
 
     public GameObject[] questionsFillIt, answersFillIt, answerPlacedTextFillIt;
+    public GameObject[] questionsMatchIt, answersMatchIt, answerPlacedTextMatchIt;
     [HideInInspector]
     public int answerPlacedCount;
     [HideInInspector]
     public int totQuestionFillItCount;
+    [HideInInspector]
+    public int totQuestionMatchItCount;
 
     private bool hasDisplayedAllFillInTheBlanks = false;
 
     public FillItReferenceManager fillItReferenceManager;
+    public MatchItReferenceManager matchItReferenceManager;
     [System.Serializable]
     private class Wrapper
     {
