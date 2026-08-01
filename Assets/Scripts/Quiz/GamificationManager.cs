@@ -10,12 +10,21 @@ using static GamificationManager;
 
 
 [System.Serializable]
+public struct MatchItem
+{
+    public string text;
+    public string imageUrl;
+}
+
+[System.Serializable]
 public struct AnswerData
 {
     public string text;
     public bool isCorrect;
     public string _id;
     public string imageUrl;
+    public MatchItem left;
+    public MatchItem right;
 }
 public class GamificationManager : MonoBehaviour
 {
@@ -37,6 +46,7 @@ public class GamificationManager : MonoBehaviour
     public GameObject basketballGame;
     public GameObject mcqGame;
     public GameObject FillIt;
+    public GameObject MatchIt;
     public GameObject gamificationCollider;
     private List<string> selectedGames = new List<string>(); // Array to store selected game names
     private int currentGameIndex = 0;
@@ -248,6 +258,25 @@ public class GamificationManager : MonoBehaviour
                         currentGameIndex++;
                     }
                     break;
+                case "MatchingFollowing":
+                    crossbow.SetActive(false);
+                    crossbowHandMode.SetActive(false);
+                    ballVisualize.SetActive(false);
+                    ballVisualizeHandMode.SetActive(false);
+                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
+                    
+                    if (MatchIt != null)
+                    {
+                        MatchIt.GetComponent<QuizManagers>().DisplayAllMatchIt(allOptions[gameCount]);
+                        MatchIt.SetActive(true);
+                    }
+                    
+                    while (gameCount + 1 < typeOfGame.Count && typeOfGame[gameCount + 1] == "MatchingFollowing")
+                    {
+                        gameCount++;
+                        currentGameIndex++;
+                    }
+                    break;
                
                 default:
                     DebugUtil.LogWarning("Unknown game name: " + currentGameName);
@@ -377,6 +406,9 @@ public class GamificationManager : MonoBehaviour
                 break;
             case "FillInTheBlanks":
                 FillIt.SetActive(false);
+                break;
+            case "MatchingFollowing":
+                if (MatchIt != null) MatchIt.SetActive(false);
                 break;
             default:
                 DebugUtil.LogWarning("Unknown game name: " + currentGameName);

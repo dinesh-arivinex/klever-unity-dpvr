@@ -4,12 +4,12 @@ using System.Collections;
 
 public class ColliderTriggerMatch : MonoBehaviour
 {
-    public GameObject Answer1Pos, Answer2Pos, Answer3Pos, Answer4Pos, Answer5Pos;
-    public GameObject Answer1HandGrab, Answer2HandGrab, Answer3HandGrab, Answer4HandGrab, Answer5HandGrab;
+    public GameObject Answer1Pos, Answer2Pos, Answer3Pos, Answer4Pos;
+    public GameObject Answer1HandGrab, Answer2HandGrab, Answer3HandGrab, Answer4HandGrab;
 
     // We store the current "slot" or resting position of each answer here.
     // Made public so all instances can sync with each other
-    [HideInInspector] public Vector3 pos1, pos2, pos3, pos4, pos5;
+    [HideInInspector] public Vector3 pos1, pos2, pos3, pos4;
 
     private void Start()
     {
@@ -18,7 +18,6 @@ public class ColliderTriggerMatch : MonoBehaviour
         if (Answer2Pos != null) pos2 = Answer2Pos.transform.position;
         if (Answer3Pos != null) pos3 = Answer3Pos.transform.position;
         if (Answer4Pos != null) pos4 = Answer4Pos.transform.position;
-        if (Answer5Pos != null) pos5 = Answer5Pos.transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,7 +36,7 @@ public class ColliderTriggerMatch : MonoBehaviour
 
     private bool IsAnswer(GameObject obj)
     {
-        return obj == Answer1Pos || obj == Answer2Pos || obj == Answer3Pos || obj == Answer4Pos || obj == Answer5Pos;
+        return obj == Answer1Pos || obj == Answer2Pos || obj == Answer3Pos || obj == Answer4Pos;
     }
 
     private void SwapPositions(GameObject objA, GameObject objB)
@@ -90,7 +89,6 @@ public class ColliderTriggerMatch : MonoBehaviour
         if (obj == Answer2Pos) return pos2;
         if (obj == Answer3Pos) return pos3;
         if (obj == Answer4Pos) return pos4;
-        if (obj == Answer5Pos) return pos5;
         return obj.transform.position;
     }
 
@@ -117,7 +115,6 @@ public class ColliderTriggerMatch : MonoBehaviour
         else if (obj == Answer2Pos) pos2 = newPos;
         else if (obj == Answer3Pos) pos3 = newPos;
         else if (obj == Answer4Pos) pos4 = newPos;
-        else if (obj == Answer5Pos) pos5 = newPos;
     }
 
     private void DisableHandGrab(GameObject obj)
@@ -126,7 +123,6 @@ public class ColliderTriggerMatch : MonoBehaviour
         if (obj == Answer2Pos && Answer2HandGrab != null) Answer2HandGrab.SetActive(false);
         if (obj == Answer3Pos && Answer3HandGrab != null) Answer3HandGrab.SetActive(false);
         if (obj == Answer4Pos && Answer4HandGrab != null) Answer4HandGrab.SetActive(false);
-        if (obj == Answer5Pos && Answer5HandGrab != null) Answer5HandGrab.SetActive(false);
     }
 
     private void EnableHandGrab(GameObject obj)
@@ -135,6 +131,5 @@ public class ColliderTriggerMatch : MonoBehaviour
         if (obj == Answer2Pos && Answer2HandGrab != null) Answer2HandGrab.SetActive(true);
         if (obj == Answer3Pos && Answer3HandGrab != null) Answer3HandGrab.SetActive(true);
         if (obj == Answer4Pos && Answer4HandGrab != null) Answer4HandGrab.SetActive(true);
-        if (obj == Answer5Pos && Answer5HandGrab != null) Answer5HandGrab.SetActive(true);
     }
 }

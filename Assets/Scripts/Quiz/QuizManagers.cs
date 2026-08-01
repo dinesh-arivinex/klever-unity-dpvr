@@ -277,6 +277,126 @@ public class QuizManagers : MonoBehaviour
         }
     }
 
+    private bool hasDisplayedAllMatchIt = false;
+
+    public void DisplayAllMatchIt(List<AnswerData> matchingOptions)
+    {
+        if (hasDisplayedAllMatchIt) return;
+        hasDisplayedAllMatchIt = true;
+
+        try
+        {
+            if (matchingOptions == null || matchingOptions.Count == 0) return;
+            totQuestionMatchItCount = matchingOptions.Count;
+
+            GameObject[] questions = null;
+            GameObject[] answers = null;
+            GameObject[] answeTextStore = null;
+
+            if (matchItReferenceManager != null)
+            {
+                questions = matchItReferenceManager.Questions;
+                answers = matchItReferenceManager.Answer;
+                answeTextStore = matchItReferenceManager.AnsweTextStore;
+            }
+            else
+            {
+                DebugUtil.LogError("[QuizManagers] matchItReferenceManager is null! Cannot display MatchIt.");
+                return;
+            }
+            
+            for (int i = 0; i < questions.Length; i++)
+            {
+                bool active = i < totQuestionMatchItCount;
+                if (questions[i] != null) questions[i].SetActive(active);
+                if (answers[i] != null) answers[i].SetActive(active);
+                if (answeTextStore[i] != null) answeTextStore[i].SetActive(active);
+            }
+
+            List<string> rightTexts = new List<string>();
+            for (int i = 0; i < totQuestionMatchItCount; i++)
+            {
+                string leftText = matchingOptions[i].left.text;
+                string rightText = matchingOptions[i].right.text;
+                
+                // left text one by one orderwise in questions array
+                if (questions[i] != null)
+                {
+                    TextMeshProUGUI textComp = questions[i].GetComponent<TextMeshProUGUI>();
+                    if(textComp == null) textComp = questions[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if(textComp != null) textComp.text = leftText;
+                }
+                
+                // store orderwise answertext for checking answer after drag and drop
+                if (answeTextStore[i] != null)
+                {
+                    TextMeshProUGUI textComp = answeTextStore[i].GetComponent<TextMeshProUGUI>();
+                    if(textComp == null) textComp = answeTextStore[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if(textComp != null) textComp.text = rightText;
+                }
+                
+                if (answerPlacedTextMatchIt != null && i < answerPlacedTextMatchIt.Length && answerPlacedTextMatchIt[i] != null)
+                {
+                    TextMeshProUGUI textComp = answerPlacedTextMatchIt[i].GetComponent<TextMeshProUGUI>();
+                    if(textComp == null) textComp = answerPlacedTextMatchIt[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if(textComp != null) textComp.text = rightText;
+                }
+
+                rightTexts.Add(rightText);
+            }
+
+            // Shuffle rightTexts randomly but ensure they are not in original position
+            if (rightTexts.Count > 1)
+            {
+                List<string> originalRightTexts = new List<string>(rightTexts);
+                System.Random rng = new System.Random();
+                bool isDerangement = false;
+                int attempts = 0;
+                
+                while (!isDerangement && attempts < 100)
+                {
+                    attempts++;
+                    // Fisher-Yates shuffle
+                    int n = rightTexts.Count;
+                    while (n > 1) 
+                    {
+                        n--;
+                        int k = rng.Next(n + 1);
+                        string value = rightTexts[k];
+                        rightTexts[k] = rightTexts[n];
+                        rightTexts[n] = value;
+                    }
+                    
+                    // Check if it's a derangement (no element in its original index)
+                    isDerangement = true;
+                    for (int i = 0; i < rightTexts.Count; i++)
+                    {
+                        if (rightTexts[i] == originalRightTexts[i])
+                        {
+                            isDerangement = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // answer array store right text randomly not orderwise
+            for (int i = 0; i < totQuestionMatchItCount; i++)
+            {
+                if (answers[i] != null)
+                {
+                    TextMeshProUGUI textComp = answers[i].GetComponent<TextMeshProUGUI>();
+                    if(textComp == null) textComp = answers[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if(textComp != null) textComp.text = rightTexts[i];
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            DebugUtil.LogError($"[QuizManagers] ERROR in DisplayAllMatchIt: {e.Message}\n{e.StackTrace}");
+        }
+    }
+
     public void DisplayQuestion(List<string> heading, List<AnswerData> answerOptions, string actualQuestion, string questionImageUrl, string typeOfGame = "", List<AnswerData> answerList = null)
     {
         DebugUtil.Log($"[QuizManagers] DisplayQuestion called. typeOfGame: '{typeOfGame}', question: '{actualQuestion}'");
