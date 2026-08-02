@@ -332,7 +332,14 @@ public class GamificationManager : MonoBehaviour
             }
             else
             {
-                scoreTexts.text = student.score.ToString() + "/" + allOptions.Count.ToString();
+                if(currentGameName== "MatchingFollowing")
+                {
+                    scoreTexts.text = student.score.ToString() + "/" + "4";
+                }
+                else
+                {
+                    scoreTexts.text = student.score.ToString() + "/" + allOptions.Count.ToString();
+                }
             }
 
         }

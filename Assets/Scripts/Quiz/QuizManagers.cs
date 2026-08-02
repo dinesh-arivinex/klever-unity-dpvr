@@ -39,6 +39,13 @@ public class QuizManagers : MonoBehaviour
 
     public FillItReferenceManager fillItReferenceManager;
     public MatchItReferenceManager matchItReferenceManager;
+
+
+    private Image targetImage;
+    private Color correctColor = new Color(Color.green.r, Color.green.g, Color.green.b, 95f / 255f);
+    private Color wrongColor = new Color(Color.red.r, Color.red.g, Color.red.b, 255f / 255f);
+
+    public ColliderTriggerMatch colliderTriggerMatch;
     [System.Serializable]
     private class Wrapper
     {
@@ -94,6 +101,14 @@ public class QuizManagers : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             NextButtonClick();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            MatchSubmit();
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            NextButtonClickMatchIt();
         }
     }
 
@@ -536,6 +551,19 @@ public class QuizManagers : MonoBehaviour
 
     }
 
+    public void NextButtonClickMatchIt()
+    {
+        nextButton.enabled = false;
+        nextButton.gameObject.GetComponent<BoxCollider>().enabled = false;
+        ToggleButtonActivation(true);
+        buttonClicked = false;
+        reloadSceneEvent.Invoke();
+        DebugUtil.Log("Your score is" + MCQstudetScore);
+        gamificationManager.OnGameCompleted();
+
+
+    }
+
     private void ChangeButtonColor(Button button, Color color)
     {
         Graphic graphic = button.GetComponent<Graphic>();
@@ -575,5 +603,76 @@ public class QuizManagers : MonoBehaviour
     {
         EndEvent.Invoke();
        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void MatchSubmit()
+    {
+        colliderTriggerMatch.Answer1HandGrab.gameObject.SetActive(false);
+        colliderTriggerMatch.Answer2HandGrab.gameObject.SetActive(false);
+        colliderTriggerMatch.Answer3HandGrab.gameObject.SetActive(false);
+        colliderTriggerMatch.Answer4HandGrab.gameObject.SetActive(false);
+
+        if (answersMatchIt[0].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[0].GetComponent<TextMeshProUGUI>().text)
+        {
+            
+            targetImage =  answersMatchIt[0].transform.parent.GetComponent<Image>();
+            ApplyColor(correctColor, targetImage);
+            gamificationManager.mcqScore++;
+        }
+        else
+        {
+            targetImage = answersMatchIt[0].transform.parent.GetComponent<Image>();
+            ApplyColor(wrongColor, targetImage);
+        }
+        if (answersMatchIt[1].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[1].GetComponent<TextMeshProUGUI>().text)
+        {
+            targetImage = answersMatchIt[1].transform.parent.GetComponent<Image>();
+            ApplyColor(correctColor, targetImage);
+            gamificationManager.mcqScore++;
+        }
+        else
+        {
+            targetImage = answersMatchIt[1].transform.parent.GetComponent<Image>();
+            ApplyColor(wrongColor, targetImage);
+        }
+        if (answersMatchIt[2].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[2].GetComponent<TextMeshProUGUI>().text)
+        {
+            targetImage = answersMatchIt[2].transform.parent.GetComponent<Image>();
+            ApplyColor(correctColor, targetImage);
+            gamificationManager.mcqScore++;
+        }
+        else
+        {
+            targetImage = answersMatchIt[2].transform.parent.GetComponent<Image>();
+            ApplyColor(wrongColor, targetImage);
+        }
+        if (answersMatchIt[3].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[3].GetComponent<TextMeshProUGUI>().text)
+        {
+            targetImage = answersMatchIt[3].transform.parent.GetComponent<Image>();
+            ApplyColor(correctColor, targetImage);
+            gamificationManager.mcqScore++;
+        }
+        else
+        {
+            targetImage = answersMatchIt[3].transform.parent.GetComponent<Image>();
+            ApplyColor(wrongColor, targetImage);
+        }
+
+        StartCoroutine(NextEnable());
+    }
+
+    public IEnumerator NextEnable()
+    {
+        yield return new WaitForSeconds(2f);
+        nextButton.gameObject.SetActive(true);
+        nextButton.enabled = true;
+        nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
+    }
+    private void ApplyColor(Color color, Image Image)
+    {
+        if (targetImage != null)
+        {
+            targetImage.color = color;
+        }
     }
 }

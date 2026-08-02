@@ -1296,6 +1296,7 @@ MonoBehaviour:
   totQuestionMatchItCount: 0
   fillItReferenceManager: {fileID: 0}
   matchItReferenceManager: {fileID: 24981713}
+  colliderTriggerMatch: {fileID: 414574774}
 --- !u!114 &24981713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17991,7 +17992,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 24981712}
         m_TargetAssemblyTypeName: QuizManagers, Assembly-CSharp
-        m_MethodName: NextButtonClickFillIt
+        m_MethodName: NextButtonClickMatchIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18114,7 +18115,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 24981712}
         m_TargetAssemblyTypeName: QuizManagers, Assembly-CSharp
-        m_MethodName: NextButtonClickFillIt
+        m_MethodName: NextButtonClickMatchIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -32276,6 +32277,7 @@ MonoBehaviour:
   totQuestionMatchItCount: 0
   fillItReferenceManager: {fileID: 0}
   matchItReferenceManager: {fileID: 0}
+  colliderTriggerMatch: {fileID: 0}
 --- !u!1 &779247904
 GameObject:
   m_ObjectHideFlags: 0
@@ -54382,8 +54384,20 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 24981712}
         m_TargetAssemblyTypeName: QuizManagers, Assembly-CSharp
-        m_MethodName: NextButtonClickFillIt
+        m_MethodName: MatchSubmit
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1404406306}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -54505,7 +54519,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 24981712}
         m_TargetAssemblyTypeName: QuizManagers, Assembly-CSharp
-        m_MethodName: NextButtonClickFillIt
+        m_MethodName: MatchSubmit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -66241,6 +66255,7 @@ MonoBehaviour:
   totQuestionMatchItCount: 0
   fillItReferenceManager: {fileID: 1694401762}
   matchItReferenceManager: {fileID: 0}
+  colliderTriggerMatch: {fileID: 0}
 --- !u!114 &1694401762
 MonoBehaviour:
   m_ObjectHideFlags: 0
