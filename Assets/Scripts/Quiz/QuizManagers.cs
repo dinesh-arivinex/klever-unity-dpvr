@@ -211,6 +211,61 @@ public class QuizManagers : MonoBehaviour
         }
     }
 
+    private void SetMatchItImage(GameObject targetGo, TextMeshProUGUI textComp, string url)
+    {
+        if (targetGo == null) return;
+        
+        // If targetGo is the text object itself, attach image to its parent so it renders behind the text as a sibling
+        Transform attachParent = targetGo.transform;
+        int targetSiblingIndex = 0;
+        
+        if (targetGo.GetComponent<TextMeshProUGUI>() != null && targetGo.transform.parent != null)
+        {
+            attachParent = targetGo.transform.parent;
+            // Set to 0 so it renders as the very first child (behind the button background and text)
+            targetSiblingIndex = 0; 
+        }
+
+        Transform existing = attachParent.Find("DynamicMatchItImage");
+        RawImage rawImg = null;
+        if (existing != null)
+        {
+            rawImg = existing.GetComponent<RawImage>();
+        }
+        else
+        {
+            GameObject imgGo = new GameObject("DynamicMatchItImage");
+            imgGo.transform.SetParent(attachParent, false);
+            imgGo.transform.SetSiblingIndex(targetSiblingIndex); // Draw behind text
+            rawImg = imgGo.AddComponent<RawImage>();
+            
+            RectTransform rect = imgGo.GetComponent<RectTransform>();
+            // Stretch to fill the parent perfectly
+            rect.anchorMin = new Vector2(0, 0);
+            rect.anchorMax = new Vector2(1, 1);
+            rect.offsetMin = new Vector2(0, 0);
+            rect.offsetMax = new Vector2(0, 0);
+            rect.sizeDelta = Vector2.zero; // sizeDelta should be 0 when anchors are 0 and 1
+        }
+
+        if (rawImg != null)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                rawImg.gameObject.SetActive(false);
+            }
+            else
+            {
+                rawImg.gameObject.SetActive(true);
+                this.gameObject.SetActive(true); // Ensure GameObject is active before starting coroutine
+                
+                StartCoroutine(LoadImageCoroutine(url, texture => {
+                    rawImg.texture = texture;
+                }));
+            }
+        }
+    }
+
     public void DisplayAllFillInTheBlanks(List<string> allQuestions, List<List<AnswerData>> allAnswersList, List<string> typeOfGames)
     {
         if (hasDisplayedAllFillInTheBlanks) return;
@@ -329,10 +384,13 @@ public class QuizManagers : MonoBehaviour
             }
 
             List<string> rightTexts = new List<string>();
+            List<string> rightImageUrls = new List<string>();
             for (int i = 0; i < totQuestionMatchItCount; i++)
             {
                 string leftText = matchingOptions[i].left.text;
                 string rightText = matchingOptions[i].right.text;
+                string leftImageUrl = matchingOptions[i].left.imageUrl;
+                string rightImageUrl = matchingOptions[i].right.imageUrl;
                 
                 // left text one by one orderwise in questions array
                 if (questions[i] != null)
@@ -340,6 +398,8 @@ public class QuizManagers : MonoBehaviour
                     TextMeshProUGUI textComp = questions[i].GetComponent<TextMeshProUGUI>();
                     if(textComp == null) textComp = questions[i].GetComponentInChildren<TextMeshProUGUI>();
                     if(textComp != null) textComp.text = leftText;
+                    
+                    SetMatchItImage(questions[i], textComp, leftImageUrl);
                 }
                 
                 // store orderwise answertext for checking answer after drag and drop
@@ -358,6 +418,7 @@ public class QuizManagers : MonoBehaviour
                 }
 
                 rightTexts.Add(rightText);
+                rightImageUrls.Add(rightImageUrl);
             }
 
             // Shuffle rightTexts randomly but ensure they are not in original position
@@ -380,6 +441,10 @@ public class QuizManagers : MonoBehaviour
                         string value = rightTexts[k];
                         rightTexts[k] = rightTexts[n];
                         rightTexts[n] = value;
+                        
+                        string urlValue = rightImageUrls[k];
+                        rightImageUrls[k] = rightImageUrls[n];
+                        rightImageUrls[n] = urlValue;
                     }
                     
                     // Check if it's a derangement (no element in its original index)
@@ -403,6 +468,8 @@ public class QuizManagers : MonoBehaviour
                     TextMeshProUGUI textComp = answers[i].GetComponent<TextMeshProUGUI>();
                     if(textComp == null) textComp = answers[i].GetComponentInChildren<TextMeshProUGUI>();
                     if(textComp != null) textComp.text = rightTexts[i];
+                    
+                    SetMatchItImage(answers[i], textComp, rightImageUrls[i]);
                 }
             }
         }
@@ -605,8 +672,31 @@ public class QuizManagers : MonoBehaviour
        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    private void DisableImagesInArray(GameObject[] arr)
+    {
+        if (arr == null) return;
+        foreach (var obj in arr)
+        {
+            if (obj == null) continue;
+            Transform img = obj.transform.Find("DynamicMatchItImage");
+            if (img != null) img.gameObject.SetActive(false);
+
+            if (obj.transform.parent != null)
+            {
+                img = obj.transform.parent.Find("DynamicMatchItImage");
+                if (img != null) img.gameObject.SetActive(false);
+            }
+        }
+    }
+
     public void MatchSubmit()
     {
+        if (matchItReferenceManager != null)
+        {
+            DisableImagesInArray(matchItReferenceManager.Questions);
+            DisableImagesInArray(matchItReferenceManager.Answer);
+        }
+
         colliderTriggerMatch.Answer1HandGrab.gameObject.SetActive(false);
         colliderTriggerMatch.Answer2HandGrab.gameObject.SetActive(false);
         colliderTriggerMatch.Answer3HandGrab.gameObject.SetActive(false);
