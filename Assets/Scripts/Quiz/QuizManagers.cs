@@ -661,6 +661,71 @@ public class QuizManagers : MonoBehaviour
         StartCoroutine(NextEnable());
     }
 
+    private int FindMatchItAnswerIndex(GameObject obj)
+    {
+        if (answersMatchIt == null) return -1;
+        for (int i = 0; i < answersMatchIt.Length; i++)
+        {
+            if (answersMatchIt[i] == null) continue;
+            // Check if answersMatchIt[i] is the exact object or any child within the obj's hierarchy
+            if (answersMatchIt[i] == obj || answersMatchIt[i].transform.IsChildOf(obj.transform)) 
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void SwapMatchItAnswers(GameObject objA, GameObject objB)
+    {
+        if (answersMatchIt == null) return;
+
+        int indexA = FindMatchItAnswerIndex(objA);
+        int indexB = FindMatchItAnswerIndex(objB);
+
+        if (indexA != -1 && indexB != -1)
+        {
+            // 1. Swap GameObject array order (sibling index)
+            int siblingIndexA = objA.transform.GetSiblingIndex();
+            int siblingIndexB = objB.transform.GetSiblingIndex();
+
+            if (siblingIndexA < siblingIndexB)
+            {
+                objB.transform.SetSiblingIndex(siblingIndexA);
+                objA.transform.SetSiblingIndex(siblingIndexB);
+            }
+            else if (siblingIndexB < siblingIndexA)
+            {
+                objA.transform.SetSiblingIndex(siblingIndexB);
+                objB.transform.SetSiblingIndex(siblingIndexA);
+            }
+
+            // 2. Swap array elements
+            GameObject temp = answersMatchIt[indexA];
+            answersMatchIt[indexA] = answersMatchIt[indexB];
+            answersMatchIt[indexB] = temp;
+            
+            DebugUtil.Log($"Swapped array elements at indices {indexA} and {indexB}");
+        }
+        else
+        {
+            DebugUtil.Log($"SwapMatchItAnswers failed to find objects in array: indexA={indexA}, indexB={indexB}");
+        }
+    }
+
+    public void MoveMatchItAnswerToSlot(GameObject snappedObject, int newSlotIndex)
+    {
+        if (answersMatchIt == null || newSlotIndex < 0 || newSlotIndex >= answersMatchIt.Length) return;
+
+        int currentIndex = System.Array.IndexOf(answersMatchIt, snappedObject);
+        if (currentIndex != -1 && currentIndex != newSlotIndex)
+        {
+            // Swap with whatever is currently in the new slot
+            GameObject objectInNewSlot = answersMatchIt[newSlotIndex];
+            SwapMatchItAnswers(snappedObject, objectInNewSlot);
+        }
+    }
+
     public IEnumerator NextEnable()
     {
         yield return new WaitForSeconds(2f);

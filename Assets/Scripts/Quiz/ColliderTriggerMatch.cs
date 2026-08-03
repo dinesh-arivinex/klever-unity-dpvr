@@ -11,8 +11,12 @@ public class ColliderTriggerMatch : MonoBehaviour
     // Made public so all instances can sync with each other
     [HideInInspector] public Vector3 pos1, pos2, pos3, pos4;
 
+    private QuizManagers quizManager;
+
     private void Start()
     {
+        quizManager = FindAnyObjectByType<QuizManagers>();
+
         // Store the actual Vector3 positions, NOT the transform references!
         if (Answer1Pos != null) pos1 = Answer1Pos.transform.position;
         if (Answer2Pos != null) pos2 = Answer2Pos.transform.position;
@@ -52,6 +56,11 @@ public class ColliderTriggerMatch : MonoBehaviour
         // 3. Update our tracked slot positions so they can be swapped again later if needed
         UpdateSlotPosition(objA, slotB);
         UpdateSlotPosition(objB, slotA);
+
+        if (quizManager != null)
+        {
+            quizManager.SwapMatchItAnswers(objA, objB);
+        }
 
         // 4. Start Coroutine to disable and re-enable colliders and grab
         StartCoroutine(DisableAndReenableRoutine(objA, objB));
