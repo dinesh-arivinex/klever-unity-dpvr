@@ -40,6 +40,17 @@ public class QuizManagers : MonoBehaviour
     public FillItReferenceManager fillItReferenceManager;
     public MatchItReferenceManager matchItReferenceManager;
 
+    [Header("Assessment presentation")]
+    [SerializeField] private TMP_FontAsset assessmentFont;
+
+    // Positions are expressed in the existing world-space canvas coordinate system.
+    // The answer bank occupies the first row; question and drop-target rows follow it.
+    private const float FillAnswerBankY = 1.88f;
+    private const float FillQuestionStartY = 380f;
+    private const float FillQuestionSpacing = 185f;
+    private const float FillDropTargetStartY = 1.55f;
+    private const float FillDropTargetSpacing = 0.25f;
+
 
     private Image targetImage;
     private Color correctColor = new Color(Color.green.r, Color.green.g, Color.green.b, 95f / 255f);
@@ -79,6 +90,7 @@ public class QuizManagers : MonoBehaviour
     private List<AnswerData> answers = new List<AnswerData>();
     private void OnEnable()
     {
+        ApplyAssessmentTypography();
         gamificationManager=FindAnyObjectByType<GamificationManager>();
         apiManager =FindAnyObjectByType<API>(); 
          //Wrapper wrapper = JsonUtility.FromJson<Wrapper>("{\"questions\":" + apiManager.assessmentsString + "}");
@@ -94,6 +106,77 @@ public class QuizManagers : MonoBehaviour
         //    element.enabled = true;
         //}
    
+    }
+
+    private void ApplyAssessmentTypography()
+    {
+        TMP_FontAsset fontAsset = assessmentFont != null
+            ? assessmentFont
+            : TMP_Settings.defaultFontAsset;
+
+        if (fontAsset == null) return;
+
+        TextMeshProUGUI[] assessmentText = GetComponentsInChildren<TextMeshProUGUI>(true);
+        foreach (TextMeshProUGUI textElement in assessmentText)
+        {
+            if (textElement == null) continue;
+
+            textElement.font = fontAsset;
+            textElement.fontSharedMaterial = fontAsset.material;
+        }
+    }
+
+    private static void SetLocalY(Transform target, float yPosition)
+    {
+        if (target == null) return;
+
+        Vector3 localPosition = target.localPosition;
+        localPosition.y = yPosition;
+        target.localPosition = localPosition;
+    }
+
+    private static void ConfigureFillInTheBlanksLayout(
+        GameObject[] questions,
+        GameObject[] answers,
+        GameObject[] answerPlacements)
+    {
+        int slotCount = Mathf.Min(
+            questions != null ? questions.Length : 0,
+            answers != null ? answers.Length : 0,
+            answerPlacements != null ? answerPlacements.Length : 0);
+
+        for (int i = 0; i < slotCount; i++)
+        {
+            RectTransform questionRect = questions[i] != null
+                ? questions[i].GetComponent<RectTransform>()
+                : null;
+            if (questionRect != null)
+            {
+                Vector2 questionPosition = questionRect.anchoredPosition;
+                questionPosition.y = FillQuestionStartY - (FillQuestionSpacing * i);
+                questionRect.anchoredPosition = questionPosition;
+            }
+
+            if (answers[i] != null)
+            {
+                SetLocalY(answers[i].transform.Find("Stone-AnchorAtHand"), FillAnswerBankY);
+                SetLocalY(answers[i].transform.Find("SnapZone-AnchorAtHand"), FillAnswerBankY);
+            }
+
+            if (answerPlacements[i] == null) continue;
+
+            float dropTargetY = FillDropTargetStartY - (FillDropTargetSpacing * i);
+            Transform placementRoot = answerPlacements[i].transform;
+            SetLocalY(placementRoot.Find("AnswerPlacePositionGetter"), dropTargetY);
+
+            RectTransform dropTarget = placementRoot.Find("AnswerPlace") as RectTransform;
+            if (dropTarget != null)
+            {
+                Vector2 dropPosition = dropTarget.anchoredPosition;
+                dropPosition.y = dropTargetY;
+                dropTarget.anchoredPosition = dropPosition;
+            }
+        }
     }
 
     private void Update()
@@ -276,8 +359,6 @@ public class QuizManagers : MonoBehaviour
         {
             DebugUtil.Log($"[QuizManagers] DisplayAllFillInTheBlanks called with {allQuestions?.Count} questions.");
             if (allQuestions == null) return;
-            totQuestionFillItCount = allQuestions.Count;
-
             GameObject[] questions = null;
             GameObject[] answers = null;
             GameObject[] answersPlacement = null;
@@ -294,17 +375,55 @@ public class QuizManagers : MonoBehaviour
                 return;
             }
 
-            for (int i = 0; i < totQuestionFillItCount; i++)
+            int availableSlots = Mathf.Min(
+                questions != null ? questions.Length : 0,
+                answers != null ? answers.Length : 0,
+                answersPlacement != null ? answersPlacement.Length : 0);
+            if (availableSlots == 0)
             {
-                questions[i].SetActive(i < totQuestionFillItCount);
-                answers[i].SetActive(i < totQuestionFillItCount);
-                answersPlacement[i].SetActive(i < totQuestionFillItCount);
+                DebugUtil.LogError("[QuizManagers] FillInTheBlanks has no complete UI slots configured.");
+                return;
             }
+
+            int requestedFillQuestionCount = 0;
+            for (int i = 0; i < allQuestions.Count; i++)
+            {
+                bool isFillQuestion = typeOfGames == null ||
+                    (i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks");
+                if (isFillQuestion) requestedFillQuestionCount++;
+            }
+
+            totQuestionFillItCount = Mathf.Min(requestedFillQuestionCount, availableSlots);
+            if (requestedFillQuestionCount > availableSlots)
+            {
+                DebugUtil.Log($"[QuizManagers] FillInTheBlanks requested {requestedFillQuestionCount} questions, but only {availableSlots} UI slots are available.");
+            }
+
+            ConfigureFillInTheBlanksLayout(questions, answers, answersPlacement);
+            ApplyAssessmentTypography();
+
+            for (int i = 0; i < questions.Length; i++)
+            {
+                if (questions[i] != null) questions[i].SetActive(i < totQuestionFillItCount);
+            }
+            for (int i = 0; i < answers.Length; i++)
+            {
+                if (answers[i] != null) answers[i].SetActive(i < totQuestionFillItCount);
+            }
+            for (int i = 0; i < answersPlacement.Length; i++)
+            {
+                if (answersPlacement[i] != null) answersPlacement[i].SetActive(i < totQuestionFillItCount);
+            }
+
             int uiIndex = 0;
             for (int i = 0; i < allQuestions.Count; i++)
             {
-                if (typeOfGames != null && i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks")
+                bool isFillQuestion = typeOfGames == null ||
+                    (i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks");
+                if (isFillQuestion)
                 {
+                    if (uiIndex >= totQuestionFillItCount) break;
+
                     DebugUtil.Log($"[QuizManagers] Found FillInTheBlanks at index {i}. Target uiIndex={uiIndex}");
                     
                     if (questionsFillIt != null)
@@ -357,6 +476,7 @@ public class QuizManagers : MonoBehaviour
         try
         {
             if (matchingOptions == null || matchingOptions.Count == 0) return;
+            ApplyAssessmentTypography();
             totQuestionMatchItCount = matchingOptions.Count;
 
             GameObject[] questions = null;
