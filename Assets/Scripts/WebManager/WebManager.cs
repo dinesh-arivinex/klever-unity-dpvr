@@ -107,6 +107,10 @@ public class WebManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(url))
         {
+            var liveDetails = new SimpleJSON.JSONObject();
+            liveDetails["isObjectXR"] = isobjectXR;
+            liveDetails["durationSeconds"] = simulationTimer;
+            Klass.Net.LiveViewPublisher.Instance?.ShowContent("simulation", url, url, liveDetails);
 
 
             if (firstTime)
@@ -229,6 +233,7 @@ public class WebManager : MonoBehaviour
     public void CheckTheStatus()
 
     {
+        Klass.Net.LiveViewPublisher.Instance?.HideContent("simulation-completed");
         //PlayerPrefs.SetInt("InSimulation", 0);
         PlayerPrefs.Save();
 
