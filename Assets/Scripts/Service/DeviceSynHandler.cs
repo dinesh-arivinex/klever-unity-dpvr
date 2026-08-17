@@ -55,6 +55,7 @@ public class DeviceSynHandler : MonoBehaviour
     public bool isActiveDevice;
     public bool isSyncedDevice;
     public bool isCompletedDevice;
+    public string experienceId;
     public static bool isOpenWelcomeScreen;
     public GameObject WelcomeScene;
     private API apiManager;

@@ -1223,45 +1223,19 @@ MonoBehaviour:
   elementWantToDelete: {fileID: 620243128368652379}
   interactableWrappers: []
   audioSource: {fileID: 806322210}
-  questionsFillIt:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  answersFillIt:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  answerPlacedTextFillIt:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  questionsMatchIt:
-  - {fileID: 388562731}
-  - {fileID: 1106940298}
-  - {fileID: 111089242}
-  - {fileID: 1468757998}
-  answersMatchIt:
-  - {fileID: 388087485}
-  - {fileID: 1339459573}
-  - {fileID: 93238653}
-  - {fileID: 1718789887}
-  answerPlacedTextMatchIt:
-  - {fileID: 1323156172}
-  - {fileID: 160292010}
-  - {fileID: 1582177781}
-  - {fileID: 1214453076}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
+  questionsMatchIt: []
+  answersMatchIt: []
+  answerPlacedTextMatchIt: []
   answerPlacedCount: 0
   totQuestionFillItCount: 0
   totQuestionMatchItCount: 0
   fillItReferenceManager: {fileID: 0}
-  matchItReferenceManager: {fileID: 24981713}
-  colliderTriggerMatch: {fileID: 414574774}
+  matchItReferenceManager: {fileID: 0}
+  assessmentFont: {fileID: 0}
+  colliderTriggerMatch: {fileID: 0}
 --- !u!114 &24981713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19344,7 +19318,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1910600711}
   textfromRes: {fileID: 1345149797}
-  fillItQuizManagers: {fileID: 1694401761}
+  fillItQuizManagers: {fileID: 0}
 --- !u!1 &473551068
 GameObject:
   m_ObjectHideFlags: 0
@@ -22543,6 +22517,7 @@ MonoBehaviour:
   isActiveDevice: 0
   isSyncedDevice: 0
   isCompletedDevice: 0
+  experienceId: 
   WelcomeScene: {fileID: 2569113327362722321}
   isOpenGame: 0
   loadingBar: {fileID: 2071870367094954102}
@@ -24919,7 +24894,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1939063136}
   textfromRes: {fileID: 129346545}
-  fillItQuizManagers: {fileID: 1694401761}
+  fillItQuizManagers: {fileID: 0}
 --- !u!1 &615333176
 GameObject:
   m_ObjectHideFlags: 0
@@ -32172,6 +32147,7 @@ MonoBehaviour:
   totQuestionMatchItCount: 0
   fillItReferenceManager: {fileID: 0}
   matchItReferenceManager: {fileID: 0}
+  assessmentFont: {fileID: 0}
   colliderTriggerMatch: {fileID: 0}
 --- !u!1 &779247904
 GameObject:
@@ -54755,7 +54731,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 775641077}
   textfromRes: {fileID: 1612471619}
-  fillItQuizManagers: {fileID: 1694401761}
+  fillItQuizManagers: {fileID: 0}
 --- !u!1 &1412636345
 GameObject:
   m_ObjectHideFlags: 0
@@ -64382,7 +64358,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1874270555}
   textfromRes: {fileID: 131725664}
-  fillItQuizManagers: {fileID: 1694401761}
+  fillItQuizManagers: {fileID: 0}
 --- !u!4 &1658545988
 Transform:
   m_ObjectHideFlags: 0
@@ -65802,7 +65778,7 @@ MonoBehaviour:
   Answer5: {fileID: 23187450}
   PositionGetter: {fileID: 1631350509}
   textfromRes: {fileID: 684149527}
-  fillItQuizManagers: {fileID: 1694401761}
+  fillItQuizManagers: {fileID: 0}
 --- !u!1 &1678219629
 GameObject:
   m_ObjectHideFlags: 0
@@ -66054,32 +66030,18 @@ MonoBehaviour:
   elementWantToDelete: {fileID: 620243128368652379}
   interactableWrappers: []
   audioSource: {fileID: 806322210}
-  questionsFillIt:
-  - {fileID: 1479578148}
-  - {fileID: 1397148871}
-  - {fileID: 1451910878}
-  - {fileID: 1841724034}
-  - {fileID: 1624267261}
-  answersFillIt:
-  - {fileID: 824136009}
-  - {fileID: 1093381561}
-  - {fileID: 277660165}
-  - {fileID: 928995172}
-  - {fileID: 218401119}
-  answerPlacedTextFillIt:
-  - {fileID: 684149525}
-  - {fileID: 1612471617}
-  - {fileID: 1345149795}
-  - {fileID: 129346543}
-  - {fileID: 131725662}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
   questionsMatchIt: []
   answersMatchIt: []
   answerPlacedTextMatchIt: []
   answerPlacedCount: 0
   totQuestionFillItCount: 0
   totQuestionMatchItCount: 0
-  fillItReferenceManager: {fileID: 1694401762}
+  fillItReferenceManager: {fileID: 0}
   matchItReferenceManager: {fileID: 0}
+  assessmentFont: {fileID: 0}
   colliderTriggerMatch: {fileID: 0}
 --- !u!114 &1694401762
 MonoBehaviour:

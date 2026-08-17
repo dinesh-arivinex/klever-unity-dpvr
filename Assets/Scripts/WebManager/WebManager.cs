@@ -13,7 +13,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class WebManager : MonoBehaviour
 {
     private const string ObjectXLauncherUrl = "https://klever-edu.com/objectx-launcher.html";
-
+    private const string AnubhavLauncherUrl = "/admin.html";
     private GamificationManager gamificationManager;
     public GameObject webView;
     public GameObject[] disableitems;
@@ -136,7 +136,15 @@ public class WebManager : MonoBehaviour
                     PlayerPrefs.SetInt("InSimulation", 1);
                     PlayerPrefs.Save();
                     webView.SetActive(false);
-                    Application.OpenURL(BuildObjectXBrowserUrl(url));
+                    if (url.Contains("vredumelzo"))
+                    {
+                        Application.OpenURL(BuildAnubhavBrowserUrl(url));
+                    }
+                    else
+                    {
+                        Application.OpenURL(BuildObjectXBrowserUrl(url));
+                    }
+                    
                 }
                 else
                 {
@@ -172,6 +180,11 @@ public class WebManager : MonoBehaviour
     private string BuildObjectXBrowserUrl(string embedUrl)
     {
         return ObjectXLauncherUrl + "?src=" + Uri.EscapeDataString(embedUrl);
+    }
+
+    private string BuildAnubhavBrowserUrl(string embedUrl)
+    {
+        return embedUrl;
     }
 
     public void ToggleItem(bool value)
