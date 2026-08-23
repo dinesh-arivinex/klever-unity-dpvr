@@ -21,7 +21,7 @@ public class QuizManagers : MonoBehaviour
     public UnityEvent StartEvent;
     public UnityEvent EndEvent;
     public GameObject elementWantToDelete;
-    private int MCQstudetScore=0;
+    private int MCQstudetScore = 0;
     private GamificationManager gamificationManager;
     public List<InteractableUnityEventWrapper> interactableWrappers = new List<InteractableUnityEventWrapper>();
     public AudioSource audioSource;
@@ -39,17 +39,6 @@ public class QuizManagers : MonoBehaviour
 
     public FillItReferenceManager fillItReferenceManager;
     public MatchItReferenceManager matchItReferenceManager;
-
-    [Header("Assessment presentation")]
-    [SerializeField] private TMP_FontAsset assessmentFont;
-
-    // Positions are expressed in the existing world-space canvas coordinate system.
-    // The answer bank occupies the first row; question and drop-target rows follow it.
-    private const float FillAnswerBankY = 1.88f;
-    private const float FillQuestionStartY = 380f;
-    private const float FillQuestionSpacing = 185f;
-    private const float FillDropTargetStartY = 1.55f;
-    private const float FillDropTargetSpacing = 0.25f;
 
 
     private Image targetImage;
@@ -76,27 +65,26 @@ public class QuizManagers : MonoBehaviour
         public string questionImageUrl;
     }
 
-   
+
     public class Option
     {
         public string text;
         public bool isCorrect;
         public string id;
     }
-   // private List<QuestionData> questions;
+    // private List<QuestionData> questions;
     private int currentQuestionIndex = 0;
     //public MeshRenderer[] meshRender;
     public List<Option> options;
     private List<AnswerData> answers = new List<AnswerData>();
     private void OnEnable()
     {
-        ApplyAssessmentTypography();
-        gamificationManager=FindAnyObjectByType<GamificationManager>();
-        apiManager =FindAnyObjectByType<API>(); 
-         //Wrapper wrapper = JsonUtility.FromJson<Wrapper>("{\"questions\":" + apiManager.assessmentsString + "}");
+        gamificationManager = FindAnyObjectByType<GamificationManager>();
+        apiManager = FindAnyObjectByType<API>();
+        //Wrapper wrapper = JsonUtility.FromJson<Wrapper>("{\"questions\":" + apiManager.assessmentsString + "}");
         //questions = wrapper.questions;
 
-     //   DisplayQuestion();
+        //   DisplayQuestion();
         StartEvent.Invoke();
         nextButton.enabled = false;
         nextButton.gameObject.GetComponent<BoxCollider>().enabled = false;
@@ -105,78 +93,7 @@ public class QuizManagers : MonoBehaviour
         //{
         //    element.enabled = true;
         //}
-   
-    }
 
-    private void ApplyAssessmentTypography()
-    {
-        TMP_FontAsset fontAsset = assessmentFont != null
-            ? assessmentFont
-            : TMP_Settings.defaultFontAsset;
-
-        if (fontAsset == null) return;
-
-        TextMeshProUGUI[] assessmentText = GetComponentsInChildren<TextMeshProUGUI>(true);
-        foreach (TextMeshProUGUI textElement in assessmentText)
-        {
-            if (textElement == null) continue;
-
-            textElement.font = fontAsset;
-            textElement.fontSharedMaterial = fontAsset.material;
-        }
-    }
-
-    private static void SetLocalY(Transform target, float yPosition)
-    {
-        if (target == null) return;
-
-        Vector3 localPosition = target.localPosition;
-        localPosition.y = yPosition;
-        target.localPosition = localPosition;
-    }
-
-    private static void ConfigureFillInTheBlanksLayout(
-        GameObject[] questions,
-        GameObject[] answers,
-        GameObject[] answerPlacements)
-    {
-        int slotCount = Mathf.Min(
-            questions != null ? questions.Length : 0,
-            answers != null ? answers.Length : 0,
-            answerPlacements != null ? answerPlacements.Length : 0);
-
-        for (int i = 0; i < slotCount; i++)
-        {
-            RectTransform questionRect = questions[i] != null
-                ? questions[i].GetComponent<RectTransform>()
-                : null;
-            if (questionRect != null)
-            {
-                Vector2 questionPosition = questionRect.anchoredPosition;
-                questionPosition.y = FillQuestionStartY - (FillQuestionSpacing * i);
-                questionRect.anchoredPosition = questionPosition;
-            }
-
-            if (answers[i] != null)
-            {
-                SetLocalY(answers[i].transform.Find("Stone-AnchorAtHand"), FillAnswerBankY);
-                SetLocalY(answers[i].transform.Find("SnapZone-AnchorAtHand"), FillAnswerBankY);
-            }
-
-            if (answerPlacements[i] == null) continue;
-
-            float dropTargetY = FillDropTargetStartY - (FillDropTargetSpacing * i);
-            Transform placementRoot = answerPlacements[i].transform;
-            SetLocalY(placementRoot.Find("AnswerPlacePositionGetter"), dropTargetY);
-
-            RectTransform dropTarget = placementRoot.Find("AnswerPlace") as RectTransform;
-            if (dropTarget != null)
-            {
-                Vector2 dropPosition = dropTarget.anchoredPosition;
-                dropPosition.y = dropTargetY;
-                dropTarget.anchoredPosition = dropPosition;
-            }
-        }
     }
 
     private void Update()
@@ -191,7 +108,7 @@ public class QuizManagers : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            NextButtonClickMatchIt();
+            NextButtonClickFillIt();
         }
     }
 
@@ -199,7 +116,7 @@ public class QuizManagers : MonoBehaviour
     {
         answerPlacedCount = 0;
     }
-
+    
     private void DisplayQuestionImage(string url)
     {
         Transform parentTransform = questionText != null ? questionText.transform.parent : transform;
@@ -215,7 +132,7 @@ public class QuizManagers : MonoBehaviour
             GameObject go = new GameObject("DynamicQuestionImage");
             go.transform.SetParent(parentTransform, false);
             rawImg = go.AddComponent<RawImage>();
-            
+
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(1.2f, 0.8f); // set size in world space scale, since it's on a VR Canvas
             rect.anchoredPosition = new Vector3(0f, 150f, 0f); // adjust offset relative to question text parent
@@ -251,7 +168,7 @@ public class QuizManagers : MonoBehaviour
             imgGo.transform.SetParent(button.transform, false);
             imgGo.transform.SetSiblingIndex(0); // Draw behind text
             rawImg = imgGo.AddComponent<RawImage>();
-            
+
             RectTransform rect = imgGo.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(0, 0);
             rect.anchorMax = new Vector2(1, 1);
@@ -297,16 +214,16 @@ public class QuizManagers : MonoBehaviour
     private void SetMatchItImage(GameObject targetGo, TextMeshProUGUI textComp, string url)
     {
         if (targetGo == null) return;
-        
+
         // If targetGo is the text object itself, attach image to its parent so it renders behind the text as a sibling
         Transform attachParent = targetGo.transform;
         int targetSiblingIndex = 0;
-        
+
         if (targetGo.GetComponent<TextMeshProUGUI>() != null && targetGo.transform.parent != null)
         {
             attachParent = targetGo.transform.parent;
             // Set to 0 so it renders as the very first child (behind the button background and text)
-            targetSiblingIndex = 0; 
+            targetSiblingIndex = 0;
         }
 
         Transform existing = attachParent.Find("DynamicMatchItImage");
@@ -321,7 +238,7 @@ public class QuizManagers : MonoBehaviour
             imgGo.transform.SetParent(attachParent, false);
             imgGo.transform.SetSiblingIndex(targetSiblingIndex); // Draw behind text
             rawImg = imgGo.AddComponent<RawImage>();
-            
+
             RectTransform rect = imgGo.GetComponent<RectTransform>();
             // Stretch to fill the parent perfectly
             rect.anchorMin = new Vector2(0, 0);
@@ -341,7 +258,7 @@ public class QuizManagers : MonoBehaviour
             {
                 rawImg.gameObject.SetActive(true);
                 this.gameObject.SetActive(true); // Ensure GameObject is active before starting coroutine
-                
+
                 StartCoroutine(LoadImageCoroutine(url, texture => {
                     rawImg.texture = texture;
                 }));
@@ -355,14 +272,16 @@ public class QuizManagers : MonoBehaviour
 
         // Set the flag to true so it never runs again
         hasDisplayedAllFillInTheBlanks = true;
-        try 
+        try
         {
             DebugUtil.Log($"[QuizManagers] DisplayAllFillInTheBlanks called with {allQuestions?.Count} questions.");
             if (allQuestions == null) return;
+            totQuestionFillItCount = allQuestions.Count;
+
             GameObject[] questions = null;
             GameObject[] answers = null;
             GameObject[] answersPlacement = null;
-            
+
             if (fillItReferenceManager != null)
             {
                 questions = fillItReferenceManager.Questions;
@@ -375,57 +294,19 @@ public class QuizManagers : MonoBehaviour
                 return;
             }
 
-            int availableSlots = Mathf.Min(
-                questions != null ? questions.Length : 0,
-                answers != null ? answers.Length : 0,
-                answersPlacement != null ? answersPlacement.Length : 0);
-            if (availableSlots == 0)
+            for (int i = 0; i < totQuestionFillItCount; i++)
             {
-                DebugUtil.LogError("[QuizManagers] FillInTheBlanks has no complete UI slots configured.");
-                return;
+                questions[i].SetActive(i < totQuestionFillItCount);
+                answers[i].SetActive(i < totQuestionFillItCount);
+                answersPlacement[i].SetActive(i < totQuestionFillItCount);
             }
-
-            int requestedFillQuestionCount = 0;
-            for (int i = 0; i < allQuestions.Count; i++)
-            {
-                bool isFillQuestion = typeOfGames == null ||
-                    (i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks");
-                if (isFillQuestion) requestedFillQuestionCount++;
-            }
-
-            totQuestionFillItCount = Mathf.Min(requestedFillQuestionCount, availableSlots);
-            if (requestedFillQuestionCount > availableSlots)
-            {
-                DebugUtil.Log($"[QuizManagers] FillInTheBlanks requested {requestedFillQuestionCount} questions, but only {availableSlots} UI slots are available.");
-            }
-
-            ConfigureFillInTheBlanksLayout(questions, answers, answersPlacement);
-            ApplyAssessmentTypography();
-
-            for (int i = 0; i < questions.Length; i++)
-            {
-                if (questions[i] != null) questions[i].SetActive(i < totQuestionFillItCount);
-            }
-            for (int i = 0; i < answers.Length; i++)
-            {
-                if (answers[i] != null) answers[i].SetActive(i < totQuestionFillItCount);
-            }
-            for (int i = 0; i < answersPlacement.Length; i++)
-            {
-                if (answersPlacement[i] != null) answersPlacement[i].SetActive(i < totQuestionFillItCount);
-            }
-
             int uiIndex = 0;
             for (int i = 0; i < allQuestions.Count; i++)
             {
-                bool isFillQuestion = typeOfGames == null ||
-                    (i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks");
-                if (isFillQuestion)
+                if (typeOfGames != null && i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks")
                 {
-                    if (uiIndex >= totQuestionFillItCount) break;
-
                     DebugUtil.Log($"[QuizManagers] Found FillInTheBlanks at index {i}. Target uiIndex={uiIndex}");
-                    
+
                     if (questionsFillIt != null)
                     {
                         if (uiIndex < questionsFillIt.Length)
@@ -439,18 +320,28 @@ public class QuizManagers : MonoBehaviour
                         }
                         else DebugUtil.Log($"[QuizManagers] FAILED Question at uiIndex {uiIndex}: questionsFillIt array length is only {questionsFillIt.Length}!");
                     }
-                    
+
                     if (allAnswersList != null && i < allAnswersList.Count && allAnswersList[i] != null && allAnswersList[i].Count > 0)
                     {
                         if (answersFillIt != null && uiIndex < answersFillIt.Length && answersFillIt[uiIndex] != null)
                         {
-                            answersFillIt[uiIndex].GetComponent<TextMeshProUGUI>().text = allAnswersList[i][0].text;
+                            var tmp = answersFillIt[uiIndex].GetComponent<TextMeshProUGUI>();
+                            if (tmp != null)
+                            {
+                                tmp.text = allAnswersList[i][0].text;
+                            }
+                            else DebugUtil.Log($"[QuizManagers] FAILED Answer at uiIndex {uiIndex}: missing TMP component.");
                         }
                         else DebugUtil.Log($"[QuizManagers] FAILED Answer at uiIndex {uiIndex}: answersFillIt[{uiIndex}] is missing or out of bounds.");
 
                         if (answerPlacedTextFillIt != null && uiIndex < answerPlacedTextFillIt.Length && answerPlacedTextFillIt[uiIndex] != null)
                         {
-                            answerPlacedTextFillIt[uiIndex].GetComponent<TextMeshProUGUI>().text = allAnswersList[i][0].text;
+                            var tmp = answerPlacedTextFillIt[uiIndex].GetComponent<TextMeshProUGUI>();
+                            if (tmp != null)
+                            {
+                                tmp.text = allAnswersList[i][0].text;
+                            }
+                            else DebugUtil.Log($"[QuizManagers] FAILED AnswerPlacedText at uiIndex {uiIndex}: missing TMP component.");
                         }
                         else DebugUtil.Log($"[QuizManagers] FAILED AnswerPlacedText at uiIndex {uiIndex}: missing or out of bounds.");
                     }
@@ -476,7 +367,6 @@ public class QuizManagers : MonoBehaviour
         try
         {
             if (matchingOptions == null || matchingOptions.Count == 0) return;
-            ApplyAssessmentTypography();
             totQuestionMatchItCount = matchingOptions.Count;
 
             GameObject[] questions = null;
@@ -494,7 +384,7 @@ public class QuizManagers : MonoBehaviour
                 DebugUtil.LogError("[QuizManagers] matchItReferenceManager is null! Cannot display MatchIt.");
                 return;
             }
-            
+
             for (int i = 0; i < questions.Length; i++)
             {
                 bool active = i < totQuestionMatchItCount;
@@ -511,30 +401,30 @@ public class QuizManagers : MonoBehaviour
                 string rightText = matchingOptions[i].right.text;
                 string leftImageUrl = matchingOptions[i].left.imageUrl;
                 string rightImageUrl = matchingOptions[i].right.imageUrl;
-                
+
                 // left text one by one orderwise in questions array
                 if (questions[i] != null)
                 {
                     TextMeshProUGUI textComp = questions[i].GetComponent<TextMeshProUGUI>();
-                    if(textComp == null) textComp = questions[i].GetComponentInChildren<TextMeshProUGUI>();
-                    if(textComp != null) textComp.text = leftText;
-                    
+                    if (textComp == null) textComp = questions[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if (textComp != null) textComp.text = leftText;
+
                     SetMatchItImage(questions[i], textComp, leftImageUrl);
                 }
-                
+
                 // store orderwise answertext for checking answer after drag and drop
                 if (answeTextStore[i] != null)
                 {
                     TextMeshProUGUI textComp = answeTextStore[i].GetComponent<TextMeshProUGUI>();
-                    if(textComp == null) textComp = answeTextStore[i].GetComponentInChildren<TextMeshProUGUI>();
-                    if(textComp != null) textComp.text = rightText;
+                    if (textComp == null) textComp = answeTextStore[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if (textComp != null) textComp.text = rightText;
                 }
-                
+
                 if (answerPlacedTextMatchIt != null && i < answerPlacedTextMatchIt.Length && answerPlacedTextMatchIt[i] != null)
                 {
                     TextMeshProUGUI textComp = answerPlacedTextMatchIt[i].GetComponent<TextMeshProUGUI>();
-                    if(textComp == null) textComp = answerPlacedTextMatchIt[i].GetComponentInChildren<TextMeshProUGUI>();
-                    if(textComp != null) textComp.text = rightText;
+                    if (textComp == null) textComp = answerPlacedTextMatchIt[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if (textComp != null) textComp.text = rightText;
                 }
 
                 rightTexts.Add(rightText);
@@ -548,25 +438,25 @@ public class QuizManagers : MonoBehaviour
                 System.Random rng = new System.Random();
                 bool isDerangement = false;
                 int attempts = 0;
-                
+
                 while (!isDerangement && attempts < 100)
                 {
                     attempts++;
                     // Fisher-Yates shuffle
                     int n = rightTexts.Count;
-                    while (n > 1) 
+                    while (n > 1)
                     {
                         n--;
                         int k = rng.Next(n + 1);
                         string value = rightTexts[k];
                         rightTexts[k] = rightTexts[n];
                         rightTexts[n] = value;
-                        
+
                         string urlValue = rightImageUrls[k];
                         rightImageUrls[k] = rightImageUrls[n];
                         rightImageUrls[n] = urlValue;
                     }
-                    
+
                     // Check if it's a derangement (no element in its original index)
                     isDerangement = true;
                     for (int i = 0; i < rightTexts.Count; i++)
@@ -586,9 +476,9 @@ public class QuizManagers : MonoBehaviour
                 if (answers[i] != null)
                 {
                     TextMeshProUGUI textComp = answers[i].GetComponent<TextMeshProUGUI>();
-                    if(textComp == null) textComp = answers[i].GetComponentInChildren<TextMeshProUGUI>();
-                    if(textComp != null) textComp.text = rightTexts[i];
-                    
+                    if (textComp == null) textComp = answers[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if (textComp != null) textComp.text = rightTexts[i];
+
                     SetMatchItImage(answers[i], textComp, rightImageUrls[i]);
                 }
             }
@@ -602,9 +492,12 @@ public class QuizManagers : MonoBehaviour
     public void DisplayQuestion(List<string> heading, List<AnswerData> answerOptions, string actualQuestion, string questionImageUrl, string typeOfGame = "", List<AnswerData> answerList = null)
     {
         DebugUtil.Log($"[QuizManagers] DisplayQuestion called. typeOfGame: '{typeOfGame}', question: '{actualQuestion}'");
-        if (answerList != null) {
+        if (answerList != null)
+        {
             DebugUtil.Log($"[QuizManagers] answerList count: {answerList.Count}");
-        } else {
+        }
+        else
+        {
             DebugUtil.Log("[QuizManagers] answerList is NULL");
         }
 
@@ -612,14 +505,14 @@ public class QuizManagers : MonoBehaviour
         questionText.text = actualQuestion;
         DisplayQuestionImage(questionImageUrl);
 
-        if (questionText != null &&  currentQuestionIndex < 1)
+        if (questionText != null && currentQuestionIndex < 1)
         {
             // MCQquestionText.text = $"MCQ{currentQuestionIndex + 1}";
             MCQquestionText.text = heading[0];
             // questionPanelText.text = $"Question{currentQuestionIndex + 1}";
             questionPanelText.text = heading[1];
             //questionText.text = $"{questions[currentQuestionIndex].question}";
-           
+
         }
 
         for (int i = 0; i < answerButtons.Length; i++)
@@ -648,14 +541,14 @@ public class QuizManagers : MonoBehaviour
                     answerButtons[i].onClick.AddListener(() => OnAnswerClick(answerIndex));
                     interactableWrappers[i].WhenSelect.AddListener(() => OnAnswerClick(answerIndex));
                 }
-                
+
             }
             else if (answerButtons[i] != null)
             {
                 answerButtons[i].gameObject.SetActive(false);
             }
         }
-      
+
         buttonClicked = false;
     }
 
@@ -681,7 +574,7 @@ public class QuizManagers : MonoBehaviour
                 // MCQstudetScore++;
                 gamificationManager.mcqScore++;
             }
-            buttonClicked = true; 
+            buttonClicked = true;
             ToggleButtonActivation(false);
             audioSource.Play();
         }
@@ -712,12 +605,12 @@ public class QuizManagers : MonoBehaviour
         currentQuestionIndex++;
         if (currentQuestionIndex < 1)
         {
-           // DisplayQuestion();
+            // DisplayQuestion();
         }
         else
         {
             reloadSceneEvent.Invoke();
-            DebugUtil.Log("Your score is"+MCQstudetScore);
+            DebugUtil.Log("Your score is" + MCQstudetScore);
             gamificationManager.OnGameCompleted();
 
 
@@ -773,7 +666,7 @@ public class QuizManagers : MonoBehaviour
         // This is essentially not causing any delay, consider removing or increasing the time if needed
 
         // Create a new color with baseColor RGB values but with the Alpha set to 95/255
-       // Color newColorWithAlpha = new Color(color.r, color.g, color.b, 95f / 255f);
+        // Color newColorWithAlpha = new Color(color.r, color.g, color.b, 95f / 255f);
 
         // Restore button color after the delay
         ChangeButtonColor(button, color);
@@ -793,7 +686,7 @@ public class QuizManagers : MonoBehaviour
     public void SceneReLoad()
     {
         EndEvent.Invoke();
-       // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void DisableImagesInArray(GameObject[] arr)
@@ -828,8 +721,8 @@ public class QuizManagers : MonoBehaviour
 
         if (answersMatchIt[0].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[0].GetComponent<TextMeshProUGUI>().text)
         {
-            
-            targetImage =  answersMatchIt[0].transform.parent.GetComponent<Image>();
+
+            targetImage = answersMatchIt[0].transform.parent.GetComponent<Image>();
             ApplyColor(correctColor, targetImage);
             gamificationManager.mcqScore++;
         }
@@ -882,7 +775,7 @@ public class QuizManagers : MonoBehaviour
         {
             if (answersMatchIt[i] == null) continue;
             // Check if answersMatchIt[i] is the exact object or any child within the obj's hierarchy
-            if (answersMatchIt[i] == obj || answersMatchIt[i].transform.IsChildOf(obj.transform)) 
+            if (answersMatchIt[i] == obj || answersMatchIt[i].transform.IsChildOf(obj.transform))
             {
                 return i;
             }
@@ -918,7 +811,7 @@ public class QuizManagers : MonoBehaviour
             GameObject temp = answersMatchIt[indexA];
             answersMatchIt[indexA] = answersMatchIt[indexB];
             answersMatchIt[indexB] = temp;
-            
+
             DebugUtil.Log($"Swapped array elements at indices {indexA} and {indexB}");
         }
         else
