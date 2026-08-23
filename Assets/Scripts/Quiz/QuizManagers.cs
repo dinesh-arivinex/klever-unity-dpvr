@@ -110,6 +110,10 @@ public class QuizManagers : MonoBehaviour
         {
             NextButtonClickFillIt();
         }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            NextButtonClickFillIt();
+        }
     }
 
     private void Start()
