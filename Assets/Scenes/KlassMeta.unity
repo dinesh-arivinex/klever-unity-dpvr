@@ -81354,6 +81354,7 @@ MonoBehaviour:
   FillIt: {fileID: 1694401759}
   MatchIt: {fileID: 24981710}
   gamificationCollider: {fileID: 6827677711741187105}
+  welcomeBoardText: {fileID: 1121481969328553115}
   thankyouCanvas: {fileID: 210506409}
   scoreText:
   - {fileID: 181262767}

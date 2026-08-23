@@ -50,6 +50,7 @@ public class GamificationManager : MonoBehaviour
     public GameObject gamificationCollider;
     private List<string> selectedGames = new List<string>(); // Array to store selected game names
     private int currentGameIndex = 0;
+    public GameObject welcomeBoardText;
     public GameObject thankyouCanvas;
     public TextMeshProUGUI[] scoreText;
     public GameObject[] yourScoreText;
@@ -140,7 +141,7 @@ public class GamificationManager : MonoBehaviour
     }
     public void StartAfterLoadingCanvas()
     {
-
+        welcomeBoardText.SetActive(false);
         Wrapper wrapper = JsonUtility.FromJson<Wrapper>("{\"questions\":" + apiManager.assessmentsString + "}");
         questions = wrapper.questions;
 
