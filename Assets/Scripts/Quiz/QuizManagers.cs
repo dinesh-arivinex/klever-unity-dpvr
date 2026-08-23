@@ -300,6 +300,25 @@ public class QuizManagers : MonoBehaviour
                 answers[i].SetActive(i < totQuestionFillItCount);
                 answersPlacement[i].SetActive(i < totQuestionFillItCount);
             }
+            List<string> shuffledAnswers = new List<string>();
+            for (int i = 0; i < allQuestions.Count; i++)
+            {
+                if (typeOfGames != null && i < typeOfGames.Count && typeOfGames[i] == "FillInTheBlanks")
+                {
+                    if (allAnswersList != null && i < allAnswersList.Count && allAnswersList[i] != null && allAnswersList[i].Count > 0)
+                        shuffledAnswers.Add(allAnswersList[i][0].text);
+                    else
+                        shuffledAnswers.Add("");
+                }
+            }
+            for (int i = 0; i < shuffledAnswers.Count; i++)
+            {
+                int rnd = UnityEngine.Random.Range(0, shuffledAnswers.Count);
+                string temp = shuffledAnswers[i];
+                shuffledAnswers[i] = shuffledAnswers[rnd];
+                shuffledAnswers[rnd] = temp;
+            }
+
             int uiIndex = 0;
             for (int i = 0; i < allQuestions.Count; i++)
             {
@@ -328,7 +347,7 @@ public class QuizManagers : MonoBehaviour
                             var tmp = answersFillIt[uiIndex].GetComponent<TextMeshProUGUI>();
                             if (tmp != null)
                             {
-                                tmp.text = allAnswersList[i][0].text;
+                                tmp.text = shuffledAnswers[uiIndex];
                             }
                             else DebugUtil.Log($"[QuizManagers] FAILED Answer at uiIndex {uiIndex}: missing TMP component.");
                         }
@@ -499,6 +518,17 @@ public class QuizManagers : MonoBehaviour
         else
         {
             DebugUtil.Log("[QuizManagers] answerList is NULL");
+        }
+
+        if (typeOfGame == "FillInTheBlanks" && answerOptions != null)
+        {
+            for (int i = 0; i < answerOptions.Count; i++)
+            {
+                int rnd = UnityEngine.Random.Range(0, answerOptions.Count);
+                AnswerData temp = answerOptions[i];
+                answerOptions[i] = answerOptions[rnd];
+                answerOptions[rnd] = temp;
+            }
         }
 
         answers = answerOptions;
