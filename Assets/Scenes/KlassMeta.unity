@@ -18773,6 +18773,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456078503}
   m_Mesh: {fileID: -8097860741330282927, guid: 52c86425978036042a721529bca0eeef, type: 3}
+--- !u!1 &456955027 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8030197382645210609, guid: d27ac1ffd4cdd7c40a39dcfa6012355c, type: 3}
+  m_PrefabInstance: {fileID: 637304059}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &456995702
 GameObject:
   m_ObjectHideFlags: 0
@@ -22523,6 +22528,11 @@ MonoBehaviour:
   loadingBar: {fileID: 2071870367094954102}
   isOpening: 0
   gamificationManager: {fileID: 2118685217}
+  RayInteractors:
+  - {fileID: 1562935818}
+  - {fileID: 456955027}
+  - {fileID: 1168309485}
+  - {fileID: 1271260106}
 --- !u!4 &547249120
 Transform:
   m_ObjectHideFlags: 0
@@ -46243,6 +46253,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1151136426}
   m_LocalEulerAnglesHint: {x: 0, y: -170.07301, z: 0}
+--- !u!1 &1168309485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2519953544252300544, guid: 44cf50d1a2e68b64791a3e3143ccda19, type: 3}
+  m_PrefabInstance: {fileID: 1403983009}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1172132148
 GameObject:
   m_ObjectHideFlags: 0
@@ -48703,7 +48718,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8105528931859149806, guid: 44cf50d1a2e68b64791a3e3143ccda19, type: 3}
   m_PrefabInstance: {fileID: 1403983009}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1168309485}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4733c5f009d26ad49b3685117b8d3eb4, type: 3}
@@ -49603,6 +49618,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268723336}
   m_CullTransparentMesh: 1
+--- !u!1 &1271260106 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2519953544252300544, guid: 44cf50d1a2e68b64791a3e3143ccda19, type: 3}
+  m_PrefabInstance: {fileID: 244755156}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1274686778
 GameObject:
   m_ObjectHideFlags: 0
@@ -61140,6 +61160,11 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.03454852, y: 0.0005114786, z: 0.00007304177}
     m_Extent: {x: 0.0009967163, y: 0.0020704702, z: 0.004453361}
   m_DirtyAABB: 0
+--- !u!1 &1562935818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8030197382645210609, guid: d27ac1ffd4cdd7c40a39dcfa6012355c, type: 3}
+  m_PrefabInstance: {fileID: 742195522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1564192903
 GameObject:
   m_ObjectHideFlags: 0
@@ -66897,7 +66922,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4464419641693729567, guid: d27ac1ffd4cdd7c40a39dcfa6012355c, type: 3}
   m_PrefabInstance: {fileID: 742195522}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1562935818}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4733c5f009d26ad49b3685117b8d3eb4, type: 3}
@@ -70154,7 +70179,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8105528931859149806, guid: 44cf50d1a2e68b64791a3e3143ccda19, type: 3}
   m_PrefabInstance: {fileID: 244755156}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1271260106}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4733c5f009d26ad49b3685117b8d3eb4, type: 3}
@@ -72918,7 +72943,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4464419641693729567, guid: d27ac1ffd4cdd7c40a39dcfa6012355c, type: 3}
   m_PrefabInstance: {fileID: 637304059}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 456955027}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4733c5f009d26ad49b3685117b8d3eb4, type: 3}
@@ -72929,7 +72954,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3392710849946547363, guid: d27ac1ffd4cdd7c40a39dcfa6012355c, type: 3}
   m_PrefabInstance: {fileID: 637304059}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 456955027}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b14164f8f23faae4293baeb84485b3d6, type: 3}

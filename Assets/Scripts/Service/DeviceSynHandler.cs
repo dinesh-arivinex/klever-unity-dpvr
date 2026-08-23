@@ -240,10 +240,17 @@ public class DeviceSynHandler : MonoBehaviour
 
     public void ActiveDeviceStatus()      => PublishStateIfChanged(force: false);
 
+    public GameObject[] RayInteractors;
+
     private void PauseVR()
     {
         Time.timeScale = 0f;
         AudioListener.pause = true;
+        
+        foreach(var item in RayInteractors)
+        {
+            item.SetActive(false);
+        }
 
         if (VideoManager.Instance != null)
         {
@@ -270,6 +277,11 @@ public class DeviceSynHandler : MonoBehaviour
     {
         Time.timeScale = 1f;
         AudioListener.pause = false;
+
+        foreach (var item in RayInteractors)
+        {
+            item.SetActive(true);
+        }
 
         if (VideoManager.Instance != null)
         {
