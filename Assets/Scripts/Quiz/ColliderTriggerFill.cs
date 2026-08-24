@@ -41,7 +41,10 @@ public class ColliderTriggerFill : MonoBehaviour
             this.gameObject.GetComponent<Image>().enabled = false;
             Answer1.GetComponent<BoxCollider>().enabled = false;
             grandParent.GetComponent<Grabbable>().enabled = false;
-            grandParent.GetComponent<SnapInteractor>().enabled = false;
+            grandParent.GetComponent<SnapInteractor>().enabled = false; 
+            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             {
@@ -97,6 +100,9 @@ public class ColliderTriggerFill : MonoBehaviour
             Answer2.GetComponent<BoxCollider>().enabled = false;
             grandParent.GetComponent<Grabbable>().enabled = false;
             grandParent.GetComponent<SnapInteractor>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             {
@@ -150,6 +156,9 @@ public class ColliderTriggerFill : MonoBehaviour
             Answer3.GetComponent<BoxCollider>().enabled = false;
             grandParent.GetComponent<Grabbable>().enabled = false;
             grandParent.GetComponent<SnapInteractor>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             { 
@@ -204,6 +213,9 @@ public class ColliderTriggerFill : MonoBehaviour
             Answer4.GetComponent<BoxCollider>().enabled = false;
             grandParent.GetComponent<Grabbable>().enabled = false;
             grandParent.GetComponent<SnapInteractor>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             {
@@ -243,8 +255,10 @@ public class ColliderTriggerFill : MonoBehaviour
             Answer5.GetComponent<BoxCollider>().enabled = false;
             grandParent.GetComponent<Grabbable>().enabled = false;
             grandParent.GetComponent<SnapInteractor>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
-
             if (childText.text == textfromRes.text)
             {
 

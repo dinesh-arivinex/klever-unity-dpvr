@@ -749,6 +749,7 @@ public class QuizManagers : MonoBehaviour
         }
 
         colliderTriggerMatch.Answer1HandGrab.gameObject.SetActive(false);
+        colliderTriggerMatch.Answer1HandGrab.gameObject.SetActive(false);
         colliderTriggerMatch.Answer2HandGrab.gameObject.SetActive(false);
         colliderTriggerMatch.Answer3HandGrab.gameObject.SetActive(false);
         colliderTriggerMatch.Answer4HandGrab.gameObject.SetActive(false);
@@ -796,6 +797,17 @@ public class QuizManagers : MonoBehaviour
         else
         {
             targetImage = answersMatchIt[3].transform.parent.GetComponent<Image>();
+            ApplyColor(wrongColor, targetImage);
+        }
+        if (answersMatchIt[4].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[4].GetComponent<TextMeshProUGUI>().text)
+        {
+            targetImage = answersMatchIt[4].transform.parent.GetComponent<Image>();
+            ApplyColor(correctColor, targetImage);
+            gamificationManager.mcqScore++;
+        }
+        else
+        {
+            targetImage = answersMatchIt[4].transform.parent.GetComponent<Image>();
             ApplyColor(wrongColor, targetImage);
         }
 

@@ -356,7 +356,7 @@ public class GamificationManager : MonoBehaviour
             {
                 if(currentGameName== "MatchingFollowing")
                 {
-                    scoreTexts.text = student.score.ToString() + "/" + "4";
+                    scoreTexts.text = student.score.ToString() + "/" + "5";
                 }
                 else
                 {
