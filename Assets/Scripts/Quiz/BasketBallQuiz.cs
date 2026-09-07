@@ -243,12 +243,16 @@ public class BasketBallQuiz : MonoBehaviour
             // Create colors with adjusted alpha values
             Color greenWithAlpha = new Color(Color.green.r, Color.green.g, Color.green.b, 95f / 255f);
             Color redWithAlpha = new Color(Color.red.r, Color.red.g, Color.red.b, 255f / 255f);
-            // Change button color immediately for the correct answer button
-            //int correctAnswerIndex = questions[currentQuestionIndex].options.FindIndex(option => option.isCorrect);
-            int correctAnswerIndex = answers.FindIndex(answers => answers.isCorrect);
-            ChangeButtonColor(answerButtons[correctAnswerIndex], greenWithAlpha);
-            // Change button color immediately for the clicked button
-            ChangeButtonColor(clickedButton, answers[selectedAnswerIndex].isCorrect ? greenWithAlpha : redWithAlpha);
+            
+            // Change button colors for all available options
+            for (int i = 0; i < answers.Count; i++)
+            {
+                if (answerButtons[i] != null && answerButtons[i].gameObject.activeSelf)
+                {
+                    ChangeButtonColor(answerButtons[i], answers[i].isCorrect ? greenWithAlpha : redWithAlpha);
+                }
+            }
+
             if (answers[selectedAnswerIndex].isCorrect)
             {
                 if(isArrow)

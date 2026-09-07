@@ -97,6 +97,7 @@ public class DeviceIDManager : MonoBehaviour
             {
                 inputText.text = "";
                 wrongPanel.SetActive(true);
+                wrongPanel.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = response.message;
             }
                
 
