@@ -139,13 +139,11 @@ public class WebManager : MonoBehaviour
                     if (url.Contains("vredumelzo"))
                     {
                         Application.OpenURL(BuildAnubhavBrowserUrl(url));
-                        StartCoroutine(KleverAppQuit());
 
                     }
                     else
                     {
                         Application.OpenURL(BuildObjectXBrowserUrl(url));
-                        StartCoroutine(KleverAppQuit());
 
                     }
 
@@ -264,12 +262,5 @@ public class WebManager : MonoBehaviour
         Destroy(webView);
         service.AssignTaskBasedOnCondition(GameStatus.Mcq);
         gamificationManager.AssignGames();
-    }
-    // Update is called once per frame
-
-    public IEnumerator KleverAppQuit()
-    {
-        yield return new WaitForSeconds(1f);
-        Application.Quit();
     }
 }

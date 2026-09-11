@@ -122,6 +122,13 @@ namespace Klass.Net
             PublishEvent(delta);
         }
 
+        public void PublishAssessmentCompleted()
+        {
+            var details = new JSONObject();
+            details["message"] = "Assessment completed";
+            ShowContent("completion", "assessment-complete", string.Empty, details);
+        }
+
         private JSONObject Envelope(string eventType)
         {
             var node = new JSONObject();
