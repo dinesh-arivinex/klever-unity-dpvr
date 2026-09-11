@@ -17,6 +17,9 @@ public enum Language
 
 public class GoogleTextToSpeech : MonoBehaviour
 {
+    private sealed class TtsCoroutineRunner : MonoBehaviour { }
+
+    private static TtsCoroutineRunner coroutineRunner;
    
     public  enum GendeR
     {
@@ -47,6 +50,7 @@ public class GoogleTextToSpeech : MonoBehaviour
     private string apiUrlTranslation = "https://translation.googleapis.com/language/translate/v2";
 
     public AudioSource audioSource;
+    private AudioSource currentAudioSource;
     private bool isFirstTime;
     [HideInInspector]
     public float audioClipLength;
@@ -75,11 +79,31 @@ public class GoogleTextToSpeech : MonoBehaviour
     }
     public void StartTalking(string text)
     {
-        // textToSynthesize = text;
-        //  StartCoroutine(SendTextToSpeechRequest());
-        // LanguageSelector();
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            DebugUtil.LogError("Cannot start text-to-speech with empty text.");
+            return;
+        }
+
+        if (serviceScript == null && GameManager.Instance != null)
+        {
+            serviceScript = GameManager.Instance.serviceScript;
+        }
+
         string cleanText = SanitizeText(text);
-        StartCoroutine(SendTranslationRequest(cleanText));
+        RunCoroutine(SendTranslationRequest(cleanText));
+    }
+
+    private static void RunCoroutine(IEnumerator routine)
+    {
+        if (coroutineRunner == null)
+        {
+            var runnerObject = new GameObject("[TTS Coroutine Runner]");
+            coroutineRunner = runnerObject.AddComponent<TtsCoroutineRunner>();
+            UnityEngine.Object.DontDestroyOnLoad(runnerObject);
+        }
+
+        coroutineRunner.StartCoroutine(routine);
     }
     public void LanguageSelector(Language selectedLanguage)
     {
@@ -175,15 +199,16 @@ public class GoogleTextToSpeech : MonoBehaviour
             var parseData = JSONNode.Parse(jsonData);
             JSONNode translation = parseData["data"]["translations"][0]["translatedText"];
 
-            StartCoroutine(SendTextToSpeechRequest(translation));
+            yield return SendTextToSpeechRequest(translation);
         }
+        request.Dispose();
     }
     public void StopAudio()
     {
-        if (audioSource.isPlaying)
+        var source = currentAudioSource != null ? currentAudioSource : audioSource;
+        if (source != null && source.isPlaying)
         {
-
-            audioSource.Stop();
+            source.Stop();
         }
     }
 IEnumerator SendTextToSpeechRequest(string text)
@@ -220,6 +245,7 @@ IEnumerator SendTextToSpeechRequest(string text)
                 DebugUtil.LogError("Invalid response or empty audio content.");
             }
         }
+        request.Dispose();
     }
 
     private string SanitizeText(string input)
@@ -247,7 +273,7 @@ IEnumerator SendTextToSpeechRequest(string text)
 
             if (File.Exists(fullPath))
             {
-                StartCoroutine(LoadAndPlayAudio(fullPath));
+                RunCoroutine(LoadAndPlayAudio(fullPath));
             }
             else
             {
@@ -270,9 +296,11 @@ IEnumerator SendTextToSpeechRequest(string text)
             {
                 AudioClip audioClip = www.GetAudioClip(false, false, AudioType.MPEG);
 
-                // Play the loaded audio clip
-                audioSource.clip = audioClip;
-                audioSource.Play();
+                // Prefer the configured source, but an inactive source cannot
+                // play. In that case use the persistent active runner's source.
+                currentAudioSource = ResolvePlaybackSource();
+                currentAudioSource.clip = audioClip;
+                currentAudioSource.Play();
                 IsAudioReady = true;
                 // Wait for the audio to finish playing
                 audioClipLength = audioClip.length;
@@ -300,6 +328,23 @@ IEnumerator SendTextToSpeechRequest(string text)
                 DebugUtil.LogError("Error loading audio file: " + www.error);
             }
         }
+    }
+
+    private AudioSource ResolvePlaybackSource()
+    {
+        if (audioSource != null && audioSource.gameObject.activeInHierarchy)
+        {
+            return audioSource;
+        }
+
+        var fallback = coroutineRunner.GetComponent<AudioSource>();
+        if (fallback == null)
+        {
+            fallback = coroutineRunner.gameObject.AddComponent<AudioSource>();
+            fallback.playOnAwake = false;
+            fallback.spatialBlend = 0f;
+        }
+        return fallback;
     }
 
 
