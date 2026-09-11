@@ -198,6 +198,7 @@ public class DeviceSynHandler : MonoBehaviour
 
         // Handle play / pause for a running session.
         bool isPaused = payload["isPaused"].AsBool;
+        Klass.Net.LiveViewPublisher.Instance?.TrackSessionState(isStart, isPaused, isStop);
         if (isStart && isOpenGame)
         {
             if (isPaused && !_isPaused)
