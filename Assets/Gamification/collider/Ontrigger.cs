@@ -5,6 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+#if KLEVER_DPVR
+using Klever.DPVR;
+#endif
 
 public class Ontrigger : MonoBehaviour
 {
@@ -74,7 +77,7 @@ public class Ontrigger : MonoBehaviour
                     GamificationController.isGamefication  = false;
                     StartSpawning();
                 }
-                if (OVRInput.GetDown(inputActionController)) // build mode Controller
+                if (ControllerSelectPressed()) // headset controller
                 {
                     GamificationController.isGamefication = false;
                     StartSpawning();
@@ -176,6 +179,15 @@ public class Ontrigger : MonoBehaviour
             yield return new WaitForSeconds(3);
             gameType.nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
         }
+    }
+
+    private bool ControllerSelectPressed()
+    {
+#if KLEVER_DPVR
+        return DpvrInput.SelectWasPressedThisFrame;
+#else
+        return OVRInput.GetDown(inputActionController);
+#endif
     }
 
 }

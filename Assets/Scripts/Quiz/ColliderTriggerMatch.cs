@@ -1,6 +1,9 @@
 using UnityEngine;
 using Oculus.Interaction;
 using System.Collections;
+#if KLEVER_DPVR
+using Klever.DPVR;
+#endif
 
 public class ColliderTriggerMatch : MonoBehaviour
 {
@@ -76,6 +79,10 @@ public class ColliderTriggerMatch : MonoBehaviour
         objA.GetComponent<Grabbable>().enabled = false;
         objB.GetComponent<BoxCollider>().enabled = false;
         objB.GetComponent<Grabbable>().enabled = false;
+#if KLEVER_DPVR
+        DpvrInteractionUtility.SetGrabEnabled(objA, false);
+        DpvrInteractionUtility.SetGrabEnabled(objB, false);
+#endif
 
         DisableHandGrab(objA);
         DisableHandGrab(objB);
@@ -88,6 +95,10 @@ public class ColliderTriggerMatch : MonoBehaviour
         objA.GetComponent<Grabbable>().enabled = true;
         objB.GetComponent<BoxCollider>().enabled = true;
         objB.GetComponent<Grabbable>().enabled = true;
+#if KLEVER_DPVR
+        DpvrInteractionUtility.SetGrabEnabled(objA, true);
+        DpvrInteractionUtility.SetGrabEnabled(objB, true);
+#endif
 
         EnableHandGrab(objA);
         EnableHandGrab(objB);

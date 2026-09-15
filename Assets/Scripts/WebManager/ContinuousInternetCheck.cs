@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using Klass.Net;
 
 public class ContinuousInternetCheck : MonoBehaviour
 {
-    // URL to ping to check for internet connectivity.
-    private string testUrl = "http://google.com";
     // Time interval in seconds to check the internet connection.
     private float checkInterval = 10f; // Adjust the interval as needed.
     public GameObject internteCanva;
@@ -22,20 +21,22 @@ public class ContinuousInternetCheck : MonoBehaviour
 
     private IEnumerator CheckInternetConnectionCoroutine()
     {
-        UnityWebRequest request = new UnityWebRequest(testUrl);
-        request.method = UnityWebRequest.kHttpVerbHEAD;
+        using UnityWebRequest request = UnityWebRequest.Head(KlassEndpoints.BackendBase);
+        request.timeout = 5;
 
         yield return request.SendWebRequest();
 
-        if (request.error != null)
+        if (request.result != UnityWebRequest.Result.Success)
         {
-            DebugUtil.Log("No internet connection: " + request.error);
-            internteCanva.SetActive(true);
+            DebugUtil.Log("Klever service is unreachable: " + request.error);
+            if (internteCanva != null)
+                internteCanva.SetActive(true);
         }
         else
         {
-            DebugUtil.Log("Internet connection is available.");
-            internteCanva.SetActive(false);
+            DebugUtil.Log("Klever service is reachable.");
+            if (internteCanva != null)
+                internteCanva.SetActive(false);
         }
     }
 }

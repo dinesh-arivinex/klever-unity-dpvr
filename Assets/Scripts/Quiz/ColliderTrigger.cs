@@ -4,6 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
+#if KLEVER_DPVR
+using Klever.DPVR;
+#endif
 
 public class ColliderTrigger : MonoBehaviour
 {
@@ -44,6 +47,9 @@ public class ColliderTrigger : MonoBehaviour
                     }
                     
                     grandParent.GetComponent<Grabbable>().enabled = false;
+#if KLEVER_DPVR
+                    DpvrInteractionUtility.SetGrabEnabled(grandParent, false);
+#endif
                     Transform handGrabInteractable = snapTarget.transform.parent.parent.Find("HandGrabInteractable");
 
                     if (handGrabInteractable != null)
