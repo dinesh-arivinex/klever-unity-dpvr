@@ -18,7 +18,7 @@ namespace Klever.DPVR
             QualitySettings.shadowDistance = 20f;
             QualitySettings.softParticles = false;
             QualitySettings.realtimeReflectionProbes = false;
-            QualitySettings.anisotropicFiltering = AnisotropicFiltering.PerTexture;
+            QualitySettings.anisotropicFiltering = AnisotropicFiltering.Enable;
             QualitySettings.skinWeights = SkinWeights.TwoBones;
             XRSettings.eyeTextureResolutionScale = 1f;
             Application.backgroundLoadingPriority = ThreadPriority.Low;

@@ -84,7 +84,8 @@ namespace Klever.DPVR.Editor
             PlayerSettings.productName = "Klever VR DPVR";
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, ApplicationId);
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel29;
-            PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevel33;
+            PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)33;
+
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, new[] { GraphicsDeviceType.OpenGLES3 });
