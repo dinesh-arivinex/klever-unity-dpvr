@@ -5,9 +5,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Klever.DPVR
 {
     /// <summary>
-    /// Shared DPVR input actions. Multiple bindings are intentional: P1 MAX firmware
-    /// versions can expose the Simple Controller either as a generic XRController or
-    /// through the vendor DpvrController layout.
+    /// Shared DPVR input actions. Multiple bindings are intentional: P1 Pro firmware
+    /// can expose the controller through the Khronos Simple Controller profile, a
+    /// generic XRController layout, or a vendor DpvrController layout.
     /// </summary>
     public static class DpvrInput
     {
@@ -25,6 +25,7 @@ namespace Klever.DPVR
         public static InputAction CreateButtonAction(string name)
         {
             var action = new InputAction(name, InputActionType.Button);
+            action.AddBinding("<KHRSimpleController>{RightHand}/select");
             action.AddBinding("<XRController>{RightHand}/triggerPressed");
             action.AddBinding("<XRController>{RightHand}/primaryButton");
             action.AddBinding("<DpvrController>{RightHand}/select");
@@ -34,6 +35,7 @@ namespace Klever.DPVR
         public static InputAction CreateAxisAction(string name)
         {
             var action = new InputAction(name, InputActionType.Value, expectedControlType: "Axis");
+            action.AddBinding("<KHRSimpleController>{RightHand}/select");
             action.AddBinding("<XRController>{RightHand}/trigger");
             action.AddBinding("<DpvrController>{RightHand}/select");
             return action;

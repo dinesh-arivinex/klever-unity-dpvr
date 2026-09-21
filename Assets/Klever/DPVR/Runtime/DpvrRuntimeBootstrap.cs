@@ -13,12 +13,14 @@ using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.UI;
+using UnityEngine.XR.Management;
+using UnityEngine.XR.OpenXR;
 using UnityEngine.Events;
 
 namespace Klever.DPVR
 {
     /// <summary>
-    /// Creates the P1 MAX OpenXR rig and adapts the existing Meta-authored scene at
+    /// Creates the P1 Pro Edu OpenXR rig and adapts the existing Meta-authored scene at
     /// runtime. Keeping this in one platform bootstrap prevents DPVR-specific logic
     /// from leaking into lesson, media, networking, and assessment systems.
     /// </summary>
@@ -53,7 +55,56 @@ namespace Klever.DPVR
         private void Start()
         {
             OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+            StartCoroutine(LogRuntimeBaseline());
             StartCoroutine(RefreshDynamicContent());
+        }
+
+        private static IEnumerator LogRuntimeBaseline()
+        {
+            // XR initialization completes before scene load in the normal build, but
+            // one frame keeps diagnostics reliable after a cold boot or app resume.
+            yield return null;
+
+            XRGeneralSettings settings = XRGeneralSettings.Instance;
+            XRLoader activeLoader = settings == null || settings.Manager == null
+                ? null
+                : settings.Manager.activeLoader;
+            if (activeLoader == null)
+            {
+                Debug.LogError("[DPVR] No XR loader is active. Confirm the P1 Pro global firmware exposes its OpenXR runtime.");
+            }
+            else
+            {
+                Debug.Log("[DPVR] Active XR loader: " + activeLoader.name);
+            }
+
+            Debug.Log("[DPVR] OpenXR runtime: " + OpenXRRuntime.name + " " + OpenXRRuntime.version);
+            Debug.Log("[DPVR] Unity device: " + SystemInfo.deviceModel + ", OS: " + SystemInfo.operatingSystem);
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+            using (var build = new AndroidJavaClass("android.os.Build"))
+            using (var version = new AndroidJavaClass("android.os.Build$VERSION"))
+            {
+                string device = build.GetStatic<string>("DEVICE");
+                string model = build.GetStatic<string>("MODEL");
+                string display = build.GetStatic<string>("DISPLAY");
+                string[] abis = build.GetStatic<string[]>("SUPPORTED_ABIS");
+                int sdk = version.GetStatic<int>("SDK_INT");
+
+                Debug.Log("[DPVR] Android baseline: device=" + device +
+                          ", model=" + model +
+                          ", sdk=" + sdk +
+                          ", display=" + display +
+                          ", abis=" + string.Join(",", abis));
+
+                string normalizedDevice = (device ?? string.Empty).Replace(" ", string.Empty).ToLowerInvariant();
+                string normalizedModel = (model ?? string.Empty).Replace(" ", string.Empty).ToLowerInvariant();
+                if (!normalizedDevice.Contains("p1pro") && !normalizedModel.Contains("p1pro"))
+                    Debug.LogWarning("[DPVR] This build targets P1 Pro Edu, but the connected device does not identify as P1Pro.");
+                if (sdk < 27)
+                    Debug.LogError("[DPVR] Android API " + sdk + " is below the supported P1 Pro baseline (API 27).");
+            }
+#endif
         }
 
         private void OnDestroy()
@@ -109,7 +160,7 @@ namespace Klever.DPVR
             cameraObject.AddComponent<AudioListener>();
 
             var headDriver = cameraObject.AddComponent<TrackedPoseDriver>();
-            headDriver.trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
+            headDriver.trackingType = TrackedPoseDriver.TrackingType.RotationOnly;
             headDriver.updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
             headDriver.positionInput = CreateActionProperty(
                 "DPVR Head Position", InputActionType.PassThrough,
@@ -140,15 +191,15 @@ namespace Klever.DPVR
             var controller = controllerObject.AddComponent<ActionBasedController>();
             controller.enableInputTracking = true;
             controller.enableInputActions = true;
-            controller.rotationAction = CreateActionProperty(
+            controller.rotationAction = CreateControllerActionProperty(
                 "DPVR Controller Rotation", InputActionType.PassThrough,
-                "<XRController>{RightHand}/deviceRotation", "Quaternion");
-            controller.isTrackedAction = CreateActionProperty(
+                "deviceRotation", "Quaternion");
+            controller.isTrackedAction = CreateControllerActionProperty(
                 "DPVR Controller Tracked", InputActionType.Button,
-                "<XRController>{RightHand}/isTracked", "Button");
-            controller.trackingStateAction = CreateActionProperty(
+                "isTracked", "Button");
+            controller.trackingStateAction = CreateControllerActionProperty(
                 "DPVR Controller Tracking State", InputActionType.PassThrough,
-                "<XRController>{RightHand}/trackingState", "Integer");
+                "trackingState", "Integer");
 
             InputAction select = DpvrInput.CreateButtonAction("DPVR Controller Select");
             controller.selectAction = RegisterAction(select);
@@ -207,6 +258,16 @@ namespace Klever.DPVR
             string name, InputActionType type, string binding, string expectedControlType)
         {
             var action = new InputAction(name, type, binding, expectedControlType: expectedControlType);
+            return RegisterAction(action);
+        }
+
+        private InputActionProperty CreateControllerActionProperty(
+            string name, InputActionType type, string controlPath, string expectedControlType)
+        {
+            var action = new InputAction(name, type, expectedControlType: expectedControlType);
+            action.AddBinding("<KHRSimpleController>{RightHand}/" + controlPath);
+            action.AddBinding("<XRController>{RightHand}/" + controlPath);
+            action.AddBinding("<DpvrController>{RightHand}/" + controlPath);
             return RegisterAction(action);
         }
 

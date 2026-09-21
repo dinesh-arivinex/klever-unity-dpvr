@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 namespace Klever.DPVR
 {
     /// <summary>
-    /// Provides a stable virtual controller position for the rotational-only P1 MAX
+    /// Provides a stable virtual controller position for the rotational-only P1 Pro
     /// controller. The controller rotation remains device-driven; only translation is
     /// synthesized from a shoulder/elbow model.
     /// </summary>
@@ -15,14 +15,22 @@ namespace Klever.DPVR
         [SerializeField] private float forearmLength = 0.42f;
         [SerializeField, Range(0f, 30f)] private float smoothing = 18f;
 
-        private readonly InputAction rotationAction = new InputAction(
-            "DPVR Controller Rotation",
-            InputActionType.PassThrough,
-            "<XRController>{RightHand}/deviceRotation",
-            expectedControlType: "Quaternion");
+        private readonly InputAction rotationAction = CreateRotationAction();
 
         private Transform head;
         private bool hasPose;
+
+        private static InputAction CreateRotationAction()
+        {
+            var action = new InputAction(
+                "DPVR Controller Rotation",
+                InputActionType.PassThrough,
+                expectedControlType: "Quaternion");
+            action.AddBinding("<KHRSimpleController>{RightHand}/deviceRotation");
+            action.AddBinding("<XRController>{RightHand}/deviceRotation");
+            action.AddBinding("<DpvrController>{RightHand}/deviceRotation");
+            return action;
+        }
 
         public void Configure(Transform headTransform)
         {

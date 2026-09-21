@@ -5,7 +5,7 @@ using UnityEngine.XR;
 
 namespace Klever.DPVR
 {
-    /// <summary>Conservative standalone-VR defaults for sustained P1 MAX sessions.</summary>
+    /// <summary>Conservative standalone-VR defaults for sustained P1 Pro Edu sessions.</summary>
     [DefaultExecutionOrder(-9999)]
     public sealed class DpvrPerformanceProfile : MonoBehaviour
     {
@@ -36,7 +36,9 @@ namespace Klever.DPVR
                     return Mathf.Max(60, Mathf.RoundToInt(refreshRate));
             }
 
-            return 72;
+            // P1 Pro firmware should normally report the panel refresh rate. Use a
+            // conservative fallback rather than assuming the newer P1 Max profile.
+            return 60;
         }
     }
 }
