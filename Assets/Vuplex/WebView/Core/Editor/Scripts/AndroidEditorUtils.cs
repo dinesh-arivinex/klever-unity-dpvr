@@ -51,10 +51,26 @@ namespace Vuplex.WebView.Editor {
             }
             var lowOverheadModeEnabled = false;
             #if VUPLEX_OCULUS
-                // The Oculus XR plugin is installed
-                Unity.XR.Oculus.OculusLoader oculusLoader = Unity.XR.Oculus.OculusSettings.CreateInstance<Unity.XR.Oculus.OculusLoader>();
-                Unity.XR.Oculus.OculusSettings oculusSettings = oculusLoader.GetSettings();
-                lowOverheadModeEnabled = oculusSettings.LowOverheadMode;
+                // Safely get the setting via reflection to avoid CS0234 if the Oculus package was modified/removed
+                try {
+                    var loaderType = System.Type.GetType("Unity.XR.Oculus.OculusLoader, Unity.XR.Oculus");
+                    if (loaderType != null) {
+                        var loader = UnityEngine.ScriptableObject.CreateInstance(loaderType);
+                        if (loader != null) {
+                            var getSettingsMethod = loaderType.GetMethod("GetSettings");
+                            if (getSettingsMethod != null) {
+                                var settings = getSettingsMethod.Invoke(loader, null) as UnityEngine.Object;
+                                if (settings != null) {
+                                    var serialized = new UnityEditor.SerializedObject(settings);
+                                    var p = serialized.FindProperty("m_LowOverheadMode");
+                                    if (p == null) p = serialized.FindProperty("LowOverheadMode");
+                                    if (p == null) p = serialized.FindProperty("lowOverheadMode");
+                                    if (p != null) lowOverheadModeEnabled = p.boolValue;
+                                }
+                            }
+                        }
+                    }
+                } catch { }
             #elif UNITY_2019_2_OR_NEWER && !UNITY_2020_1_OR_NEWER
                 // VROculus.lowOverheadMode is only supported from Unity 2019.2 - 2019.4
                 lowOverheadModeEnabled = PlayerSettings.VROculus.lowOverheadMode;
@@ -70,22 +86,13 @@ namespace Vuplex.WebView.Editor {
                 var settings = UnityEngine.XR.OpenXR.OpenXRSettings.GetSettingsForBuildTargetGroup(BuildTargetGroup.Android);
                 var questFeature = settings.GetFeature<UnityEngine.XR.OpenXR.Features.MetaQuestSupport.MetaQuestFeature>();
                 var updatedSetting = false;
-                #if UNITY_2021_3_OR_NEWER
-                    // MetaQuestFeature.ForceRemoveInternetPermission was added in OpenXR v1.9.1, which requires Unity 2021.3 or newer.
-                    // If you experience a compiler error here, please upgrade your OpenXR package.
-                    if (questFeature.ForceRemoveInternetPermission) {
-                        questFeature.ForceRemoveInternetPermission = false;
-                        updatedSetting = true;
-                    }
-                #else
-                    var serializedFeature = new UnityEditor.SerializedObject(questFeature);
-                    var property = serializedFeature.FindProperty("forceRemoveInternetPermission");
-                    if (property != null && property.boolValue) {
-                        property.boolValue = false;
-                        serializedFeature.ApplyModifiedProperties();
-                        updatedSetting = true;
-                    }
-                #endif
+                var serializedFeature = new UnityEditor.SerializedObject(questFeature);
+                var property = serializedFeature.FindProperty("forceRemoveInternetPermission");
+                if (property != null && property.boolValue) {
+                    property.boolValue = false;
+                    serializedFeature.ApplyModifiedProperties();
+                    updatedSetting = true;
+                }
                 if (updatedSetting) {
                     WebViewLogger.LogWarning("Just a heads-up: 3D WebView automatically disabled the OpenXR Meta Quest Support setting \"Force Remove Internet Permission\" to ensure that it can fetch web pages from the internet. (This message will only be logged once.)");
                 }
