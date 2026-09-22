@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Oculus.Interaction;
+using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,7 +23,7 @@ public class QuizManagers : MonoBehaviour
     public GameObject elementWantToDelete;
     private int MCQstudetScore = 0;
     private GamificationManager gamificationManager;
-    public List<InteractableUnityEventWrapper> interactableWrappers = new List<InteractableUnityEventWrapper>();
+    public List<XRSimpleInteractable> interactableWrappers = new List<XRSimpleInteractable>();
     public AudioSource audioSource;
 
     public GameObject[] questionsFillIt, answersFillIt, answerPlacedTextFillIt;
@@ -98,6 +98,7 @@ public class QuizManagers : MonoBehaviour
 
     private void Update()
     {
+#if ENABLE_LEGACY_INPUT_MANAGER
         if (Input.GetKeyDown(KeyCode.H))
         {
             NextButtonClick();
@@ -114,6 +115,7 @@ public class QuizManagers : MonoBehaviour
         {
             NextButtonClickFillIt();
         }
+#endif
     }
 
     private void Start()
@@ -553,7 +555,7 @@ public class QuizManagers : MonoBehaviour
         {
             if (i < answerOptions.Count)
             {
-                var wrappers = answerButtons[i].GetComponents<InteractableUnityEventWrapper>();
+                var wrappers = answerButtons[i].GetComponents<XRSimpleInteractable>();
                 interactableWrappers.AddRange(wrappers);
                 if (answerButtons[i] != null)
                 {
@@ -573,7 +575,7 @@ public class QuizManagers : MonoBehaviour
 
                     int answerIndex = i;
                     answerButtons[i].onClick.AddListener(() => OnAnswerClick(answerIndex));
-                    interactableWrappers[i].WhenSelect.AddListener(() => OnAnswerClick(answerIndex));
+                    interactableWrappers[i].selectEntered.AddListener((args) => OnAnswerClick(answerIndex));
                 }
 
             }

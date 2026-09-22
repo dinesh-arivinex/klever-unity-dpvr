@@ -182,19 +182,22 @@ public class GamificationManager : MonoBehaviour
             // string nextGameName = selectedGames[currentGameIndex];
             currentGameName = currentGame;
             PublishCurrentAssessment();
-            if (!GamificationControllerHandSwitcher.Instance.isHandMode)
+            if (GamificationControllerHandSwitcher.Instance != null)
             {
-                GamificationControllerHandSwitcher.Instance.leftControllerRaycast.SetActive(false);
-                GamificationControllerHandSwitcher.Instance.rightControllerRaycast.SetActive(true);
-                GamificationControllerHandSwitcher.Instance.handPoseBall.SetActive(true);
-                //GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
-            }
-            else
-            {
-                GamificationControllerHandSwitcher.Instance.leftHandRaycast.SetActive(false);
-                GamificationControllerHandSwitcher.Instance.rightHandRaycast.SetActive(true);
-                GamificationControllerHandSwitcher.Instance.handPoseBallHandMode.SetActive(true);
-                GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
+                if (!GamificationControllerHandSwitcher.Instance.isHandMode)
+                {
+                    if (GamificationControllerHandSwitcher.Instance.leftControllerRaycast != null) GamificationControllerHandSwitcher.Instance.leftControllerRaycast.SetActive(false);
+                    if (GamificationControllerHandSwitcher.Instance.rightControllerRaycast != null) GamificationControllerHandSwitcher.Instance.rightControllerRaycast.SetActive(true);
+                    if (GamificationControllerHandSwitcher.Instance.handPoseBall != null) GamificationControllerHandSwitcher.Instance.handPoseBall.SetActive(true);
+                    //if (GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
+                }
+                else
+                {
+                    if (GamificationControllerHandSwitcher.Instance.leftHandRaycast != null) GamificationControllerHandSwitcher.Instance.leftHandRaycast.SetActive(false);
+                    if (GamificationControllerHandSwitcher.Instance.rightHandRaycast != null) GamificationControllerHandSwitcher.Instance.rightHandRaycast.SetActive(true);
+                    if (GamificationControllerHandSwitcher.Instance.handPoseBallHandMode != null) GamificationControllerHandSwitcher.Instance.handPoseBallHandMode.SetActive(true);
+                    if (GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
+                }
             }
             switch (currentGameName)
             {
@@ -220,7 +223,7 @@ public class GamificationManager : MonoBehaviour
                     arrowVisualizeHandMode.SetActive(true);
                     arrowVisualizeHandMode.GetComponent<MeshRenderer>().enabled = true;
                     crossbowHandMode.SetActive(true); 
-                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
+                    if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
                     break;
                 case "Basketball":
                    //  basketBallScore++;
@@ -234,7 +237,7 @@ public class GamificationManager : MonoBehaviour
                     crossbowHandMode.SetActive(false);
                     ballVisualize.SetActive(true);
                     ballVisualizeHandMode.SetActive(true);
-                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
+                    if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(false);
                     gamificationCollider.SetActive(true);
                     basketballGame.GetComponent<BasketBallQuiz>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
                     break;
@@ -243,7 +246,7 @@ public class GamificationManager : MonoBehaviour
                     crossbowHandMode.SetActive(false);
                     ballVisualize.SetActive(false);
                     ballVisualizeHandMode.SetActive(false);
-                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
+                    if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
                     mcqGame.GetComponent<QuizManagers>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount], currentGameName, allAnswers[gameCount]);
                     mcqGame.SetActive(true);
                     break;
@@ -252,7 +255,7 @@ public class GamificationManager : MonoBehaviour
                     crossbowHandMode.SetActive(false);
                     ballVisualize.SetActive(false);
                     ballVisualizeHandMode.SetActive(false);
-                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
+                    if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
                     FillIt.GetComponent<QuizManagers>().DisplayAllFillInTheBlanks(questionlist, allAnswers, typeOfGame);
                     FillIt.SetActive(true);
                     
@@ -268,7 +271,7 @@ public class GamificationManager : MonoBehaviour
                     crossbowHandMode.SetActive(false);
                     ballVisualize.SetActive(false);
                     ballVisualizeHandMode.SetActive(false);
-                    GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
+                    if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
                     
                     if (MatchIt != null)
                     {
@@ -326,11 +329,14 @@ public class GamificationManager : MonoBehaviour
             rightcontroller1.GetComponent<SkinnedMeshRenderer>().enabled = true;
         }
             
-        GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
-        GamificationControllerHandSwitcher.Instance.leftHandRaycast.SetActive(false);
-        GamificationControllerHandSwitcher.Instance.rightHandRaycast.SetActive(false);
-        GamificationControllerHandSwitcher.Instance.leftControllerRaycast.SetActive(false);
-        GamificationControllerHandSwitcher.Instance.rightControllerRaycast.SetActive(false);
+        if (GamificationControllerHandSwitcher.Instance != null)
+        {
+            if (GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
+            if (GamificationControllerHandSwitcher.Instance.leftHandRaycast != null) GamificationControllerHandSwitcher.Instance.leftHandRaycast.SetActive(false);
+            if (GamificationControllerHandSwitcher.Instance.rightHandRaycast != null) GamificationControllerHandSwitcher.Instance.rightHandRaycast.SetActive(false);
+            if (GamificationControllerHandSwitcher.Instance.leftControllerRaycast != null) GamificationControllerHandSwitcher.Instance.leftControllerRaycast.SetActive(false);
+            if (GamificationControllerHandSwitcher.Instance.rightControllerRaycast != null) GamificationControllerHandSwitcher.Instance.rightControllerRaycast.SetActive(false);
+        }
         DeviceSynHandler.isGameOver = true;
         thankyouCanvas.SetActive(true);
         GameManager.Instance.AssessmentParent.SetActive(false);
