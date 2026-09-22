@@ -93,7 +93,7 @@ namespace Klever.DPVR.Editor
             // The supplied P1 Pro global firmware is Android 8.1 (API 27). Any
             // higher minimum is rejected by Android before the application starts.
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel27;
-            PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevel33;
+            PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)33;
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.Android.androidTVCompatibility = false;
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);

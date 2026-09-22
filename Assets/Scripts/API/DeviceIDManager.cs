@@ -49,10 +49,17 @@ public class DeviceIDManager : MonoBehaviour
     }
     void Update()
     {
+#if ENABLE_INPUT_SYSTEM
+        if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            OnSubmitClick();
+        }
+#else
         if (Input.GetKeyDown(KeyCode.Space))
         {
             OnSubmitClick();
         }
+#endif
     }
     public void OneTimeDeviceConfiguration()
     {

@@ -2585,10 +2585,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  EndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   elementWantToDelete: {fileID: 0}
-  meshRender:
-  - {fileID: 0}
-  - {fileID: 0}
+  interactableWrappers: []
+  audioSource: {fileID: 0}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
+  questionsMatchIt: []
+  answersMatchIt: []
+  answerPlacedTextMatchIt: []
+  answerPlacedCount: 0
+  totQuestionFillItCount: 0
+  totQuestionMatchItCount: 0
+  fillItReferenceManager: {fileID: 0}
+  matchItReferenceManager: {fileID: 0}
+  colliderTriggerMatch: {fileID: 0}
 --- !u!1 &2587580182915155595
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,10 +2699,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  EndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   elementWantToDelete: {fileID: 0}
-  meshRender:
-  - {fileID: 0}
-  - {fileID: 0}
+  interactableWrappers: []
+  audioSource: {fileID: 0}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
+  questionsMatchIt: []
+  answersMatchIt: []
+  answerPlacedTextMatchIt: []
+  answerPlacedCount: 0
+  totQuestionFillItCount: 0
+  totQuestionMatchItCount: 0
+  fillItReferenceManager: {fileID: 0}
+  matchItReferenceManager: {fileID: 0}
+  colliderTriggerMatch: {fileID: 0}
 --- !u!1 &2778359485328790929
 GameObject:
   m_ObjectHideFlags: 0
@@ -3643,7 +3671,6 @@ GameObject:
   - component: {fileID: 4547705952443429621}
   - component: {fileID: 4258235446071428132}
   - component: {fileID: 7477504305612910299}
-  - component: {fileID: 2249403198953486892}
   m_Layer: 5
   m_Name: Archery-Canvas
   m_TagString: Untagged
@@ -3738,35 +3765,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2249403198953486892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491404940908331973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!1 &3580560853124630003
 GameObject:
   m_ObjectHideFlags: 0
@@ -5527,7 +5525,6 @@ GameObject:
   - component: {fileID: 587824877718935118}
   - component: {fileID: 5835393124055298128}
   - component: {fileID: 5047650015226856728}
-  - component: {fileID: 8628557999947343199}
   m_Layer: 5
   m_Name: "\uF702UICanvas (1)"
   m_TagString: Untagged
@@ -5618,35 +5615,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8628557999947343199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4433945110003661086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!1 &4567162533978307160
 GameObject:
   m_ObjectHideFlags: 0
@@ -8656,6 +8624,7 @@ MonoBehaviour:
   isSpawnobj: 0
   optionSelectionbool: 0
   spawn: {fileID: 0}
+  errorText: {fileID: 0}
 --- !u!1 &6898405816817336201
 GameObject:
   m_ObjectHideFlags: 0
@@ -10604,7 +10573,6 @@ GameObject:
   - component: {fileID: 1801424836318123024}
   - component: {fileID: 4363790131077848745}
   - component: {fileID: 1930459205252212598}
-  - component: {fileID: 601597737562128128}
   m_Layer: 5
   m_Name: Basketball-Canvas
   m_TagString: Untagged
@@ -10699,35 +10667,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &601597737562128128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7788946198793840377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!1 &7826483791855714779
 GameObject:
   m_ObjectHideFlags: 0
@@ -10949,7 +10888,6 @@ GameObject:
   - component: {fileID: 7486506883276688260}
   - component: {fileID: 4811396708892097387}
   - component: {fileID: 6234166912036712953}
-  - component: {fileID: 2937738821921645556}
   m_Layer: 5
   m_Name: "\uF702UICanvas"
   m_TagString: Untagged
@@ -11040,35 +10978,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2937738821921645556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7939265328863951996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!1 &7943166051296263101
 GameObject:
   m_ObjectHideFlags: 0

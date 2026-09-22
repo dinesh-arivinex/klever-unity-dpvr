@@ -782,6 +782,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObject: {fileID: 7571612920581514598}
+  GrabObj: {fileID: 0}
+  meshRenderer: {fileID: 0}
   jsonString: '[   {     "AnnotationUniqueName": "InputField_1",     "AnnotationText":
     "Clicked on: swan_swan_0",     "AnnotationPosition": {       "x": 0.12,      
     "y": -0.02,       "z": 0.03     },     "AnnotationRotation": {       "x": 0.00000,      
@@ -1144,7 +1146,6 @@ GameObject:
   - component: {fileID: 6844292158567978596}
   - component: {fileID: 4347955227473387091}
   - component: {fileID: 3520257258969107354}
-  - component: {fileID: 7699741964464740747}
   - component: {fileID: 7860267843365831958}
   m_Layer: 0
   m_Name: pointer
@@ -1218,19 +1219,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7699741964464740747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365748939926973029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!135 &7860267843365831958
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2212,8 +2200,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2cc65cd4df07e428b59d3cbd2ef0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nupad: {fileID: 1346247497586472881}
-  enter: {fileID: 2422078618522422010}
+  numpad: {fileID: 0}
+  enter: {fileID: 0}
 --- !u!1 &601837210498197577
 GameObject:
   m_ObjectHideFlags: 0
@@ -4053,7 +4041,6 @@ GameObject:
   - component: {fileID: 3126303799216282861}
   - component: {fileID: 8993776613368549688}
   - component: {fileID: 8662385881007840015}
-  - component: {fileID: 4502396762075019622}
   m_Layer: 5
   m_Name: Model Details - Old
   m_TagString: Untagged
@@ -4147,35 +4134,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4502396762075019622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119674730489199945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 90
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!1 &1136655983098874011
 GameObject:
   m_ObjectHideFlags: 0
@@ -4864,7 +4822,6 @@ GameObject:
   - component: {fileID: 4859506443292277939}
   - component: {fileID: 5219243384134861959}
   - component: {fileID: 4854908058044086291}
-  - component: {fileID: 3702623968918464694}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -4937,19 +4894,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3702623968918464694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1209807503107147846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &1218185984711921272
 GameObject:
   m_ObjectHideFlags: 0
@@ -5511,7 +5455,6 @@ GameObject:
   - component: {fileID: 414922009479309196}
   - component: {fileID: 8180987760225669747}
   - component: {fileID: 7317273826867452924}
-  - component: {fileID: 5955512096314288351}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -5584,19 +5527,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5955512096314288351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1363855844211540278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &1366195291642871775
 GameObject:
   m_ObjectHideFlags: 0
@@ -5961,13 +5891,19 @@ MonoBehaviour:
   - {fileID: 390912446148336010}
   - {fileID: 5243932120096697621}
   startPoint: {fileID: 2574750118395519824}
+  startPointHandMode: {fileID: 0}
   startpoint_A: {fileID: 7426368487662855812}
+  startpoint_AHandMode: {fileID: 0}
   rightHand: {fileID: 2558462381525263261}
+  rightController: {fileID: 0}
   answerButton: []
   buttonBasketBall: {fileID: 390912446148336010}
   buttonArrow: {fileID: 5243932120096697621}
+  audioSource: {fileID: 0}
   ballPrefab: {fileID: 2611762687428344103}
+  ballPrefabHandMode: {fileID: 0}
   arrowPrefab: {fileID: 8268231915747366864}
+  arrowPrefabHandMode: {fileID: 0}
   arrowVisualize: {fileID: 0}
   boxColliders:
   - {fileID: 9019998463549412889}
@@ -8485,7 +8421,6 @@ GameObject:
   - component: {fileID: 2352156422438864885}
   - component: {fileID: 1770399748432162529}
   - component: {fileID: 8634380950505405018}
-  - component: {fileID: 6308227081970509165}
   m_Layer: 0
   m_Name: 'Reticle '
   m_TagString: Untagged
@@ -8558,19 +8493,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6308227081970509165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029291680592139216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &2031474688430762809
 GameObject:
   m_ObjectHideFlags: 0
@@ -9399,13 +9321,21 @@ MonoBehaviour:
   arrowGame: {fileID: 4731786361553270979}
   basketballGame: {fileID: 2147862598554836479}
   mcqGame: {fileID: 7696336094542203145}
+  FillIt: {fileID: 0}
+  MatchIt: {fileID: 0}
   gamificationCollider: {fileID: 3393902534691198837}
+  welcomeBoardText: {fileID: 0}
   thankyouCanvas: {fileID: 1449035696101872708}
+  scoreText: []
+  yourScoreText: []
   meshRender: []
   apiManager: {fileID: 3926518535601303609}
   questions: []
   currentGameName: 
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  ballVisualize: {fileID: 0}
+  ballVisualizeHandMode: {fileID: 0}
   arrowScore: 0
   basketBallScore: 0
   mcqScore: 0
@@ -9416,6 +9346,14 @@ MonoBehaviour:
   - {fileID: 7426368487662855812}
   classRoom: {fileID: 5494805552890083602}
   welcomeSessionScene: {fileID: 5026228986140328880}
+  rightcontroller1: {fileID: 0}
+  rightcontroller2: {fileID: 0}
+  crossbow: {fileID: 0}
+  crossbowHandMode: {fileID: 0}
+  arrowCollider1: {fileID: 0}
+  arrowCollider2: {fileID: 0}
+  arrowCollider3: {fileID: 0}
+  arrowCollider4: {fileID: 0}
 --- !u!1 &2195025972351345659
 GameObject:
   m_ObjectHideFlags: 0
@@ -10926,7 +10864,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6610445906692896547}
-  - component: {fileID: 6981012063531039473}
   m_Layer: 0
   m_Name: Camera Offset
   m_TagString: Untagged
@@ -10957,18 +10894,6 @@ Transform:
   - {fileID: 6768789181889095007}
   m_Father: {fileID: 3401070613849840318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6981012063531039473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2382756958556255903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bcb80850b1d29042966f02442b5ebef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2383709938334924881
 GameObject:
   m_ObjectHideFlags: 0
@@ -11136,7 +11061,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5324572597604264306}
-  - component: {fileID: 307427825675253003}
   m_Layer: 0
   m_Name: XRIT
   m_TagString: Untagged
@@ -11159,20 +11083,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8992228325351337852}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &307427825675253003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2420182462491551961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f98df0357432d4b529f1c291892dff62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: https://klass-vr-file.s3.ap-south-1.amazonaws.com/klass-simulations/Hibiscus/index.html
-  canvasName: Canvass
 --- !u!1 &2423974773518450830
 GameObject:
   m_ObjectHideFlags: 0
@@ -11836,7 +11746,6 @@ GameObject:
   - component: {fileID: 2488703563939212543}
   - component: {fileID: 3914568345779369475}
   - component: {fileID: 9005333197082487328}
-  - component: {fileID: 3811342710367518321}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -11909,19 +11818,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3811342710367518321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2501298355154756361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &2512152334182102471
 GameObject:
   m_ObjectHideFlags: 0
@@ -15778,7 +15674,6 @@ GameObject:
   - component: {fileID: 4680067141365335803}
   - component: {fileID: 4608240199524603616}
   - component: {fileID: 1401022997194578613}
-  - component: {fileID: 1454070701727076394}
   m_Layer: 5
   m_Name: "\uF702UICanvas (1)"
   m_TagString: Untagged
@@ -15869,35 +15764,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1454070701727076394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081209698902240684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 90
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!1 &3100866905620973143
 GameObject:
   m_ObjectHideFlags: 0
@@ -16488,7 +16354,6 @@ GameObject:
   - component: {fileID: 2891846313528976745}
   - component: {fileID: 4890804451459994478}
   - component: {fileID: 5484784268826491772}
-  - component: {fileID: 2551625781882511937}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -16561,19 +16426,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2551625781882511937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3142894261135812809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &3166877330662700814
 GameObject:
   m_ObjectHideFlags: 0
@@ -16618,7 +16470,6 @@ GameObject:
   - component: {fileID: 2504773778673048500}
   - component: {fileID: 4407117603304539405}
   - component: {fileID: 815386390949279743}
-  - component: {fileID: 5743518197571881288}
   - component: {fileID: 5346450330392406345}
   m_Layer: 0
   m_Name: pointer
@@ -16692,19 +16543,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5743518197571881288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3175375370778924658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!135 &5346450330392406345
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -16936,7 +16774,6 @@ GameObject:
   - component: {fileID: 1298971880095473572}
   - component: {fileID: 7704725984981824284}
   - component: {fileID: 7436443490828016713}
-  - component: {fileID: 8685573148772568604}
   m_Layer: 5
   m_Name: Model Details
   m_TagString: Untagged
@@ -17030,35 +16867,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8685573148772568604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3272356138157517046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 90
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!1 &3273341605681823383
 GameObject:
   m_ObjectHideFlags: 0
@@ -19536,6 +19344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assessmentsString: 
+  boardParent: {fileID: 0}
   immediatActionApiDownload:
     m_PersistentCalls:
       m_Calls:
@@ -23891,11 +23700,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediaPlayer: {fileID: 4049713089232712638}
+  videoPlayer: {fileID: 0}
+  skyBox_VideoPlaye_Mat: {fileID: 0}
+  videoPlayerURL: 
+  googleTextToSpeech: {fileID: 0}
   stereoPackingMode: 0
   youtubePlayer: {fileID: 2370945220339172058}
   ytbPlayer: {fileID: 8669004078276757332}
   YoutubeAudioSource: {fileID: 8400577484068542853}
   avpro: {fileID: 5932291782007481938}
+  youtubeURLGeneratedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &2750671030879771540
 AudioSource:
   m_ObjectHideFlags: 0
@@ -27658,7 +27474,6 @@ GameObject:
   - component: {fileID: 7156020059074876361}
   - component: {fileID: 7798331334756384326}
   - component: {fileID: 141664267292865802}
-  - component: {fileID: 3220012522386706953}
   - component: {fileID: 1310703281849321945}
   m_Layer: 5
   m_Name: NumPad
@@ -27752,35 +27567,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3220012522386706953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4708271213255176493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!114 &1310703281849321945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28325,6 +28111,7 @@ MonoBehaviour:
         m_CallState: 2
   simulation: {fileID: 5138898011161050253}
   temp: {fileID: 933951313596620246}
+  isobjectXR: 0
 --- !u!1 &4779621426900666000
 GameObject:
   m_ObjectHideFlags: 0
@@ -29910,7 +29697,6 @@ GameObject:
   - component: {fileID: 2654399408056966110}
   - component: {fileID: 1188902633522573480}
   - component: {fileID: 8210688482357755047}
-  - component: {fileID: 6838466394099270000}
   m_Layer: 0
   m_Name: Gaze Controller
   m_TagString: Untagged
@@ -30342,40 +30128,6 @@ MonoBehaviour:
   m_OverrideInteractorLineOrigin: 1
   m_LineOriginTransform: {fileID: 0}
   m_LineOriginOffset: 0
---- !u!114 &6838466394099270000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5080906233980588246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4dda83905bb74f438163a63b79312a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UpdateTrackingType: 0
-  m_EnableInputTracking: 1
-  m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 0}
-  m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 0}
-  m_AnimateModel: 0
-  m_ModelSelectTransition: 
-  m_ModelDeSelectTransition: 
-  m_ControllerNode: 2
-  uiPressAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Ui Press
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: da90db40-e5f7-44f2-9bf0-1b1478df7483
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
 --- !u!1 &5107310248030736797
 GameObject:
   m_ObjectHideFlags: 0
@@ -30795,10 +30547,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 709ec81c3956785468fee21a08507ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  classRoom: 0
   classRooms:
   - {fileID: 215707510681378668}
   - {fileID: 7004420364587937123}
   - {fileID: 3326467997538275108}
+  skyBoxMaterials: []
   dummyBoard: {fileID: 7815768823344083825}
   boardA: {fileID: 4440226320743764921}
   boardB: {fileID: 9101964029152575578}
@@ -30815,6 +30569,7 @@ MonoBehaviour:
   classRoomAGamPos: {fileID: 1922852526967453344}
   classRoomBGamPos: {fileID: 2833755525637147038}
   classRoomCGamPos: {fileID: 7066205894702164727}
+  addingImage: {fileID: 0}
 --- !u!1 &5138898011161050253
 GameObject:
   m_ObjectHideFlags: 0
@@ -33551,6 +33306,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   deviceSynHandler: {fileID: 4320161990616431499}
+  blackSphere: {fileID: 0}
 --- !u!1 &5886880325820019208
 GameObject:
   m_ObjectHideFlags: 0
@@ -35270,7 +35026,6 @@ GameObject:
   - component: {fileID: 5355708569802172094}
   - component: {fileID: 3549117087581610359}
   - component: {fileID: 3996327637776759190}
-  - component: {fileID: 1246727191272767745}
   m_Layer: 0
   m_Name: 'Reticle '
   m_TagString: Untagged
@@ -35343,19 +35098,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1246727191272767745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6236391533657046188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &6238563157772213132
 GameObject:
   m_ObjectHideFlags: 0
@@ -36662,7 +36404,6 @@ GameObject:
   - component: {fileID: 6196895541615633726}
   - component: {fileID: 8377739150693985027}
   - component: {fileID: 8860357374396665891}
-  - component: {fileID: 1363943374190572904}
   - component: {fileID: 8133206886651633314}
   m_Layer: 0
   m_Name: pointer-Old
@@ -36736,19 +36477,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1363943374190572904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6307278073462339980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!65 &8133206886651633314
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37843,11 +37571,13 @@ MonoBehaviour:
   isActiveDevice: 0
   isSyncedDevice: 0
   isCompletedDevice: 0
+  experienceId: 
   WelcomeScene: {fileID: 7189561606341322618}
   isOpenGame: 0
   loadingBar: {fileID: 9071915589879164538}
   isOpening: 0
   gamificationManager: {fileID: 3933504884640898889}
+  RayInteractors: []
 --- !u!1 &6610398342379978403
 GameObject:
   m_ObjectHideFlags: 0
@@ -39944,7 +39674,6 @@ GameObject:
   - component: {fileID: 3552972901906391511}
   - component: {fileID: 3282077630184573560}
   - component: {fileID: 7850367852680263976}
-  - component: {fileID: 4658134935108107501}
   - component: {fileID: 6207455145068708357}
   m_Layer: 5
   m_Name: 'SucessfullyRegistread '
@@ -40036,35 +39765,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4658134935108107501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6961359008886536201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!114 &6207455145068708357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44058,9 +43758,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   elementWantToDelete: {fileID: 1280768906991832340}
-  meshRender:
-  - {fileID: 2729863200671959861}
-  - {fileID: 815386390949279743}
+  interactableWrappers: []
+  audioSource: {fileID: 0}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
+  questionsMatchIt: []
+  answersMatchIt: []
+  answerPlacedTextMatchIt: []
+  answerPlacedCount: 0
+  totQuestionFillItCount: 0
+  totQuestionMatchItCount: 0
+  fillItReferenceManager: {fileID: 0}
+  matchItReferenceManager: {fileID: 0}
+  colliderTriggerMatch: {fileID: 0}
 --- !u!1 &7707055938775498615
 GameObject:
   m_ObjectHideFlags: 0
@@ -46319,8 +46030,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2cc65cd4df07e428b59d3cbd2ef0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nupad: {fileID: 1346247497586472881}
-  enter: {fileID: 2422078618522422010}
+  numpad: {fileID: 0}
+  enter: {fileID: 0}
 --- !u!1 &8284804188480793068
 GameObject:
   m_ObjectHideFlags: 0
@@ -46815,7 +46526,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3401070613849840318}
   - component: {fileID: 7792891123259298666}
-  - component: {fileID: 1158549476780952010}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -46856,189 +46566,6 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 2382756958556255903}
   m_RequestedTrackingOriginMode: 2
   m_CameraYOffset: 1.1176
---- !u!114 &1158549476780952010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8365259053057547053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed887defb08514242aef7736b6d7285c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GazeRayInteractor: {fileID: 2654399408056966110}
-  GazeLineRender: {fileID: 1188902633522573480}
-  GazeReticle: {fileID: 4859506443292277939}
-  HeadSetGazeSelectToPrimaryDevice:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Head Set Gaze Select To Primary Device
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: a65bd29d-0488-4a78-bacd-bc1be82cfcb9
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -4648776723322445859, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  LeftHandController: {fileID: 5472644538348805888}
-  LeftHandRayInteractor: {fileID: 6630762562547808890}
-  LeftHandLineRender: {fileID: 350127461723423638}
-  LeftHandReticle: {fileID: 2891846313528976745}
-  LeftDeviceSelectToPrimaryDevice:
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 0
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 2fe80094-cdbc-4a93-b096-f1e2c27e95b3
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -2145489700192762957, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 1
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: b4fb51b4-e651-45d3-b8dd-8d8b7409288a
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 9129268998885488165, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 84fcfb67-6248-4812-8210-66865217216e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -5437491301893149776, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 84fcfb67-6248-4812-8210-66865217216e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -7501354095085518398, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 84fcfb67-6248-4812-8210-66865217216e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 2962834693858953448, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  LeftDeviceConnectChanged:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Left Device Connect Changed
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 2cf57b6c-61f1-4e32-8061-e02abade32e6
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -2431860380660121829, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  RightHandController: {fileID: 1695313223446454403}
-  RightHandRayInteractor: {fileID: 3433348379395793802}
-  RightHandLineRender: {fileID: 3465882959631924424}
-  RightHandReticle: {fileID: 2504773778673048500}
-  RightDeviceSelectToPrimaryDevice:
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 0
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: dbc88168-c567-4797-b4ea-d53efd7da1ed
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 5747502650761668682, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 1
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 5b8cb5e0-638d-4c37-831b-20db808ed8bd
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -8751482817868324269, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 126ee1dd-467b-4cab-b41c-bf58aa99169d
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 5307817145285219055, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 126ee1dd-467b-4cab-b41c-bf58aa99169d
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -3304996294856693050, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 126ee1dd-467b-4cab-b41c-bf58aa99169d
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 3049557059885952700, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  RightDeviceConnectChanged:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Right Device Connect Changed
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: d6ce4056-843c-4521-95b8-069f6f5af057
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -710164203188214771, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  m_AxisToPressThreshold: 0.1
-  SwitcherEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  RightControllerConnectChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  LeftControllerConnectChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_PrimaryDevice: 3
-  depthScaleMultiplier: 0.0018
 --- !u!1 &8409774664602535755
 GameObject:
   m_ObjectHideFlags: 0
@@ -50526,7 +50053,6 @@ GameObject:
   - component: {fileID: 72981365178497705}
   - component: {fileID: 2464059687591588349}
   - component: {fileID: 835674775252054191}
-  - component: {fileID: 8966125356700244904}
   - component: {fileID: 3253710583223222218}
   m_Layer: 0
   m_Name: pointer-Old
@@ -50600,19 +50126,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8966125356700244904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9118893309986510333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!65 &3253710583223222218
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -51055,7 +50568,6 @@ GameObject:
   - component: {fileID: 2033098851316054860}
   - component: {fileID: 8370886045836012162}
   - component: {fileID: 2729863200671959861}
-  - component: {fileID: 3969654606370531279}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -51128,19 +50640,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3969654606370531279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9202074591807904295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &9204856453608263974
 GameObject:
   m_ObjectHideFlags: 0
@@ -54865,6 +54364,7 @@ MonoBehaviour:
   imageUrl: https://klass-vr-file.s3.ap-south-1.amazonaws.com/360images%2F60a3b3c3-8f52-4237-b763-c972343a00a1.jpeg
   sphereMaterial: {fileID: 2100000, guid: 6a02af59f7bb9b942a2a8f56f0930e60, type: 2}
   skybox: {fileID: 2100000, guid: 6a02af59f7bb9b942a2a8f56f0930e60, type: 2}
+  blackTexture: {fileID: 0}
   imagePath: Assets/Scripts/360Image/kris-guico-rsB-he-ye7w-unsplash.jpg
   imageScript: 
   VideoSphere: {fileID: 7137159295549597726}
@@ -59386,18 +58886,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 312315377435554317}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 4789762954343829134}
   staringPointArrow: {fileID: 4638198759080657714}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!4 &922476337673660047 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9012850456211545481, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -59502,9 +59009,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isArrow: 0
-  meshRender:
-  - {fileID: 2729863200671959861}
-  - {fileID: 815386390949279743}
   isBasketBall: 1
   basketBall: {fileID: 2611762687428344103}
   arrow: {fileID: 8268231915747366864}
@@ -59612,18 +59116,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 2954043844315500025}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 3186077006696591970}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 2577332458342666072}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!1 &3959613915426703173 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5127918869947284547, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -59643,18 +59154,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 7098194217724879475}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 8932052882769206634}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 6797282796432789782}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!1 &4618117165246752001 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3589230311283858951, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -59674,18 +59192,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 3309628048891722550}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 2462167177790975870}
   staringPointArrow: {fileID: 4638198759080657714}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!1 &4731786361553270979 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3491404940908331973, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -59723,7 +59248,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isArrow: 0
-  meshRender: []
   isBasketBall: 0
   basketBall: {fileID: 2611762687428344103}
   arrow: {fileID: 8268231915747366864}
@@ -59777,18 +59301,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 3107257385474709636}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 3587353086686764725}
   staringPointArrow: {fileID: 4638198759080657714}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!1 &5528685469298830916 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4422691857895691586, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -59808,18 +59339,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 6981821542119691596}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 8873334608675743292}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 5074214249872675735}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!114 &6480356209972207101 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2897927035465426683, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -59887,18 +59425,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 1762478010411987003}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 922476337673660047}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 4908304578835312610}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!4 &8051577820352592545 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2190345590935552423, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -59923,18 +59468,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 2128752536410322777}
   destination: {fileID: 6756157880164963731}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 3925019095627777051}
   staringPointArrow: {fileID: 4638198759080657714}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 4899366545779094776}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 2611762687428344103}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 1918051938668123984}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1856342959625612118}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 8268231915747366864}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!65 &8630660588625582941 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 441103172555300955, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}

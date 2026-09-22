@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1042573306}
-  m_IndirectSpecularColor: {r: 0.55919725, g: 0.56806326, b: 0.5827016, a: 1}
+  m_IndirectSpecularColor: {r: 0.27298138, g: 0.28253436, b: 0.2987282, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1033,9 +1033,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isArrow: 0
-  meshRender:
-  - {fileID: 6695423401555060070}
-  - {fileID: 2958595142349988659}
   isBasketBall: 1
   basketBall: {fileID: 5415276241759752995}
   arrow: {fileID: 1685086241659395516}
@@ -1266,7 +1263,6 @@ GameObject:
   - component: {fileID: 89007273}
   - component: {fileID: 89007272}
   - component: {fileID: 89007271}
-  - component: {fileID: 89007270}
   m_Layer: 5
   m_Name: "\uF702UICanvas (1)"
   m_TagString: Untagged
@@ -1294,35 +1290,6 @@ RectTransform:
   m_AnchoredPosition: {x: 4.3719997, y: -1.1990001}
   m_SizeDelta: {x: 904, y: 520}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &89007270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 89007268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 90
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!114 &89007271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1571,8 +1538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2cc65cd4df07e428b59d3cbd2ef0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nupad: {fileID: 434888230}
-  enter: {fileID: 208064765}
+  numpad: {fileID: 0}
+  enter: {fileID: 0}
 --- !u!114 &91504232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3744,7 +3711,6 @@ GameObject:
   - component: {fileID: 240777084}
   - component: {fileID: 240777087}
   - component: {fileID: 240777086}
-  - component: {fileID: 240777085}
   m_Layer: 0
   m_Name: 'Reticle '
   m_TagString: Untagged
@@ -3767,19 +3733,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3840419485816608170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &240777085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 240777083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!23 &240777086
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5210,7 +5163,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 307266307}
-  - component: {fileID: 307266306}
   m_Layer: 0
   m_Name: XRIT
   m_TagString: Untagged
@@ -5218,20 +5170,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &307266306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307266305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f98df0357432d4b529f1c291892dff62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: https://klass-vr-file.s3.ap-south-1.amazonaws.com/klass-simulations/Hibiscus/index.html
-  canvasName: Canvass
 --- !u!4 &307266307
 Transform:
   m_ObjectHideFlags: 0
@@ -5905,7 +5843,6 @@ GameObject:
   - component: {fileID: 335287830}
   - component: {fileID: 335287829}
   - component: {fileID: 335287828}
-  - component: {fileID: 335287827}
   - component: {fileID: 335287832}
   m_Layer: 5
   m_Name: NumPad
@@ -5914,35 +5851,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &335287827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 335287825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!114 &335287828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7003,7 +6911,6 @@ GameObject:
   - component: {fileID: 395595252}
   - component: {fileID: 395595256}
   - component: {fileID: 395595255}
-  - component: {fileID: 395595254}
   - component: {fileID: 395595253}
   m_Layer: 0
   m_Name: pointer
@@ -7048,19 +6955,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &395595254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 395595251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!23 &395595255
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7330,7 +7224,6 @@ GameObject:
   - component: {fileID: 421610457}
   - component: {fileID: 421610456}
   - component: {fileID: 421610455}
-  - component: {fileID: 421610454}
   m_Layer: 5
   m_Name: Model Details
   m_TagString: Untagged
@@ -7361,35 +7254,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.2, y: -1.12}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &421610454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 421610452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 90
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!114 &421610455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9354,6 +9218,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObject: {fileID: 1051552932}
+  GrabObj: {fileID: 0}
+  meshRenderer: {fileID: 0}
   jsonString: '[   {     "AnnotationUniqueName": "InputField_1",     "AnnotationText":
     "Clicked on: swan_swan_0",     "AnnotationPosition": {       "x": 0.12,      
     "y": -0.02,       "z": 0.03     },     "AnnotationRotation": {       "x": 0.00000,      
@@ -9862,11 +9728,13 @@ MonoBehaviour:
   isActiveDevice: 0
   isSyncedDevice: 0
   isCompletedDevice: 0
+  experienceId: 
   WelcomeScene: {fileID: 2569113327362722321}
   isOpenGame: 0
   loadingBar: {fileID: 2071870367094954102}
   isOpening: 0
   gamificationManager: {fileID: 2118685217}
+  RayInteractors: []
 --- !u!4 &547249120
 Transform:
   m_ObjectHideFlags: 0
@@ -10949,6 +10817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assessmentsString: 
+  boardParent: {fileID: 0}
   immediatActionApiDownload:
     m_PersistentCalls:
       m_Calls:
@@ -14137,7 +14006,6 @@ GameObject:
   - component: {fileID: 744715770}
   - component: {fileID: 744715773}
   - component: {fileID: 744715772}
-  - component: {fileID: 744715771}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -14160,19 +14028,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 286482526}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &744715771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 744715769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!23 &744715772
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15079,9 +14934,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   elementWantToDelete: {fileID: 620243128368652379}
-  meshRender:
-  - {fileID: 6695423401555060070}
-  - {fileID: 2958595142349988659}
+  interactableWrappers: []
+  audioSource: {fileID: 0}
+  questionsFillIt: []
+  answersFillIt: []
+  answerPlacedTextFillIt: []
+  questionsMatchIt: []
+  answersMatchIt: []
+  answerPlacedTextMatchIt: []
+  answerPlacedCount: 0
+  totQuestionFillItCount: 0
+  totQuestionMatchItCount: 0
+  fillItReferenceManager: {fileID: 0}
+  matchItReferenceManager: {fileID: 0}
+  colliderTriggerMatch: {fileID: 0}
 --- !u!4 &792027074
 Transform:
   m_ObjectHideFlags: 0
@@ -15365,13 +15231,19 @@ MonoBehaviour:
   - {fileID: 835201143}
   - {fileID: 670241606}
   startPoint: {fileID: 2112436067}
+  startPointHandMode: {fileID: 0}
   startpoint_A: {fileID: 1959559285}
+  startpoint_AHandMode: {fileID: 0}
   rightHand: {fileID: 2497756501957284415}
+  rightController: {fileID: 0}
   answerButton: []
   buttonBasketBall: {fileID: 835201143}
   buttonArrow: {fileID: 670241606}
+  audioSource: {fileID: 0}
   ballPrefab: {fileID: 5415276241759752995}
+  ballPrefabHandMode: {fileID: 0}
   arrowPrefab: {fileID: 1685086241659395516}
+  arrowPrefabHandMode: {fileID: 0}
   arrowVisualize: {fileID: 0}
   boxColliders:
   - {fileID: 2137392197}
@@ -17023,6 +16895,7 @@ MonoBehaviour:
         m_CallState: 2
   simulation: {fileID: 1494054916}
   temp: {fileID: 53326959}
+  isobjectXR: 0
 --- !u!1 &865994861 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1754935377135531882, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -17042,18 +16915,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 1854199788}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 688264366}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 1233738011}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!4 &872268606
 Transform:
   m_ObjectHideFlags: 0
@@ -18665,10 +18545,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 709ec81c3956785468fee21a08507ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  classRoom: 0
   classRooms:
   - {fileID: 933197909}
   - {fileID: 2142143874}
   - {fileID: 1389507504}
+  skyBoxMaterials: []
   dummyBoard: {fileID: 1802625652}
   boardA: {fileID: 266844942}
   boardB: {fileID: 1088989685}
@@ -18685,6 +18567,7 @@ MonoBehaviour:
   classRoomAGamPos: {fileID: 305623909}
   classRoomBGamPos: {fileID: 1608164761}
   classRoomCGamPos: {fileID: 887314621}
+  addingImage: {fileID: 0}
 --- !u!1 &1008699810
 GameObject:
   m_ObjectHideFlags: 0
@@ -20888,18 +20771,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 1066838615}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 1076905556}
   staringPointArrow: {fileID: 1959559286}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!65 &1076905558 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 441103172555300955, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -21061,7 +20951,6 @@ GameObject:
   - component: {fileID: 1085331819}
   - component: {fileID: 1085331822}
   - component: {fileID: 1085331821}
-  - component: {fileID: 1085331820}
   m_Layer: 0
   m_Name: 'Reticle '
   m_TagString: Untagged
@@ -21084,19 +20973,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1070916497}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1085331820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1085331818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!23 &1085331821
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -21204,18 +21080,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 28505151}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 1104108461}
   staringPointArrow: {fileID: 1959559286}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!65 &1104108464 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1627896402489237775, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -21728,7 +21611,6 @@ GameObject:
   - component: {fileID: 1129754522}
   - component: {fileID: 1129754521}
   - component: {fileID: 1129754520}
-  - component: {fileID: 1129754519}
   m_Layer: 5
   m_Name: Model Details - Old
   m_TagString: Untagged
@@ -21759,35 +21641,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.392, y: -0.977}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1129754519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1129754517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 90
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!114 &1129754520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22394,7 +22247,6 @@ GameObject:
   - component: {fileID: 1153912514}
   - component: {fileID: 1153912518}
   - component: {fileID: 1153912517}
-  - component: {fileID: 1153912516}
   - component: {fileID: 1153912515}
   m_Layer: 0
   m_Name: pointer-Old
@@ -22439,19 +22291,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9.999999, y: 1.03, z: 9.999999}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1153912516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1153912513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!23 &1153912517
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -23680,7 +23519,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isArrow: 0
-  meshRender: []
   isBasketBall: 0
   basketBall: {fileID: 5415276241759752995}
   arrow: {fileID: 1685086241659395516}
@@ -24848,8 +24686,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2cc65cd4df07e428b59d3cbd2ef0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nupad: {fileID: 434888230}
-  enter: {fileID: 208064765}
+  numpad: {fileID: 0}
+  enter: {fileID: 0}
 --- !u!114 &1347720239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28672,18 +28510,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 499846229}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 450582597}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 1116026711}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!1001 &1531181700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30619,18 +30464,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 2040661755}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 1651522851}
   staringPointArrow: {fileID: 1959559286}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!65 &1651522854 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1478647924898653610, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -35179,7 +35031,6 @@ GameObject:
   - component: {fileID: 1899531394}
   - component: {fileID: 1899531393}
   - component: {fileID: 1899531392}
-  - component: {fileID: 1899531391}
   - component: {fileID: 1899531390}
   m_Layer: 5
   m_Name: 'SucessfullyRegistread '
@@ -35200,35 +35051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7829bcfd302ea184d80c68cefd8bca38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1899531391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899531389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7cf444b1accaa4d8817ef11189f669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollDeadZone: 0.15
-  m_IgnoreReversedGraphics: 0
-  m_CheckFor2DOcclusion: 0
-  m_CheckFor3DOcclusion: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RaycastTriggerInteraction: 1
-  ScreenPosition: {x: 0, y: 0}
-  curvedUI: 0
-  angle: 360
-  preserveAspect: 1
-  quality: 1
-  baseCircleSegments: 16
-  mReduceRadius: 0
-  uiangle: 4
-  pointOnCanvas: {x: 0, y: 0}
 --- !u!114 &1899531392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35323,7 +35145,6 @@ GameObject:
   - component: {fileID: 1909863085}
   - component: {fileID: 1909863089}
   - component: {fileID: 1909863088}
-  - component: {fileID: 1909863087}
   - component: {fileID: 1909863086}
   m_Layer: 0
   m_Name: pointer-Old
@@ -35368,19 +35189,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9.999999, y: 1.03, z: 9.999999}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1909863087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1909863084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!23 &1909863088
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -38293,6 +38101,7 @@ MonoBehaviour:
   imageUrl: https://klass-vr-file.s3.ap-south-1.amazonaws.com/360images%2F60a3b3c3-8f52-4237-b763-c972343a00a1.jpeg
   sphereMaterial: {fileID: 2100000, guid: 6a02af59f7bb9b942a2a8f56f0930e60, type: 2}
   skybox: {fileID: 2100000, guid: 6a02af59f7bb9b942a2a8f56f0930e60, type: 2}
+  blackTexture: {fileID: 0}
   imagePath: Assets/Scripts/360Image/kris-guico-rsB-he-ye7w-unsplash.jpg
   imageScript: 
   VideoSphere: {fileID: 6770872989234663839}
@@ -41651,18 +41460,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 689616547}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 515482023}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 598816503}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!1001 &2093629127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41775,18 +41591,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 437545659}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 99502258}
   staringPointArrow: {fileID: 0}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 611949580}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!1 &2103195623
 GameObject:
   m_ObjectHideFlags: 0
@@ -42688,13 +42511,21 @@ MonoBehaviour:
   arrowGame: {fileID: 1202488846}
   basketballGame: {fileID: 62116301}
   mcqGame: {fileID: 1728956040296472638}
+  FillIt: {fileID: 0}
+  MatchIt: {fileID: 0}
   gamificationCollider: {fileID: 1627453094}
+  welcomeBoardText: {fileID: 0}
   thankyouCanvas: {fileID: 1395249965}
+  scoreText: []
+  yourScoreText: []
   meshRender: []
   apiManager: {fileID: 627722849}
   questions: []
   currentGameName: 
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  ballVisualize: {fileID: 0}
+  ballVisualizeHandMode: {fileID: 0}
   arrowScore: 0
   basketBallScore: 0
   mcqScore: 0
@@ -42705,6 +42536,14 @@ MonoBehaviour:
   - {fileID: 1959559285}
   classRoom: {fileID: 919132148541142801}
   welcomeSessionScene: {fileID: 1846193213}
+  rightcontroller1: {fileID: 0}
+  rightcontroller2: {fileID: 0}
+  crossbow: {fileID: 0}
+  crossbowHandMode: {fileID: 0}
+  arrowCollider1: {fileID: 0}
+  arrowCollider2: {fileID: 0}
+  arrowCollider3: {fileID: 0}
+  arrowCollider4: {fileID: 0}
 --- !u!1 &2135917318
 GameObject:
   m_ObjectHideFlags: 0
@@ -42863,18 +42702,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   answerButtons: {fileID: 134017435}
   destination: {fileID: 2112436068}
+  destinationHandMode: {fileID: 0}
   staringPoint: {fileID: 2137392195}
   staringPointArrow: {fileID: 1959559286}
+  staringPointArrowHandMode: {fileID: 0}
   fallpoint: {fileID: 0}
   isEntered: 0
-  inputActionController: {fileID: 3279264004350380116, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
+  inputActionController: 0
   BasketBallAudioClip: {fileID: 1079398586}
   basketBall: {fileID: 4174371008409972916, guid: 549c4e07bd79bf84eb25015cdf0e2784, type: 3}
   ballVisualize: {fileID: 5415276241759752995}
+  ballVisualizeHandMode: {fileID: 0}
   ballVisualizeChild: {fileID: 8127920854285107021}
+  ballVisualizeChildHandMode: {fileID: 0}
   ArrowAudioClip: {fileID: 1917784660}
   arrow: {fileID: 8015120985162270703, guid: 9dc71d7e940035e4fb03758c5661f348, type: 3}
   arrowVisualize: {fileID: 1685086241659395516}
+  arrowVisualizeHandMode: {fileID: 0}
+  gameType: {fileID: 0}
+  interactableEvents: {fileID: 0}
 --- !u!65 &2137392197 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 933406463012351263, guid: 34d5bffa969925344a94dc41815a5ae5, type: 3}
@@ -43536,7 +43382,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7652031044799613536}
   - component: {fileID: 3750738839874769919}
-  - component: {fileID: 3072011872514228972}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -43788,19 +43633,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8304701770910407281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &421657940963493345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3487299994652189630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!4 &426792714205242174
 Transform:
   m_ObjectHideFlags: 0
@@ -45702,7 +45534,6 @@ GameObject:
   - component: {fileID: 6919664559211567390}
   - component: {fileID: 5700281303023859891}
   - component: {fileID: 2207720910022512780}
-  - component: {fileID: 7055173151291464864}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -45718,19 +45549,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685086241659395516}
   m_Mesh: {fileID: 4300000, guid: 6ab7d68b2bc3b4f4d92ccf6a4a81a124, type: 2}
---- !u!114 &1482924232884858406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7967443036213263926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!4 &1510580605391244291
 Transform:
   m_ObjectHideFlags: 0
@@ -45891,19 +45709,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 862202681156151051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1645802945966042896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3070474164529930520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &1685086241659395516
 GameObject:
   m_ObjectHideFlags: 0
@@ -46442,6 +46247,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   deviceSynHandler: {fileID: 547249119}
+  blackSphere: {fileID: 0}
 --- !u!33 &2083631950119588631
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -46761,7 +46567,6 @@ GameObject:
   - component: {fileID: 1820860583116969458}
   - component: {fileID: 1006227989012125744}
   - component: {fileID: 7988916163369140055}
-  - component: {fileID: 6541539812347298858}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -48184,7 +47989,6 @@ GameObject:
   - component: {fileID: 630977979044033722}
   - component: {fileID: 4038998380480947663}
   - component: {fileID: 2958595142349988659}
-  - component: {fileID: 1645802945966042896}
   - component: {fileID: 4038998380480947664}
   m_Layer: 0
   m_Name: pointer
@@ -48193,189 +47997,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3072011872514228972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178645605800909242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed887defb08514242aef7736b6d7285c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GazeRayInteractor: {fileID: 5940875019273296830}
-  GazeLineRender: {fileID: 882583979977587974}
-  GazeReticle: {fileID: 1820860583116969458}
-  HeadSetGazeSelectToPrimaryDevice:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Head Set Gaze Select To Primary Device
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: a65bd29d-0488-4a78-bacd-bc1be82cfcb9
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -4648776723322445859, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  LeftHandController: {fileID: 286482530}
-  LeftHandRayInteractor: {fileID: 286482529}
-  LeftHandLineRender: {fileID: 286482528}
-  LeftHandReticle: {fileID: 744715770}
-  LeftDeviceSelectToPrimaryDevice:
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 0
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 2fe80094-cdbc-4a93-b096-f1e2c27e95b3
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -2145489700192762957, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 1
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: b4fb51b4-e651-45d3-b8dd-8d8b7409288a
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 9129268998885488165, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 84fcfb67-6248-4812-8210-66865217216e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -5437491301893149776, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 84fcfb67-6248-4812-8210-66865217216e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -7501354095085518398, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 84fcfb67-6248-4812-8210-66865217216e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 2962834693858953448, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  LeftDeviceConnectChanged:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Left Device Connect Changed
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 2cf57b6c-61f1-4e32-8061-e02abade32e6
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -2431860380660121829, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  RightHandController: {fileID: 3211676845268561347}
-  RightHandRayInteractor: {fileID: 8484509916969928286}
-  RightHandLineRender: {fileID: 4319253805138191404}
-  RightHandReticle: {fileID: 630977979044033722}
-  RightDeviceSelectToPrimaryDevice:
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 0
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: dbc88168-c567-4797-b4ea-d53efd7da1ed
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 5747502650761668682, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 1
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 5b8cb5e0-638d-4c37-831b-20db808ed8bd
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -8751482817868324269, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 126ee1dd-467b-4cab-b41c-bf58aa99169d
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 5307817145285219055, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 126ee1dd-467b-4cab-b41c-bf58aa99169d
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -3304996294856693050, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  - m_UseReference: 1
-    m_Action:
-      m_Name: Element 2
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 126ee1dd-467b-4cab-b41c-bf58aa99169d
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 3049557059885952700, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  RightDeviceConnectChanged:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Right Device Connect Changed
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: d6ce4056-843c-4521-95b8-069f6f5af057
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -710164203188214771, guid: c09a3556fc99fa54b9f05199036980bb, type: 3}
-  m_AxisToPressThreshold: 0.1
-  SwitcherEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  RightControllerConnectChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  LeftControllerConnectChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_PrimaryDevice: 3
-  depthScaleMultiplier: 0.0018
 --- !u!1 &3076008922606203975
 GameObject:
   m_ObjectHideFlags: 0
@@ -48949,7 +48570,6 @@ GameObject:
   - component: {fileID: 2513537343747044026}
   - component: {fileID: 289285112245631036}
   - component: {fileID: 5169400177277636522}
-  - component: {fileID: 421657940963493345}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -50381,40 +50001,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4443061822861750937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014308625493259070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4dda83905bb74f438163a63b79312a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UpdateTrackingType: 0
-  m_EnableInputTracking: 1
-  m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 0}
-  m_ModelParent: {fileID: 0}
-  m_Model: {fileID: 0}
-  m_AnimateModel: 0
-  m_ModelSelectTransition: 
-  m_ModelDeSelectTransition: 
-  m_ControllerNode: 2
-  uiPressAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Ui Press
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: da90db40-e5f7-44f2-9bf0-1b1478df7483
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
 --- !u!1 &4473566287320170550
 GameObject:
   m_ObjectHideFlags: 0
@@ -50542,7 +50128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6338021718447313547}
-  - component: {fileID: 5247632185892841149}
   m_Layer: 0
   m_Name: Camera Offset
   m_TagString: Untagged
@@ -51436,18 +51021,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4990862030573532274}
   m_Mesh: {fileID: 7296449534950766761, guid: d3828703daa30dd4eb1ea4f088b57f76, type: 3}
---- !u!114 &5247632185892841149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4613450674366478706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bcb80850b1d29042966f02442b5ebef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &5286134756089376067
 Transform:
   m_ObjectHideFlags: 0
@@ -53109,19 +52682,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 652, y: 445}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6541539812347298858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2321311881437228665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!224 &6564288564411855861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -53851,19 +53411,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7055173151291464864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426683592595240230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee008209f012d824ca5d0e7935083dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sortingOrder: 32767
 --- !u!1 &7056288315131900486
 GameObject:
   m_ObjectHideFlags: 0
@@ -55033,11 +54580,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediaPlayer: {fileID: 522480972}
+  videoPlayer: {fileID: 0}
+  skyBox_VideoPlaye_Mat: {fileID: 0}
+  videoPlayerURL: 
+  googleTextToSpeech: {fileID: 0}
   stereoPackingMode: 0
   youtubePlayer: {fileID: 662888025}
   ytbPlayer: {fileID: 662888030}
   YoutubeAudioSource: {fileID: 662888028}
   avpro: {fileID: 201248163}
+  youtubeURLGeneratedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &7734532013295857534
 AudioSource:
   m_ObjectHideFlags: 0
@@ -55429,7 +54983,6 @@ GameObject:
   - component: {fileID: 4952945025766062280}
   - component: {fileID: 2496136547273342221}
   - component: {fileID: 6695423401555060070}
-  - component: {fileID: 1482924232884858406}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -55507,7 +55060,6 @@ GameObject:
   - component: {fileID: 5940875019273296830}
   - component: {fileID: 882583979977587974}
   - component: {fileID: 7539904920685616261}
-  - component: {fileID: 4443061822861750937}
   m_Layer: 0
   m_Name: Gaze Controller
   m_TagString: Untagged
