@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Oculus.Interaction;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -46,7 +45,7 @@ public class ColliderTrigger : MonoBehaviour
                         }
                     }
                     
-                    grandParent.GetComponent<Grabbable>().enabled = false;
+                    // grandParent.GetComponent<Grabbable>().enabled = false;
 #if KLEVER_DPVR
                     DpvrInteractionUtility.SetGrabEnabled(grandParent, false);
 #endif
@@ -56,7 +55,7 @@ public class ColliderTrigger : MonoBehaviour
                     {
                         handGrabInteractable.gameObject.SetActive(false);
                     }
-                    grandParent.GetComponent<SnapInteractor>().enabled = false;
+                    // grandParent.GetComponent<SnapInteractor>().enabled = false;
                     grandParent.transform.localPosition = AnswerPlacePos.transform.localPosition;
                     this.gameObject.GetComponent<BoxCollider>().enabled = false;
                     this.gameObject.GetComponent<Image>().enabled=false;

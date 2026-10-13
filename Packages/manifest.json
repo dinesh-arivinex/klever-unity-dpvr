@@ -1,8 +1,8 @@
 {
   "dependencies": {
+    "com.dpvr.xr.threedof-arm-model": "file:C:/Users/FCI/Downloads/DPVR3DoFControllerArmModel",
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.itisnajim.socketiounity": "https://github.com/itisnajim/SocketIOUnity.git",
-    "com.meta.xr.sdk.all": "72.0.0",
     "com.unity.cloud.gltfast": "6.12.1",
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.1",

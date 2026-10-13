@@ -9,7 +9,7 @@ public class AppA_Launcher : MonoBehaviour
     public string appBPackageName = "com.melzo.Anubhav_Demo";
 
     public Button launchButton; // Assign in Inspector
-    public Oculus.Interaction.InteractableUnityEventWrapper interactableEventWrapper; // Assign in Inspector
+// public Oculus.Interaction.InteractableUnityEventWrapper interactableEventWrapper;
 
     void Start()
     {
@@ -18,10 +18,6 @@ public class AppA_Launcher : MonoBehaviour
         if (launchButton != null)
             launchButton.onClick.AddListener(OnLaunchButtonPressed);
 
-        if (interactableEventWrapper == null)
-            interactableEventWrapper = GetComponentInChildren<Oculus.Interaction.InteractableUnityEventWrapper>();
-        if (interactableEventWrapper != null)
-            interactableEventWrapper.WhenSelect.AddListener(OnLaunchButtonPressed);
     }
 
     public void OnLaunchButtonPressed()

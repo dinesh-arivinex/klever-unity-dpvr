@@ -1,5 +1,5 @@
 using UnityEngine;
-using Oculus.Interaction;
+
 using System.Collections;
 #if KLEVER_DPVR
 using Klever.DPVR;
@@ -76,9 +76,9 @@ public class ColliderTriggerMatch : MonoBehaviour
     {
         // Disable them so they drop and don't re-collide instantly
         objA.GetComponent<BoxCollider>().enabled = false;
-        objA.GetComponent<Grabbable>().enabled = false;
+// objA.GetComponent<Grabbable>().enabled = false;
         objB.GetComponent<BoxCollider>().enabled = false;
-        objB.GetComponent<Grabbable>().enabled = false;
+// objB.GetComponent<Grabbable>().enabled = false;
 #if KLEVER_DPVR
         DpvrInteractionUtility.SetGrabEnabled(objA, false);
         DpvrInteractionUtility.SetGrabEnabled(objB, false);
@@ -92,9 +92,9 @@ public class ColliderTriggerMatch : MonoBehaviour
 
         // Re-enable them
         objA.GetComponent<BoxCollider>().enabled = true;
-        objA.GetComponent<Grabbable>().enabled = true;
+// objA.GetComponent<Grabbable>().enabled = true;
         objB.GetComponent<BoxCollider>().enabled = true;
-        objB.GetComponent<Grabbable>().enabled = true;
+// objB.GetComponent<Grabbable>().enabled = true;
 #if KLEVER_DPVR
         DpvrInteractionUtility.SetGrabEnabled(objA, true);
         DpvrInteractionUtility.SetGrabEnabled(objB, true);
@@ -158,3 +158,4 @@ public class ColliderTriggerMatch : MonoBehaviour
         if (obj == Answer5Pos && Answer5HandGrab != null) Answer5HandGrab.SetActive(true);
     }
 }
+

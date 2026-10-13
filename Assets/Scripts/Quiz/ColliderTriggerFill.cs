@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using LibTessDotNet;
-using Oculus.Interaction;
-using Oculus.Interaction.HandGrab;
+
+
 using TMPro;
 using Unity.XR.CoreUtils;
 using UnityEngine;
@@ -43,14 +43,14 @@ public class ColliderTriggerFill : MonoBehaviour
             this.GetComponent<BoxCollider>().enabled = false;
             this.gameObject.GetComponent<Image>().enabled = false;
             Answer1.GetComponent<BoxCollider>().enabled = false;
-            grandParent.GetComponent<Grabbable>().enabled = false;
+            // grandParent.GetComponent<Grabbable>().enabled = false;
 #if KLEVER_DPVR
             DpvrInteractionUtility.SetGrabEnabled(grandParent, false);
 #endif
-            grandParent.GetComponent<SnapInteractor>().enabled = false; 
-            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
+            // grandParent.GetComponent<SnapInteractor>().enabled = false; 
+            // grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+            // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+            // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             {
@@ -104,14 +104,13 @@ public class ColliderTriggerFill : MonoBehaviour
             this.GetComponent<BoxCollider>().enabled = false;
             this.gameObject.GetComponent<Image>().enabled = false;
             Answer2.GetComponent<BoxCollider>().enabled = false;
-            grandParent.GetComponent<Grabbable>().enabled = false;
+// grandParent.GetComponent<Grabbable>().enabled = false;
 #if KLEVER_DPVR
             DpvrInteractionUtility.SetGrabEnabled(grandParent, false);
 #endif
-            grandParent.GetComponent<SnapInteractor>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
+// grandParent.GetComponent<SnapInteractor>().enabled = false;grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             {
@@ -163,14 +162,13 @@ public class ColliderTriggerFill : MonoBehaviour
             this.GetComponent<BoxCollider>().enabled = false;
             this.gameObject.GetComponent<Image>().enabled = false;
             Answer3.GetComponent<BoxCollider>().enabled = false;
-            grandParent.GetComponent<Grabbable>().enabled = false;
+// grandParent.GetComponent<Grabbable>().enabled = false;
 #if KLEVER_DPVR
             DpvrInteractionUtility.SetGrabEnabled(grandParent, false);
 #endif
-            grandParent.GetComponent<SnapInteractor>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
+// grandParent.GetComponent<SnapInteractor>().enabled = false;grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             { 
@@ -223,14 +221,13 @@ public class ColliderTriggerFill : MonoBehaviour
             targetImage = Answer4.GetComponent<Image>();
             this.gameObject.GetComponent<Image>().enabled = false;
             Answer4.GetComponent<BoxCollider>().enabled = false;
-            grandParent.GetComponent<Grabbable>().enabled = false;
+// grandParent.GetComponent<Grabbable>().enabled = false;
 #if KLEVER_DPVR
             DpvrInteractionUtility.SetGrabEnabled(grandParent, false);
 #endif
-            grandParent.GetComponent<SnapInteractor>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
+// grandParent.GetComponent<SnapInteractor>().enabled = false;grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             {
@@ -268,14 +265,13 @@ public class ColliderTriggerFill : MonoBehaviour
             targetImage = Answer5.GetComponent<Image>();
             this.gameObject.GetComponent<Image>().enabled = false;
             Answer5.GetComponent<BoxCollider>().enabled = false;
-            grandParent.GetComponent<Grabbable>().enabled = false;
+// grandParent.GetComponent<Grabbable>().enabled = false;
 #if KLEVER_DPVR
             DpvrInteractionUtility.SetGrabEnabled(grandParent, false);
 #endif
-            grandParent.GetComponent<SnapInteractor>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
-            grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
+// grandParent.GetComponent<SnapInteractor>().enabled = false;grandParent.transform.GetChild(1).gameObject.GetComponent<HandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
+// grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
             if (childText.text == textfromRes.text)
             {
@@ -315,3 +311,4 @@ public class ColliderTriggerFill : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 }
+
