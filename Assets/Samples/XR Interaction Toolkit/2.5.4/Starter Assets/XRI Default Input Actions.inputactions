@@ -1604,6 +1604,17 @@
                 },
                 {
                     "name": "",
+                    "id": "3b86719a-98a6-4a3e-a122-7b3faf3ce8ce",
+                    "path": "<DpvrController>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "dd433817-216c-46b9-8dd3-f3a4ea1767b9",
                     "path": "<XRController>{RightHand}/{Grip}",
                     "interactions": "",
