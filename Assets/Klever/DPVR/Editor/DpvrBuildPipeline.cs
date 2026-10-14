@@ -30,6 +30,7 @@ namespace Klever.DPVR.Editor
         private const string OpenXrLoaderType = "UnityEngine.XR.OpenXR.OpenXRLoader";
         private const string OculusLoaderType = "Unity.XR.Oculus.OculusLoader";
         private const string OutputPath = "Builds/DPVR/Klever_VR_P1Pro_Edu.apk";
+        private const string AndroidManifestPath = "Assets/Plugins/Android/AndroidManifest.xml";
 
         [MenuItem("Klever/DPVR/Prepare OpenXR Project")]
         public static void PrepareProject()
@@ -195,6 +196,8 @@ namespace Klever.DPVR.Editor
             if (!EditorBuildSettings.scenes.Any(scene => scene.enabled))
                 errors.Add("At least one scene must be enabled in Build Settings.");
 
+            ValidateOpenXrAndroidManifest(errors);
+
             OpenXRSettings openXrSettings =
                 OpenXRSettings.GetSettingsForBuildTargetGroup(BuildTargetGroup.Android);
             KHRSimpleControllerProfile profile =
@@ -227,6 +230,32 @@ namespace Klever.DPVR.Editor
 
             if (errors.Count == 0)
                 Debug.Log("[DPVR] Project validation passed with " + warnings.Count + " release warning(s).");
+        }
+
+        private static void ValidateOpenXrAndroidManifest(List<string> errors)
+        {
+            if (!File.Exists(AndroidManifestPath))
+            {
+                errors.Add("Custom AndroidManifest.xml is missing; OpenXR runtime discovery cannot be verified.");
+                return;
+            }
+
+            string manifest = File.ReadAllText(AndroidManifestPath);
+            string[] requiredDeclarations =
+            {
+                "org.khronos.openxr.permission.OPENXR_SYSTEM",
+                "org.khronos.openxr.runtime_broker",
+                "org.khronos.openxr.system_runtime_broker",
+                "org.khronos.openxr.OpenXRRuntimeService",
+                "org.khronos.openxr.OpenXRApiLayerService",
+                "org.khronos.openxr.intent.category.IMMERSIVE_HMD"
+            };
+
+            foreach (string declaration in requiredDeclarations)
+            {
+                if (!manifest.Contains(declaration))
+                    errors.Add("AndroidManifest.xml is missing required OpenXR declaration: " + declaration);
+            }
         }
 
         private static bool IsMetaOpenXrFeature(OpenXRFeature feature)
