@@ -22,8 +22,21 @@ public class RuntimeImportBehaviourHelper : MonoBehaviour
     }
     public void FindingModel()
     {
+        if (runtimeImportBehaviour == null)
+            runtimeImportBehaviour = GetComponent<RuntimeImportBehaviour>();
+        if (runtimeImportBehaviour == null)
+        {
+            Debug.LogError("[RuntimeImportBehaviourHelper] RuntimeImportBehaviour is missing; cannot set up the model.");
+            return;
+        }
         googleTextToSpeech = FindObjectOfType<GoogleTextToSpeech>();
         model = GameObject.FindWithTag(runtimeImportBehaviour.tagName);
+
+        if (model == null)
+        {
+            DebugUtil.Log("[RuntimeImportBehaviourHelper] No model found to set up (download was skipped).");
+            return;
+        }
 
         GameObject emptyObject = new GameObject("Parent");
         emptyObject.transform.localPosition =gameObject.transform.position;
@@ -36,11 +49,6 @@ public class RuntimeImportBehaviourHelper : MonoBehaviour
         model.transform.position = Vector3.zero;
         emptyObject.tag = "3dmodel";
         emptyObject.transform.GetChild(0).transform.localPosition = Vector3.zero;
-        string modelUrl = PlayerPrefs.GetString(StaticStrings.modelUrl);
-        var details = new SimpleJSON.JSONObject();
-        details["name"] = PlayerPrefs.GetString(StaticStrings.modelName);
-        Klass.Net.LiveViewPublisher.Instance?.ShowContent("model3d", modelUrl, modelUrl, details);
-
 
     }
     public void AddProperty(GameObject parentObject)
@@ -137,7 +145,10 @@ public class RuntimeImportBehaviourHelper : MonoBehaviour
     public void customCallBack(string text)
     {
         FindingModel();
-        googleTextToSpeech.StartTalking(text);
+        if (googleTextToSpeech != null)
+            googleTextToSpeech.StartTalking(text);
+        else
+            Debug.LogError("[RuntimeImportBehaviourHelper] GoogleTextToSpeech is missing; cannot start narration.");
     }
     public void CustomStartSpeak()
     {
@@ -145,14 +156,32 @@ public class RuntimeImportBehaviourHelper : MonoBehaviour
     }
     public void StartSpeaking()
     {
-        googleTextToSpeech.AssistantStartTalking();
+        if (googleTextToSpeech == null)
+            googleTextToSpeech = FindObjectOfType<GoogleTextToSpeech>();
+        if (googleTextToSpeech != null)
+            googleTextToSpeech.AssistantStartTalking();
+        else
+            Debug.LogError("[RuntimeImportBehaviourHelper] GoogleTextToSpeech is missing; cannot start narration.");
     }
     public void DisableObject()
     {
-        GameObject threeDModel = GameObject.Find("Parent");
-        GameObject threeDModelParent = threeDModel.transform.parent.gameObject;
-        Destroy(threeDModel);
-        threeDModelParent.GetComponent<BoxCollider>().enabled = false;
+        // Use this helper's wrapper; other imported models can share its name.
+        GameObject modelRoot = extractModel;
+        if (modelRoot == null)
+            return;
+
+        Transform parent = modelRoot.transform.parent;
+        if (parent != null)
+        {
+            BoxCollider parentCollider = parent.GetComponent<BoxCollider>();
+            if (parentCollider != null)
+                parentCollider.enabled = false;
+        }
+
+        modelRoot.SetActive(false);
+        Destroy(modelRoot);
+        extractModel = null;
+        model = null;
     }
     // Update is called once per frame
     void Update()
@@ -162,13 +191,8 @@ public class RuntimeImportBehaviourHelper : MonoBehaviour
         if(isDestroy)
         {
 
-            if (model!=null)
-            {
-                GameObject threeDModel = GameObject.Find("Parent");
-                GameObject threeDModelParent = threeDModel.transform.parent.gameObject;
-                Destroy(threeDModel);
-                threeDModelParent.GetComponent<BoxCollider>().enabled = false;
-            }
+            isDestroy = false;
+            DisableObject();
 
         }
         

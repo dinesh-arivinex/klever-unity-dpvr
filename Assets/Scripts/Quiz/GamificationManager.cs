@@ -89,7 +89,7 @@ public class GamificationManager : MonoBehaviour
     public List<List<AnswerData>> allAnswers = new List<List<AnswerData>>();
     private List<string> typeOfGame = new List<string>();
     private List<string> questionImageUrlList = new List<string>();
-    private int gameCount;
+    public int gameCount;
     //public  BasketBallQuiz[] gameType;
     private List<string> headingDetails = new List<string>();
     List<string[]> options = new List<string[]>();
@@ -119,6 +119,9 @@ public class GamificationManager : MonoBehaviour
   
     public void AssignGames()
     {
+#if KLEVER_DPN
+        Debug.Log("[DPVR-FLOW] Assessment stage requested; dataPresent=" + !string.IsNullOrEmpty(apiManager.assessmentsString));
+#endif
         if (googleTextToSpeech == null && GameManager.Instance != null)
         {
             googleTextToSpeech = GameManager.Instance.googleTextToSpeech;
@@ -181,7 +184,13 @@ public class GamificationManager : MonoBehaviour
         {
             // string nextGameName = selectedGames[currentGameIndex];
             currentGameName = currentGame;
+#if KLEVER_DPN
+            Debug.Log("[DPVR-FLOW] Assessment type=" + currentGameName + "; question=" + (gameCount + 1));
+#endif
             PublishCurrentAssessment();
+            if (currentGameName == "MatchingFollowing" || currentGameName == "FillInTheBlanks")
+                for (int i = 0; i < (currentGameName == "MatchingFollowing" ? 5 : allOptions.Count); i++)
+                    Klass.Net.LiveViewPublisher.Instance?.ViewSimultaneousQuestion(i);
             if (GamificationControllerHandSwitcher.Instance != null)
             {
                 if (!GamificationControllerHandSwitcher.Instance.isHandMode)
@@ -242,10 +251,12 @@ public class GamificationManager : MonoBehaviour
                     basketballGame.GetComponent<BasketBallQuiz>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount]);
                     break;
                 case "MCQ":
-                    crossbow.SetActive(false);
-                    crossbowHandMode.SetActive(false);
-                    ballVisualize.SetActive(false);
-                    ballVisualizeHandMode.SetActive(false);
+                    // The DPVR scene has no legacy hand/controller sports visuals.
+                    // They are optional when showing the ordinary MCQ panel.
+                    if (crossbow != null) crossbow.SetActive(false);
+                    if (crossbowHandMode != null) crossbowHandMode.SetActive(false);
+                    if (ballVisualize != null) ballVisualize.SetActive(false);
+                    if (ballVisualizeHandMode != null) ballVisualizeHandMode.SetActive(false);
                     if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
                     mcqGame.GetComponent<QuizManagers>().DisplayQuestion(headingDetails, allOptions[gameCount], questionlist[gameCount], questionImageUrlList[gameCount], currentGameName, allAnswers[gameCount]);
                     mcqGame.SetActive(true);
@@ -347,10 +358,10 @@ public class GamificationManager : MonoBehaviour
             schoolId = schoolId,
             sectionID = sectionID,
             gradeID = gradeID,
-            score = arrowScore + basketBallScore + mcqScore,
+            score = Klass.Net.LiveViewPublisher.Instance != null ? Klass.Net.LiveViewPublisher.Instance.CorrectCount : 0,
             totalQuestions = currentGameName == "MatchingFollowing" ? 5 : allOptions.Count,
-            answeredQuestions = currentGameName == "MatchingFollowing" ? 5 : allOptions.Count,
-            correctAnswers = arrowScore + basketBallScore + mcqScore,
+            answeredQuestions = Klass.Net.LiveViewPublisher.Instance != null ? Klass.Net.LiveViewPublisher.Instance.AnsweredCount : 0,
+            correctAnswers = Klass.Net.LiveViewPublisher.Instance != null ? Klass.Net.LiveViewPublisher.Instance.CorrectCount : 0,
             // optional, defaults to 60
         };
         string jsonData = JsonUtility.ToJson(student);
@@ -411,14 +422,28 @@ public class GamificationManager : MonoBehaviour
     }
     public void   CallingThankYouCanvas()
     {
-        Klass.Net.LiveViewPublisher.Instance?.PublishAssessmentCompleted();
+        PrepareCompletionScreen();
+        StartCoroutine(EnableThankYouCanvas(exid, sid, sectionId, gradeId));
+    }
+
+    public void PrepareCompletionScreen()
+    {
+#if KLEVER_DPN
+        Klever.DPVR.DpvrSessionPresentation.ShowCompleted(0, 0);
+#endif
+
+        Klass.Net.LiveViewPublisher.Instance?.PublishAssessmentCompleted(currentGameName == "MatchingFollowing" ? 5 : allOptions.Count);
         foreach (GameObject item in disableObjects)
         {
-            item.SetActive(false);
+            if (item != null) item.SetActive(false);
         }
-        classRoom.SetActive(true);
+        if (classRoom != null) classRoom.SetActive(true);
+#if KLEVER_DPN
+        if (thankyouCanvas != null) thankyouCanvas.SetActive(true);
+        if (GameManager.Instance != null && GameManager.Instance.AssessmentParent != null)
+            GameManager.Instance.AssessmentParent.SetActive(false);
+#endif
         ActiveDeviceStatus();
-        StartCoroutine(EnableThankYouCanvas(exid, sid, sectionId, gradeId));
     }
     private string exid;
     private string sid;
@@ -481,10 +506,18 @@ public class GamificationManager : MonoBehaviour
     // Method to enable selected games based on data from API
     public void ActiveDeviceStatus()
     {
+#if KLEVER_DPN
+        var handler = GameManager.Instance != null ? GameManager.Instance.deviceSynHandler : null;
+        if (handler == null) handler = FindObjectOfType<DeviceSynHandler>();
+        if (handler != null) handler.MarkExperienceCompleted();
+        Klever.DPVR.DpvrSessionPresentation.ShowCompleted(Klass.Net.LiveViewPublisher.Instance != null ? Klass.Net.LiveViewPublisher.Instance.CorrectCount : 0,
+            currentGameName == "MatchingFollowing" ? 5 : allOptions.Count);
+#else
         // Migrated from REST PATCH /device_sync to retained MQTT state publish.
         var mqtt = Klass.Net.KlassMqttClient.Instance;
         if (mqtt != null && mqtt.IsConnected)
             mqtt.PublishState(isActive: true, isSynced: true, isCompleted: true);
+#endif
     }
     IEnumerator SendPatchRequest(string api, string jsonPayload)
     {

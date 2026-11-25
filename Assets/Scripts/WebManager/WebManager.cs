@@ -107,14 +107,15 @@ public class WebManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(url))
         {
+            if (firstTime)
+            {
             var liveDetails = new SimpleJSON.JSONObject();
             liveDetails["isObjectXR"] = isobjectXR;
             liveDetails["durationSeconds"] = simulationTimer;
             Klass.Net.LiveViewPublisher.Instance?.ShowContent("simulation", url, url, liveDetails);
 
 
-            if (firstTime)
-            {
+
                 ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);
                 if (GamificationControllerHandSwitcher.Instance != null)
                 {
@@ -124,8 +125,12 @@ public class WebManager : MonoBehaviour
                     if (GamificationControllerHandSwitcher.Instance.rightControllerRaycast != null) GamificationControllerHandSwitcher.Instance.rightControllerRaycast.SetActive(true);
                 }
                 
-                simulation.transform.position = temp.transform.position;
-                simulation.transform.rotation = temp.transform.rotation;
+#if KLEVER_DPN
+                if (isobjectXR)
+#endif
+                {
+                    simulation.transform.SetPositionAndRotation(temp.transform.position, temp.transform.rotation);
+                }
                 startingevent.Invoke();
                 timerCoroutine = StartCoroutine(WebViewDuration(simulationTimer));
                 ToggleItem(false);
@@ -153,6 +158,10 @@ public class WebManager : MonoBehaviour
                 }
                 else
                 {
+#if KLEVER_DPN
+                    boardSimulationActive = true;
+                    FitSimulationToBoard(ChangeClassRoom.Instance);
+#endif
                     canvasWebViewLoader.SetupWebView(url);
                 }
             }
@@ -181,6 +190,28 @@ public class WebManager : MonoBehaviour
         }
 
     }
+
+#if KLEVER_DPN
+    private bool boardSimulationActive;
+
+    private void LateUpdate()
+    {
+        // Vuplex and the canvas can finish layout after the lesson step starts.
+        if (boardSimulationActive && webView != null && webView.activeInHierarchy)
+            FitSimulationToBoard(ChangeClassRoom.Instance);
+    }
+
+    public void FitSimulationToBoard(ChangeClassRoom room)
+    {
+        if (room == null || _webViewPrefab == null) return;
+        var surface = Klever.VR.ClassroomBoardLayout.Surface(room);
+        if (surface == null) return;
+
+        var camera = Camera.main;
+        var viewer = camera != null ? camera.transform.position : new Vector3(0, 1.6f, 0);
+        Klever.VR.ClassroomBoardLayout.FitSimulation((RectTransform)_webViewPrefab.transform, surface, viewer, buttonNext != null ? buttonNext.transform as RectTransform : null);
+    }
+#endif
 
     private string BuildObjectXBrowserUrl(string embedUrl)
     {
@@ -251,6 +282,9 @@ public class WebManager : MonoBehaviour
     public void CheckTheStatus()
 
     {
+#if KLEVER_DPN
+        boardSimulationActive = false;
+#endif
         Klass.Net.LiveViewPublisher.Instance?.HideContent("simulation-completed");
         //PlayerPrefs.SetInt("InSimulation", 0);
         PlayerPrefs.Save();

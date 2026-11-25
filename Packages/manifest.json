@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.dpvr.xr.threedof-arm-model": "file:C:/Users/FCI/Downloads/DPVR3DoFControllerArmModel",
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.itisnajim.socketiounity": "https://github.com/itisnajim/SocketIOUnity.git",
     "com.unity.cloud.gltfast": "6.12.1",
@@ -18,7 +17,7 @@
     "com.unity.xr.hands": "1.8.1",
     "com.unity.xr.interaction.toolkit": "2.5.4",
     "com.unity.xr.management": "4.5.1",
-    "com.unity.xr.openxr": "1.8.1",
+    "com.unity.xr.openxr": "1.16.1",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

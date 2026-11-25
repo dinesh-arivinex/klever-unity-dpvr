@@ -163,6 +163,9 @@ public class LoadingBar : MonoBehaviour
     }
     public void SynchDevice()
     {
+#if KLEVER_DPN
+        Klever.DPVR.DpvrSessionPresentation.ShowLoading();
+#endif
         if (parentObject == null && transform.parent != null)
             parentObject = transform.parent.gameObject;
         if (parentObject != null) parentObject.SetActive(true);

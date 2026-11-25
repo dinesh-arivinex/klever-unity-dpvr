@@ -20,9 +20,18 @@ namespace Klever.DPVR
             QualitySettings.realtimeReflectionProbes = false;
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.Enable;
             QualitySettings.skinWeights = SkinWeights.TwoBones;
+#if KLEVER_DPN
+            dpn.DpnManager.eyeTextureScale = 1f;
+#else
             XRSettings.eyeTextureResolutionScale = 1f;
+#endif
             Application.backgroundLoadingPriority = ThreadPriority.Low;
+#if KLEVER_DPN
+            // The connected P1 Pro firmware reported 72 Hz in the native SDK trace.
+            Application.targetFrameRate = 72;
+#else
             Application.targetFrameRate = GetRuntimeRefreshRate();
+#endif
         }
 
         private static int GetRuntimeRefreshRate()

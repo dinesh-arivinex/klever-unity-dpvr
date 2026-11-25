@@ -105,9 +105,13 @@ public class AnnotationManager : MonoBehaviour
     }
     public void initialization()
     {
+#if KLEVER_DPN
+        GrabObj.GetComponent<Klever.DPVR.DpvrLessonInteraction>()?.BeginModel();
+#endif
         parentObject.transform.position = Vector3.zero;
         GrabObj.transform.position = Vector3.zero;
         GameObject objectsWithTag = GameObject.FindGameObjectWithTag(modelTagNames[modelCount]);
+        if (objectsWithTag == null) { Debug.LogError("[Model] Expected imported model is unavailable; cannot display this step."); return; }
         Transform childTransform = objectsWithTag.transform.parent;
         model = childTransform.gameObject;
         googleTextToSpeech = FindObjectOfType<GoogleTextToSpeech>();
@@ -120,7 +124,7 @@ public class AnnotationManager : MonoBehaviour
 
         //  model.transform.position=Vector3.zero;
 
-        if (orderOfAnnotation.Count > listexcicuter)
+        if (orderOfAnnotation != null && orderOfAnnotation.Count > listexcicuter)
         {
             if (orderOfAnnotation[listexcicuter] == orderExcicuter)
             {
@@ -145,7 +149,7 @@ public class AnnotationManager : MonoBehaviour
         }
 
 
-        Invoke("SetPosition", 2f);
+        // Placement is completed in ChangePosition after the mesh bounds exist.
         // SetPosition(); 
         modelCount++;
         modelTagNames.Add("VRModel" + modelCount.ToString());
@@ -158,12 +162,21 @@ public class AnnotationManager : MonoBehaviour
         // this functionn will works when we put annotation without bounding box
 
         yield return new WaitForSeconds(0.01f);
-        Transform child = model.transform.GetChild(0);
-        modelScale.StartActivitySingleObject(child.GetChild(0).gameObject);
-        child.GetChild(0).gameObject.transform.localPosition = Vector3.zero;
-        SetBoxColliderBasedOnSize(GrabObj);
+#if !KLEVER_DPN
+        if (model.transform.childCount > 0)
+        {
+            Transform child = model.transform.GetChild(0);
+            var scalable = child.childCount > 0 ? child.GetChild(0) : child;
+            modelScale.StartActivitySingleObject(scalable.gameObject);
+            scalable.localPosition = Vector3.zero;
+        }
         assetDownloader.ChangeModelPosition();
         SetBoxColliderBasedOnSize(GrabObj);
+#endif
+#if KLEVER_DPN
+        Klever.DPVR.DpvrLessonInteraction.PlaceOnTable(GrabObj, assetDownloader.instantiationPoint.position);
+#endif
+        assetDownloader.PublishVisibleModel();
     }
 
     Vector3 GetBottomPosition(GameObject obj)

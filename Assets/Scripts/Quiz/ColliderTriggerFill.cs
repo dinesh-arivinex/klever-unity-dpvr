@@ -29,6 +29,7 @@ public class ColliderTriggerFill : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (LessonPause.IsPaused) return;
 
         if (other.gameObject == Answer1)
         {
@@ -52,6 +53,7 @@ public class ColliderTriggerFill : MonoBehaviour
             // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
             // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
+            fillItQuizManagers.RecordFillAnswer(textfromRes, childText.text);
             if (childText.text == textfromRes.text)
             {
 
@@ -112,6 +114,7 @@ public class ColliderTriggerFill : MonoBehaviour
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
+            fillItQuizManagers.RecordFillAnswer(textfromRes, childText.text);
             if (childText.text == textfromRes.text)
             {
 
@@ -170,6 +173,7 @@ public class ColliderTriggerFill : MonoBehaviour
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
+            fillItQuizManagers.RecordFillAnswer(textfromRes, childText.text);
             if (childText.text == textfromRes.text)
             { 
 
@@ -229,6 +233,7 @@ public class ColliderTriggerFill : MonoBehaviour
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
+            fillItQuizManagers.RecordFillAnswer(textfromRes, childText.text);
             if (childText.text == textfromRes.text)
             {
 
@@ -273,6 +278,7 @@ public class ColliderTriggerFill : MonoBehaviour
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceHandGrabInteractable>().enabled = false;
 // grandParent.transform.GetChild(1).gameObject.GetComponent<DistanceGrabInteractable>().enabled = false;
             grandParent.transform.GetChild(1).gameObject.SetActive(false);
+            fillItQuizManagers.RecordFillAnswer(textfromRes, childText.text);
             if (childText.text == textfromRes.text)
             {
 

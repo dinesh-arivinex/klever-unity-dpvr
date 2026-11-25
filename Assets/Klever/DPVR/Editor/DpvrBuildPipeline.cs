@@ -49,6 +49,9 @@ namespace Klever.DPVR.Editor
         [MenuItem("Klever/DPVR/Build Android APK")]
         public static void BuildAndroid()
         {
+#if KLEVER_DPN
+            DpvrLegacyBuildPipeline.BuildTestAndroid();
+#else
             PrepareAndValidateForBuild();
 
             string absoluteOutput = Path.GetFullPath(OutputPath);
@@ -73,6 +76,7 @@ namespace Klever.DPVR.Editor
                     "DPVR APK build failed with " + report.summary.totalErrors + " error(s). See the Unity Editor log.");
 
             Debug.Log("[DPVR] APK built successfully: " + absoluteOutput);
+#endif
         }
 
         internal static void PrepareAndValidateForBuild()
@@ -89,7 +93,7 @@ namespace Klever.DPVR.Editor
 
             IgnoreMetaProjectSetupTasksForDpvr();
 
-            PlayerSettings.productName = "Klever VR DPVR";
+            PlayerSettings.productName = "Klever";
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, ApplicationId);
             // The supplied P1 Pro global firmware is Android 8.1 (API 27). Any
             // higher minimum is rejected by Android before the application starts.
@@ -317,8 +321,15 @@ namespace Klever.DPVR.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
+#if KLEVER_DPVR
+            // Only the selected DPVR configuration may rewrite Android XR settings.
             if (report.summary.platform == BuildTarget.Android)
+#if KLEVER_DPN
+                DpvrLegacyBuildPipeline.PrepareForBuild();
+#else
                 DpvrBuildPipeline.PrepareAndValidateForBuild();
+#endif
+#endif
         }
     }
 }

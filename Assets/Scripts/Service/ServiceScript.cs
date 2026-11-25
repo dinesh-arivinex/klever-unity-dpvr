@@ -103,6 +103,9 @@ public class ServiceScript : MonoBehaviour
     
     public void AssignTaskBasedOnCondition(GameStatus currentStatus)
     {
+#if KLEVER_DPN
+        Debug.Log("[DPVR-FLOW] Stage=" + currentStatus);
+#endif
         GameManager.Instance.assetDownloaderObj.SetActive(true);
         GameManager.Instance.simulationManagerObj.SetActive(true);
         GameManager.Instance.videoManagerObj.SetActive(true);

@@ -301,6 +301,9 @@ IEnumerator SendTextToSpeechRequest(string text)
                 currentAudioSource = ResolvePlaybackSource();
                 currentAudioSource.clip = audioClip;
                 currentAudioSource.Play();
+#if KLEVER_DPN
+                Klever.DPVR.DpvrSessionPresentation.NarrationReady();
+#endif
                 IsAudioReady = true;
                 // Wait for the audio to finish playing
                 audioClipLength = audioClip.length;

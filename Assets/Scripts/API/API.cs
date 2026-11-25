@@ -121,7 +121,11 @@ public class API : MonoBehaviour
 
 
             jsonData = req.downloadHandler.text;
+#if KLEVER_DPN
+            Debug.Log("[DPVR-CONTENT] Experience response received; bytes=" + jsonData.Length);
+#else
             Debug.Log("JsonData:"+jsonData);
+#endif
             bool parseAsArray = false;
             try
             {
@@ -170,7 +174,14 @@ public class API : MonoBehaviour
                     string sessionId = session != null ? session["_id"].Value : "";
                     string sessionTimeAndDate = session != null ? session["sessionTimeAndDate"].Value : "";
 
+#if KLEVER_DPN
+                    assessmentsString = string.Empty;
+                    typeOfGames.Clear();
+                    JSONArray assessments = Klever.DPVR.DpvrContentCompatibility.Assessments(spaceData[0]);
+                    Debug.Log("[DPVR-CONTENT] Assessment count=" + (assessments != null ? assessments.Count : 0));
+#else
                     JSONArray assessments = spaceData[0]["assessments"].AsArray;
+#endif
                     if (assessments != null && assessments.Count > 0)
                     {
                         foreach (JSONNode assessment in assessments)
@@ -372,7 +383,12 @@ public class API : MonoBehaviour
                         JSONNode videoDetail = content["videoDetails"][0];
                         if (videoDetail != null && videoDetail.Count > 0)
                         {
+#if KLEVER_DPN
+                            isPlayingVideo = !string.IsNullOrEmpty(Klever.DPVR.DpvrContentCompatibility.VideoUrl(videoDetail));
+                            if (!isPlayingVideo) Debug.LogError("[DPVR-CONTENT] Video detail has no playable source URL.");
+#else
                             isPlayingVideo = true;
+#endif
                             UpdateVideoPreferences(videoDetail);
                         }
                         else if(!string.IsNullOrEmpty(youTubeUrl)&& !string.IsNullOrEmpty(youTubeDownloadableUrl))
@@ -398,8 +414,6 @@ public class API : MonoBehaviour
                         bool isResuming = DeepLinkManager.isResumingFromDeepLink || (PlayerPrefs.GetInt("InSimulation", 0) == 1);
                         if (isResuming)
                         {
-                            PlayerPrefs.SetInt("InSimulation", 0);
-                            PlayerPrefs.Save();
                             DeepLinkManager.ResumeExperience();
                         }
                         else
@@ -524,13 +538,23 @@ public class API : MonoBehaviour
     private void UpdateVideoPreferences(JSONNode videoDetail)
     {
         string videoScript = videoDetail["script"];
+#if KLEVER_DPN
+        JSONNode videoId = Klever.DPVR.DpvrContentCompatibility.VideoRecord(videoDetail);
+        string videoURL = Klever.DPVR.DpvrContentCompatibility.VideoUrl(videoDetail);
+        videoManager.ConfigureDirectVideoSource();
+#else
         JSONNode videoId = videoDetail["VideoId"];
         string videoURL = videoId["videoURL"].Value.Trim();
+#endif
         string videoTitle = videoId["title"];
         string videoDescription = videoId["description"];
         string videoThumbnail = videoId["thumbnail"];
         string videoType = videoId["typeOfVideo"];
         string videoSound = videoDetail["videoSound"];
+#if KLEVER_DPN
+        videoManager.ChangeVideoType(videoType);
+        Debug.Log("[DPVR-CONTENT] Direct video configured; sourcePresent=" + !string.IsNullOrEmpty(videoURL));
+#endif
         // VrManager.UpdateVideoType(videoType);
         PlayerPrefs.SetString(StaticStrings.videoUrl, videoURL);
         PlayerPrefs.SetString(StaticStrings.videoScript, videoScript);

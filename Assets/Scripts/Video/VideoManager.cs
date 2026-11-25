@@ -41,6 +41,9 @@ public class VideoManager : MonoBehaviour
     public GameObject avpro;
     private bool isThreeSixty;
     private Coroutine videoCoroutine;
+#if KLEVER_DPN
+    private bool dpvrEventsSubscribed;
+#endif
 
     public UnityEvent youtubeURLGeneratedEvent;
     public static VideoManager Instance;
@@ -88,6 +91,12 @@ public class VideoManager : MonoBehaviour
     }
     public void ChangeVideoType(string videoType)
     {
+#if KLEVER_DPN
+        MediaHints hints = mediaPlayer.FallbackMediaHints;
+        hints.stereoPacking = videoType == "stereoscopic-side-to-side" ? StereoPacking.LeftRight :
+            videoType == "stereoscopic-top-to-bottom" ? StereoPacking.TopBottom : StereoPacking.None;
+        mediaPlayer.FallbackMediaHints = hints;
+#endif
         /*  if (videoType == "stereoscopic-side-to-side")
           {
               MediaHints hints = mediaPlayer.FallbackMediaHints;
@@ -109,6 +118,20 @@ public class VideoManager : MonoBehaviour
     // Main play function
     public void PlayVideo()
     {
+#if KLEVER_DPN
+        // A narrated clip can leave AVPro volume at zero for the next clip.
+        // Reset per clip; IsAudioNullInVideo retains the authored narration policy.
+        RestoreDpvrVideoAudio();
+        if (!dpvrEventsSubscribed)
+        {
+            mediaPlayer.Events.AddListener(OnDpvrVideoEvent);
+            dpvrEventsSubscribed = true;
+        }
+        StopAllCoroutines();
+        CancelInvoke(nameof(Performe));
+        videoOpened = false;
+        videoCoroutine = null;
+#endif
         videoPlayerURL = PlayerPrefs.GetString(StaticStrings.videoUrl);
         Klass.Net.LiveViewPublisher.Instance?.ShowContent("video", videoPlayerURL, videoPlayerURL);
 
@@ -128,7 +151,12 @@ public class VideoManager : MonoBehaviour
                 //videoPlayer.gameObject.SetActive(true);
                 //videoPlayer.source = VideoSource.Url;
                 //videoPlayer.url = videoPlayerURL;
+#if KLEVER_DPN
+                bool isOpening = mediaPlayer.OpenMedia(Klever.DPVR.DpvrVideoRenditions.Resolve(videoPlayerURL), autoPlay: true);
+                Debug.Log("[DPVR-VIDEO] Open accepted=" + isOpening);
+#else
                 bool isOpening = mediaPlayer.OpenMedia(new MediaPath(videoPlayerURL, MediaPathType.AbsolutePathOrURL), autoPlay: true);
+#endif
                 videoOpened = isOpening;
                 // Use startTimer and endTimer from AssignYoutubeProperty
                 StartCoroutine(OpenVideoAndSeek(startTimer, endTimer));
@@ -158,7 +186,12 @@ public class VideoManager : MonoBehaviour
             this.gameObject.transform.GetChild(0).gameObject.SetActive(true);
             youtubePlayer.gameObject.SetActive(false);
 
+#if KLEVER_DPN
+            bool isOpening = mediaPlayer.OpenMedia(Klever.DPVR.DpvrVideoRenditions.Resolve(videoPlayerURL), autoPlay: true);
+            Debug.Log("[DPVR-VIDEO] Open accepted=" + isOpening);
+#else
             bool isOpening = mediaPlayer.OpenMedia(new MediaPath(videoPlayerURL, MediaPathType.AbsolutePathOrURL), autoPlay: true);
+#endif
             videoOpened = isOpening;
 
             StartCoroutine(OpenVideo());
@@ -278,6 +311,10 @@ public class VideoManager : MonoBehaviour
         
         if (string.IsNullOrEmpty(videoScript)||videoSound=="mute")
         {
+#if KLEVER_DPN
+            RestoreDpvrVideoAudio();
+            Debug.Log("[DPVR-AUDIO] Clip audio enabled; sourceHasAudio=" + (mediaPlayer.Info != null && mediaPlayer.Info.HasAudio()));
+#endif
             //   GetMediaInfo();
             StartCoroutine(GetMediaInfo());
 
@@ -286,6 +323,9 @@ public class VideoManager : MonoBehaviour
         {
            StartCoroutine(AssinOperation());
             MuteVolumn();
+#if KLEVER_DPN
+            Debug.Log("[DPVR-AUDIO] Lesson narration selected; clip audio muted by existing content policy.");
+#endif
 
 
         }
@@ -293,6 +333,40 @@ public class VideoManager : MonoBehaviour
 
 
     }
+
+#if KLEVER_DPN
+    public void RestoreDpvrVideoAudio()
+    {
+        if (mediaPlayer == null) return;
+        mediaPlayer.AudioVolume = 1f;
+        mediaPlayer.AudioMuted = false;
+    }
+
+    public void ConfigureDirectVideoSource()
+    {
+        // A new non-YouTube clip must not inherit a previous YouTube URL/status.
+        youtubeURL = null;
+        youtubeVideoStatus = null;
+        startTimer = 0f;
+        endTimer = 0f;
+    }
+
+    private void OnDpvrVideoEvent(MediaPlayer player, MediaPlayerEvent.EventType eventType, ErrorCode error)
+    {
+        if (eventType != MediaPlayerEvent.EventType.MetaDataReady && eventType != MediaPlayerEvent.EventType.FirstFrameReady &&
+            eventType != MediaPlayerEvent.EventType.Error && eventType != MediaPlayerEvent.EventType.FinishedPlaying) return;
+        Debug.Log("[DPVR-VIDEO] Event=" + eventType + " error=" + error +
+            " width=" + (player.Info != null ? player.Info.GetVideoWidth() : 0) +
+            " height=" + (player.Info != null ? player.Info.GetVideoHeight() : 0) +
+            " hasAudio=" + (player.Info != null && player.Info.HasAudio()) +
+            " volume=" + player.AudioVolume + " muted=" + player.AudioMuted);
+    }
+
+    private void OnDestroy()
+    {
+        if (dpvrEventsSubscribed && mediaPlayer != null) mediaPlayer.Events.RemoveListener(OnDpvrVideoEvent);
+    }
+#endif
 
     public void Seek()
     {
@@ -342,6 +416,7 @@ public class VideoManager : MonoBehaviour
     private IEnumerator ActivateVideoEndAction(float duration)
     {
         yield return new WaitForSeconds(duration);
+        Klass.Net.LiveViewPublisher.Instance?.CompleteContent("video");
         if (!isThreeSixty)
         {
             service.AssignTaskBasedOnCondition(GameStatus.NoAudioInVideo);
@@ -356,6 +431,11 @@ public class VideoManager : MonoBehaviour
     }
     public void Performe()
     {
+        Klass.Net.LiveViewPublisher.Instance?.CompleteContent("video");
+#if KLEVER_DPN
+        Debug.Log("[DPVR-FLOW] Video stage completed; imageSkip=" + GameManager.Instance.isImageSkip +
+                  " modelStage=" + GameManager.Instance.isModelSkip);
+#endif
         if(videoCoroutine!=null)
         {
             StopCoroutine(videoCoroutine);
@@ -420,6 +500,7 @@ public class VideoManager : MonoBehaviour
             yield return new WaitForSeconds(duration);
         }
 
+        Klass.Net.LiveViewPublisher.Instance?.CompleteContent("video");
         // After video ends, trigger appropriate game
         
         if (!isThreeSixty)
