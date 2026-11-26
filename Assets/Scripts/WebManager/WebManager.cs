@@ -33,6 +33,11 @@ public class WebManager : MonoBehaviour
     public GameObject simulation;
     public GameObject temp;
     private bool firstTime;
+#if KLEVER_DPN
+    private const string ElectricCircuitOriginal = "https://d3vdjegbtyvp.cloudfront.net/Electric_Circuit/index.html";
+    private const string ElectricCircuitDpvr = "https://d3vdjegbtyvp.cloudfront.net/Electric_Circuit-dpvr/v2/index.html";
+    private bool isDpvrElectricCircuit;
+#endif
     public bool isobjectXR;
     // Start is called before the first frame update
     void Start()
@@ -92,6 +97,15 @@ public class WebManager : MonoBehaviour
         simulationScript = script;
         url = newUrl;
         simulationTimer = ConvertTimeToSeconds(time);
+#if KLEVER_DPN
+        isDpvrElectricCircuit = !isobjectXR && Uri.TryCreate(newUrl, UriKind.Absolute, out var simulationUri) &&
+            simulationUri.GetLeftPart(UriPartial.Path) == ElectricCircuitOriginal;
+        if (isDpvrElectricCircuit)
+        {
+            url = ElectricCircuitDpvr;
+            return;
+        }
+#endif
 
         // ObjectX launches an immersive WebXR session, which Vuplex 3D WebView
         // doesn't support. Keep the WebView path only for non-WebXR simulations.
@@ -101,13 +115,22 @@ public class WebManager : MonoBehaviour
             StartLoading();
         }
 
+#if !KLEVER_DPN
         StartSimulation();
+#endif
     }
     public void StartSimulation()
     {
+#if KLEVER_DPN
+        if (dpvrAssessmentStarted || firstTime) return;
+#endif
         if (!string.IsNullOrEmpty(url))
         {
+#if KLEVER_DPN
+            firstTime = true;
+#else
             if (firstTime)
+#endif
             {
             var liveDetails = new SimpleJSON.JSONObject();
             liveDetails["isObjectXR"] = isobjectXR;
@@ -132,6 +155,9 @@ public class WebManager : MonoBehaviour
                     simulation.transform.SetPositionAndRotation(temp.transform.position, temp.transform.rotation);
                 }
                 startingevent.Invoke();
+#if KLEVER_DPN
+                if (!isDpvrElectricCircuit)
+#endif
                 timerCoroutine = StartCoroutine(WebViewDuration(simulationTimer));
                 ToggleItem(false);
                 googleTextToSpeech.StopAudio();
@@ -159,12 +185,21 @@ public class WebManager : MonoBehaviour
                 else
                 {
 #if KLEVER_DPN
+                    webView.SetActive(true);
+                    _webViewPrefab.gameObject.SetActive(true);
                     boardSimulationActive = true;
                     FitSimulationToBoard(ChangeClassRoom.Instance);
+                    if (isDpvrElectricCircuit)
+                    {
+                        StartLoading();
+                        timerCoroutine = StartCoroutine(WaitForDpvrElectricCircuit());
+                        return;
+                    }
 #endif
                     canvasWebViewLoader.SetupWebView(url);
                 }
             }
+#if !KLEVER_DPN
             else
             {
                 ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);
@@ -182,6 +217,7 @@ public class WebManager : MonoBehaviour
                 }
             }
             firstTime = true;
+#endif
 
         }
         else
@@ -193,6 +229,34 @@ public class WebManager : MonoBehaviour
 
 #if KLEVER_DPN
     private bool boardSimulationActive;
+    private bool dpvrAssessmentStarted;
+
+    private IEnumerator WaitForDpvrElectricCircuit()
+    {
+        timer.text = "Loading Electric Circuit…";
+        Debug.Log("[DPVR-SIMULATION] Waiting for Electric Circuit stage.");
+        float limit = Time.time + 90f;
+        while (Time.time < limit)
+        {
+            var web = _webViewPrefab.WebView;
+            if (web != null && web.IsInitialized)
+            {
+                var poll = web.ExecuteJavaScript("typeof stage !== 'undefined' && !!stage && !!stage.getNumChildren() ? 'ready' : 'loading'");
+                while (!poll.IsCompleted && Time.time < limit) yield return null;
+                if (poll.Status == TaskStatus.RanToCompletion && poll.Result.Trim('"') == "ready")
+                {
+                    Debug.Log("[DPVR-SIMULATION] Electric Circuit loaded; lesson timer started.");
+                    yield return WebViewDuration(simulationTimer);
+                    yield break;
+                }
+            }
+            yield return new WaitForSeconds(1f);
+        }
+        Debug.LogWarning("[DPVR-SIMULATION] Electric Circuit did not become ready.");
+        timer.text = "Simulation could not load";
+        buttonNext.SetActive(true);
+        GameManager.Instance.deviceSynHandler?.PublishDownloadError("Electric Circuit did not finish loading.");
+    }
 
     private void LateUpdate()
     {
@@ -241,6 +305,9 @@ public class WebManager : MonoBehaviour
         {
             await _webViewPrefab.WaitUntilInitialized();
             _webViewPrefab.WebView.UrlChanged += (sender, eventArgs) => {
+#if KLEVER_DPN
+                if (!firstTime || dpvrAssessmentStarted) return;
+#endif
                 Debug.Log("[WebManager] URL changed: " + eventArgs.Url);
                 if (!string.IsNullOrEmpty(eventArgs.Url) && (eventArgs.Url.Contains("klever://") || eventArgs.Url.Contains("klever-edu") || eventArgs.Url.EndsWith("/home") || eventArgs.Url.Contains("close-simulation")))
                 {
@@ -283,6 +350,8 @@ public class WebManager : MonoBehaviour
 
     {
 #if KLEVER_DPN
+        if (dpvrAssessmentStarted) return;
+        dpvrAssessmentStarted = true;
         boardSimulationActive = false;
 #endif
         Klass.Net.LiveViewPublisher.Instance?.HideContent("simulation-completed");

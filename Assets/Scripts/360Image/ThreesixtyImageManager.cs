@@ -20,6 +20,9 @@ public class ThreesixtyImageManager : MonoBehaviour
     private ServiceScript serviceScript;
     public UnityEvent startingEvent;
     public string stop;
+#if KLEVER_DPN
+    private bool dpvrImageStageEntered;
+#endif
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +41,10 @@ public class ThreesixtyImageManager : MonoBehaviour
 
     public void ThreeSixtyExperianceStarted()
     {
+#if KLEVER_DPN
+        if (dpvrImageStageEntered) return;
+        dpvrImageStageEntered = true;
+#endif
       
         if (!api.is360Image)
         {
@@ -64,6 +71,9 @@ public class ThreesixtyImageManager : MonoBehaviour
     private void Performe()
     {
         googleTextToSpeech.StopAudio();
+#if KLEVER_DPN
+        GameManager.Instance.EnableClassAndBoard.Invoke();
+#endif
         if (!isModelSkip)
         {
             ChangeSkyBox.SetSkybox(ChangeSkyBox.skyBoxMaterialNew[ChangeClassRoom.Instance.classRoom]);

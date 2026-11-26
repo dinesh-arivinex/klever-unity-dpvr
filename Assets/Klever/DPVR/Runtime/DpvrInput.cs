@@ -22,6 +22,15 @@ namespace Klever.DPVR
             }
         }
 
+        public static bool SelectIsPressed
+        {
+            get
+            {
+                EnsureEnabled();
+                return SelectAction.IsPressed();
+            }
+        }
+
         public static InputAction CreateButtonAction(string name)
         {
             var action = new InputAction(name, InputActionType.Button);

@@ -151,6 +151,7 @@ namespace Klever.VR.Editor
                 }
                 foreach (var button in go.GetComponentsInChildren<UnityEngine.UI.Button>(true))
                     Require(!string.IsNullOrWhiteSpace(button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text), "Update action starts without a visible label.");
+                AuditNoticeStates(go, client, notice, change);
                 var poseCamera = new GameObject("Pitched and rolled update pose audit");
                 try
                 {
@@ -180,6 +181,62 @@ namespace Klever.VR.Editor
             var once = File.ReadAllText(rulesPath);
             buildHook.OnPostGenerateGradleAndroidProject(rulesDirectory);
             Require(File.ReadAllText(rulesPath) == once && once.Contains("Existing SDK rules must survive") && once.Contains("com.klever.updates.**"), "JNI keep-rule injection changed SDK rules or duplicated entries.");
+        }
+        private static void AuditNoticeStates(GameObject go, VrUpdateClient client, VrUpdateNotice notice, MethodInfo change)
+        {
+            var previousWelcome = DeviceSynHandler.isOpenWelcomeScreen;
+            var helper = new GameObject("Update notice state audit");
+            try
+            {
+                var sync = helper.AddComponent<DeviceSynHandler>();
+                DeviceSynHandler.isOpenWelcomeScreen = true;
+                sync.experienceId = string.Empty;
+                var eye = helper.AddComponent<Camera>();
+                eye.tag = "MainCamera";
+                typeof(VrUpdateClient).GetProperty("Release").SetValue(client, new VerifiedRelease
+                {
+                    VersionCode = 999999,
+                    VersionName = "9.9.9",
+                    SizeBytes = 1000
+                });
+                var lateUpdate = typeof(VrUpdateNotice).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+                var primary = (UnityEngine.UI.Button)typeof(VrUpdateNotice).GetField("primary", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(notice);
+                var later = (UnityEngine.UI.Button)typeof(VrUpdateNotice).GetField("later", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(notice);
+                var actionText = (TMPro.TextMeshProUGUI)typeof(VrUpdateNotice).GetField("actionText", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(notice);
+                var sweep = (RectTransform)typeof(VrUpdateNotice).GetField("savingSweep", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(notice);
+
+                change.Invoke(client, new object[] { VrUpdateClient.UpdateState.Available });
+                lateUpdate.Invoke(notice, null);
+                Require(later.gameObject.activeSelf && primary.interactable, "Later button must remain visible while update is available.");
+
+                change.Invoke(client, new object[] { VrUpdateClient.UpdateState.Downloading });
+                lateUpdate.Invoke(notice, null);
+                Require(!later.gameObject.activeSelf, "Later button must be removed while downloading.");
+
+                change.Invoke(client, new object[] { VrUpdateClient.UpdateState.Verifying });
+                lateUpdate.Invoke(notice, null);
+                Require(!later.gameObject.activeSelf, "Later button must remain removed while verifying.");
+
+                typeof(VrUpdateClient).GetField("deliveryCheckedAt", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(client, Time.realtimeSinceStartup);
+                typeof(VrUpdateClient).GetField("deliveryPending", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(client, true);
+                change.Invoke(client, new object[] { VrUpdateClient.UpdateState.VerifiedAwaitingInstaller });
+                lateUpdate.Invoke(notice, null);
+                Require(!later.gameObject.activeSelf && !primary.interactable &&
+                    actionText.text.StartsWith("Saving results", StringComparison.Ordinal) &&
+                    sweep != null && sweep.gameObject.activeSelf,
+                    "Saving results button must animate and keep Later hidden while delivery is pending.");
+
+                typeof(VrUpdateClient).GetField("deliveryPending", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(client, false);
+                lateUpdate.Invoke(notice, null);
+                Require(!later.gameObject.activeSelf && primary.interactable && actionText.text == "Install update" &&
+                    sweep != null && !sweep.gameObject.activeSelf,
+                    "Verified update must show Install update without Later button or saving animation.");
+            }
+            finally
+            {
+                DeviceSynHandler.isOpenWelcomeScreen = previousWelcome;
+                UnityEngine.Object.DestroyImmediate(helper);
+            }
         }
         private static void PreviewNotice(GameObject root)
         {

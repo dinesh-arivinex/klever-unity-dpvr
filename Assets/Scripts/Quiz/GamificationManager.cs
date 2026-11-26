@@ -147,7 +147,7 @@ public class GamificationManager : MonoBehaviour
     }
     public void StartAfterLoadingCanvas()
     {
-        welcomeBoardText.SetActive(false);
+        if (welcomeBoardText != null) welcomeBoardText.SetActive(false);
         Wrapper wrapper = JsonUtility.FromJson<Wrapper>("{\"questions\":" + apiManager.assessmentsString + "}");
         questions = wrapper.questions;
 
@@ -262,10 +262,10 @@ public class GamificationManager : MonoBehaviour
                     mcqGame.SetActive(true);
                     break;
                 case "FillInTheBlanks":
-                    crossbow.SetActive(false);
-                    crossbowHandMode.SetActive(false);
-                    ballVisualize.SetActive(false);
-                    ballVisualizeHandMode.SetActive(false);
+                    if (crossbow != null) crossbow.SetActive(false);
+                    if (crossbowHandMode != null) crossbowHandMode.SetActive(false);
+                    if (ballVisualize != null) ballVisualize.SetActive(false);
+                    if (ballVisualizeHandMode != null) ballVisualizeHandMode.SetActive(false);
                     if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
                     FillIt.GetComponent<QuizManagers>().DisplayAllFillInTheBlanks(questionlist, allAnswers, typeOfGame);
                     FillIt.SetActive(true);
@@ -278,10 +278,10 @@ public class GamificationManager : MonoBehaviour
                     }
                     break;
                 case "MatchingFollowing":
-                    crossbow.SetActive(false);
-                    crossbowHandMode.SetActive(false);
-                    ballVisualize.SetActive(false);
-                    ballVisualizeHandMode.SetActive(false);
+                    if (crossbow != null) crossbow.SetActive(false);
+                    if (crossbowHandMode != null) crossbowHandMode.SetActive(false);
+                    if (ballVisualize != null) ballVisualize.SetActive(false);
+                    if (ballVisualizeHandMode != null) ballVisualizeHandMode.SetActive(false);
                     if (GamificationControllerHandSwitcher.Instance != null && GamificationControllerHandSwitcher.Instance.rightHandMesh != null) GamificationControllerHandSwitcher.Instance.rightHandMesh.SetActive(true);
                     
                     if (MatchIt != null)

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.Android;
 using UnityEditor.Build;
@@ -9,10 +10,38 @@ using UnityEngine;
 
 namespace Klever.Branding.Editor
 {
-    public sealed class KleverAppIcons : IPreprocessBuildWithReport
+    public sealed class KleverAppIcons : IPreprocessBuildWithReport, IPostGenerateGradleAndroidProject
     {
         public int callbackOrder => -1000;
         public void OnPreprocessBuild(BuildReport report) { Apply(); }
+
+        public void OnPostGenerateGradleAndroidProject(string unityLibrary)
+        {
+#if KLEVER_DPN
+            var launcher = Path.Combine(Path.GetDirectoryName(unityLibrary), "launcher", "src", "main");
+            var drawables = Path.Combine(unityLibrary, "src", "main", "res", "drawable-nodpi");
+            Directory.CreateDirectory(drawables);
+            File.Copy(Path.Combine(launcher, "res", "mipmap-xxxhdpi", "app_icon.png"),
+                Path.Combine(drawables, "klever_dpvr_task_icon.png"), true);
+            XNamespace android = "http://schemas.android.com/apk/res/android";
+            const string icon = "@drawable/klever_dpvr_task_icon";
+            foreach (var path in new[] { Path.Combine(launcher, "AndroidManifest.xml"),
+                Path.Combine(unityLibrary, "src", "main", "AndroidManifest.xml") })
+            {
+                var manifest = XDocument.Load(path);
+                var app = manifest.Root.Element("application");
+                app.SetAttributeValue(android + "icon", icon);
+                app.SetAttributeValue(android + "roundIcon", icon);
+                app.SetAttributeValue(android + "logo", icon);
+                var activity = app.Elements("activity").FirstOrDefault(element =>
+                    (string)element.Attribute(android + "name") == "com.dpvr.sdk.DpvrActivity");
+                activity?.SetAttributeValue(android + "icon", icon);
+                activity?.SetAttributeValue(android + "logo", icon);
+                manifest.Save(path);
+            }
+            Debug.Log("[KLEVER-ICONS] DPVR app and activity use a legacy bitmap for the firmware launcher.");
+#endif
+        }
 
         [MenuItem("Klever/Apply Flutter App Icons")]
         public static void Apply()

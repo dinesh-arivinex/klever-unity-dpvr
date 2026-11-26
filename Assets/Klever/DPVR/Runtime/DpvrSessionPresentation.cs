@@ -9,7 +9,7 @@ namespace Klever.DPVR
     // when the authored loading screen temporarily hides the classroom.
     public sealed class DpvrSessionPresentation : MonoBehaviour
     {
-        public enum Stage { Hidden, Loading, Completed, Waiting, Paused }
+        public enum Stage { Hidden, Loading, Completed, Waiting, Paused, VideoError }
         private static DpvrSessionPresentation instance;
         private Canvas panel;
         private TextMeshProUGUI label;
@@ -124,6 +124,15 @@ namespace Klever.DPVR
             var view = Ensure();
             view.CurrentStage = Stage.Waiting;
             view.label.text = "<b>Session ended</b>\nGetting ready for your next lesson…";
+            view.panel.gameObject.SetActive(true);
+            view.FollowView();
+        }
+
+        public static void ShowVideoError()
+        {
+            var view = Ensure();
+            view.CurrentStage = Stage.VideoError;
+            view.label.text = "<b>Video could not play</b>\nPlease let your teacher know.";
             view.panel.gameObject.SetActive(true);
             view.FollowView();
         }

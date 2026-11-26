@@ -97,7 +97,10 @@ namespace Klever.DPVR
             bool hit = ray != null && ray.isActiveAndEnabled && ray.TryGetCurrent3DRaycastHit(out var result) &&
                 result.collider != null && (result.collider.transform == transform || result.collider.transform.IsChildOf(transform));
             foreach (var btn in new[] { primary, later })
-                btn.GetComponent<Outline>().enabled = false;
+            {
+                var outline = btn != null ? btn.GetComponent<Outline>() : null;
+                if (outline != null) outline.enabled = false;
+            }
             marker.gameObject.SetActive(hit);
             if (!hit) return;
             // Re-read after the definite-hit check for C# definite assignment.

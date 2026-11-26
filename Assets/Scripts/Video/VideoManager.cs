@@ -43,6 +43,11 @@ public class VideoManager : MonoBehaviour
     private Coroutine videoCoroutine;
 #if KLEVER_DPN
     private bool dpvrEventsSubscribed;
+    private bool dpvrVideoActive;
+    private bool dpvrFinished;
+    private bool dpvrSeekPending;
+    private bool dpvrNarrationStarted;
+    private bool dpvrPlaybackError;
 #endif
 
     public UnityEvent youtubeURLGeneratedEvent;
@@ -68,6 +73,10 @@ public class VideoManager : MonoBehaviour
 
     private void Update()
     {
+#if KLEVER_DPN
+        if (dpvrVideoActive && !LessonPause.IsPaused)
+            UpdateDpvrVideo();
+#endif
         if (mediaPlayer != null && mediaPlayer.gameObject.activeInHierarchy && mediaPlayer.Control != null && mediaPlayer.Info != null)
         {
             Klass.Net.LiveViewPublisher.Instance?.PublishPlayback(
@@ -119,19 +128,8 @@ public class VideoManager : MonoBehaviour
     public void PlayVideo()
     {
 #if KLEVER_DPN
-        // A narrated clip can leave AVPro volume at zero for the next clip.
-        // Reset per clip; IsAudioNullInVideo retains the authored narration policy.
-        RestoreDpvrVideoAudio();
-        if (!dpvrEventsSubscribed)
-        {
-            mediaPlayer.Events.AddListener(OnDpvrVideoEvent);
-            dpvrEventsSubscribed = true;
-        }
-        StopAllCoroutines();
-        CancelInvoke(nameof(Performe));
-        videoOpened = false;
-        videoCoroutine = null;
-#endif
+        PlayDpvrVideo();
+#else
         videoPlayerURL = PlayerPrefs.GetString(StaticStrings.videoUrl);
         Klass.Net.LiveViewPublisher.Instance?.ShowContent("video", videoPlayerURL, videoPlayerURL);
 
@@ -151,12 +149,7 @@ public class VideoManager : MonoBehaviour
                 //videoPlayer.gameObject.SetActive(true);
                 //videoPlayer.source = VideoSource.Url;
                 //videoPlayer.url = videoPlayerURL;
-#if KLEVER_DPN
-                bool isOpening = mediaPlayer.OpenMedia(Klever.DPVR.DpvrVideoRenditions.Resolve(videoPlayerURL), autoPlay: true);
-                Debug.Log("[DPVR-VIDEO] Open accepted=" + isOpening);
-#else
                 bool isOpening = mediaPlayer.OpenMedia(new MediaPath(videoPlayerURL, MediaPathType.AbsolutePathOrURL), autoPlay: true);
-#endif
                 videoOpened = isOpening;
                 // Use startTimer and endTimer from AssignYoutubeProperty
                 StartCoroutine(OpenVideoAndSeek(startTimer, endTimer));
@@ -186,16 +179,12 @@ public class VideoManager : MonoBehaviour
             this.gameObject.transform.GetChild(0).gameObject.SetActive(true);
             youtubePlayer.gameObject.SetActive(false);
 
-#if KLEVER_DPN
-            bool isOpening = mediaPlayer.OpenMedia(Klever.DPVR.DpvrVideoRenditions.Resolve(videoPlayerURL), autoPlay: true);
-            Debug.Log("[DPVR-VIDEO] Open accepted=" + isOpening);
-#else
             bool isOpening = mediaPlayer.OpenMedia(new MediaPath(videoPlayerURL, MediaPathType.AbsolutePathOrURL), autoPlay: true);
-#endif
             videoOpened = isOpening;
 
             StartCoroutine(OpenVideo());
         }
+#endif
     }
 
     private IEnumerator OpenVideoAndSeek(double startTime, double endTime)
@@ -335,6 +324,83 @@ public class VideoManager : MonoBehaviour
     }
 
 #if KLEVER_DPN
+    private void PlayDpvrVideo()
+    {
+        dpvrVideoActive = false;
+        mediaPlayer.CloseMedia();
+        RestoreDpvrVideoAudio();
+        if (!dpvrEventsSubscribed)
+        {
+            mediaPlayer.Events.AddListener(OnDpvrVideoEvent);
+            dpvrEventsSubscribed = true;
+        }
+
+        videoPlayerURL = PlayerPrefs.GetString(StaticStrings.videoUrl);
+        videoScript = PlayerPrefs.GetString(StaticStrings.videoScript);
+        videoSound = PlayerPrefs.GetString(StaticStrings.videoSound);
+        dpvrVideoActive = true;
+        dpvrFinished = false;
+        dpvrPlaybackError = !string.IsNullOrEmpty(youtubeURL) && youtubeVideoStatus == "failed";
+        dpvrSeekPending = !string.IsNullOrEmpty(youtubeURL) && startTimer > 0f;
+        dpvrNarrationStarted = string.IsNullOrEmpty(videoScript) || videoSound == "mute";
+        if (dpvrPlaybackError) return;
+
+        Klass.Net.LiveViewPublisher.Instance?.ShowContent("video", videoPlayerURL, videoPlayerURL);
+        youtubeURLGeneratedEvent.Invoke();
+        if (!string.IsNullOrEmpty(youtubeURL)) GameManager.Instance.DisableClassAndBoard.Invoke();
+        mediaPlayer.gameObject.SetActive(true);
+        transform.GetChild(0).gameObject.SetActive(true);
+        youtubePlayer.SetActive(false);
+        mediaPlayer.Loop = false;
+        if (!dpvrNarrationStarted) MuteVolumn();
+        if (!mediaPlayer.OpenMedia(Klever.DPVR.DpvrVideoRenditions.Resolve(videoPlayerURL), autoPlay: !dpvrSeekPending))
+            dpvrPlaybackError = true;
+    }
+
+    private void UpdateDpvrVideo()
+    {
+        if (dpvrPlaybackError)
+        {
+            dpvrVideoActive = false;
+            mediaPlayer.CloseMedia();
+            Klass.Net.LiveViewPublisher.Instance?.HideContent("video-playback-error");
+            GameManager.Instance.EnableClassAndBoard.Invoke();
+            GameManager.Instance.deviceSynHandler?.PublishDownloadError("The headset could not play the lesson video.");
+            Klever.DPVR.DpvrSessionPresentation.ShowVideoError();
+            return;
+        }
+
+        var control = mediaPlayer.Control;
+        if (control == null) return;
+        if (dpvrSeekPending && control.CanPlay() && mediaPlayer.Info.GetDuration() > 0)
+        {
+            dpvrSeekPending = false;
+            control.Seek(startTimer < mediaPlayer.Info.GetDuration() ? startTimer : 0);
+            control.Play();
+            return;
+        }
+        if (!dpvrNarrationStarted && control.IsPlaying())
+        {
+            dpvrNarrationStarted = true;
+            googleTextToSpeech.StartTalking(videoScript);
+        }
+        if (!DpvrPlaybackComplete(dpvrFinished || control.IsFinished(), control.GetCurrentTime(),
+                mediaPlayer.Info.GetDuration(), !string.IsNullOrEmpty(youtubeURL), startTimer, endTimer))
+            return;
+
+        dpvrVideoActive = false;
+        Debug.Log($"[DPVR-VIDEO] Playback complete at {control.GetCurrentTime():F2}/{mediaPlayer.Info.GetDuration():F2}s.");
+        mediaPlayer.CloseMedia();
+        googleTextToSpeech.StopAudio();
+        Klass.Net.LiveViewPublisher.Instance?.CompleteContent("video");
+        service.AssignTaskBasedOnCondition(GameStatus.threesixtyImage);
+    }
+
+    public static bool DpvrPlaybackComplete(bool finished, double time, double length, bool isYouTube, double start, double end)
+    {
+        return finished || (isYouTube && length > 0 && end > start && end < length && time >= end);
+    }
+
     public void RestoreDpvrVideoAudio()
     {
         if (mediaPlayer == null) return;
@@ -360,6 +426,9 @@ public class VideoManager : MonoBehaviour
             " height=" + (player.Info != null ? player.Info.GetVideoHeight() : 0) +
             " hasAudio=" + (player.Info != null && player.Info.HasAudio()) +
             " volume=" + player.AudioVolume + " muted=" + player.AudioMuted);
+        if (!dpvrVideoActive) return;
+        if (eventType == MediaPlayerEvent.EventType.FinishedPlaying) dpvrFinished = true;
+        if (eventType == MediaPlayerEvent.EventType.Error) dpvrPlaybackError = true;
     }
 
     private void OnDestroy()

@@ -282,7 +282,9 @@ public class QuizManagers : MonoBehaviour
         {
             DebugUtil.Log($"[QuizManagers] DisplayAllFillInTheBlanks called with {allQuestions?.Count} questions.");
             if (allQuestions == null) return;
-            totQuestionFillItCount = allQuestions.Count;
+            totQuestionFillItCount = 0;
+            for (int i = 0; i < allQuestions.Count && typeOfGames != null && i < typeOfGames.Count; i++)
+                if (typeOfGames[i] == "FillInTheBlanks") totQuestionFillItCount++;
 
             GameObject[] questions = null;
             GameObject[] answers = null;
@@ -300,12 +302,9 @@ public class QuizManagers : MonoBehaviour
                 return;
             }
 
-            for (int i = 0; i < totQuestionFillItCount; i++)
-            {
-                questions[i].SetActive(i < totQuestionFillItCount);
-                answers[i].SetActive(i < totQuestionFillItCount);
-                answersPlacement[i].SetActive(i < totQuestionFillItCount);
-            }
+            SetFillInRows(questions, totQuestionFillItCount);
+            SetFillInRows(answers, totQuestionFillItCount);
+            SetFillInRows(answersPlacement, totQuestionFillItCount);
             List<string> shuffledAnswers = new List<string>();
             for (int i = 0; i < allQuestions.Count; i++)
             {
@@ -382,6 +381,12 @@ public class QuizManagers : MonoBehaviour
         }
     }
 
+    private static void SetFillInRows(GameObject[] rows, int count)
+    {
+        for (int i = 0; i < rows.Length; i++)
+            if (rows[i] != null) rows[i].SetActive(i < count);
+    }
+
     private bool hasDisplayedAllMatchIt = false;
 
     public void DisplayAllMatchIt(List<AnswerData> matchingOptions)
@@ -415,7 +420,16 @@ public class QuizManagers : MonoBehaviour
             {
                 bool active = i < totQuestionMatchItCount;
                 if (questions[i] != null) questions[i].SetActive(active);
-                if (answers[i] != null) answers[i].SetActive(active);
+                if (answers[i] != null)
+                {
+                    answers[i].SetActive(active);
+                    var cardMatch = answers[i].GetComponentInParent<ColliderTriggerMatch>(true);
+                    if (cardMatch != null)
+                    {
+                        var cardCollider = cardMatch.GetComponent<BoxCollider>();
+                        if (cardCollider != null) cardCollider.enabled = active;
+                    }
+                }
                 if (answeTextStore[i] != null) answeTextStore[i].SetActive(active);
             }
 
@@ -781,61 +795,29 @@ public class QuizManagers : MonoBehaviour
         colliderTriggerMatch.Answer3HandGrab.gameObject.SetActive(false);
         colliderTriggerMatch.Answer4HandGrab.gameObject.SetActive(false);
 
-        if (answersMatchIt[0].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[0].GetComponent<TextMeshProUGUI>().text)
-        {
+        int matchCount = totQuestionMatchItCount > 0
+            ? Mathf.Min(totQuestionMatchItCount, answersMatchIt.Length, answerPlacedTextMatchIt.Length)
+            : Mathf.Min(answersMatchIt.Length, answerPlacedTextMatchIt.Length);
 
-            targetImage = answersMatchIt[0].transform.parent.GetComponent<Image>();
-            ApplyColor(correctColor, targetImage);
-            gamificationManager.mcqScore++;
-        }
-        else
+        for (int i = 0; i < matchCount; i++)
         {
-            targetImage = answersMatchIt[0].transform.parent.GetComponent<Image>();
-            ApplyColor(wrongColor, targetImage);
-        }
-        if (answersMatchIt[1].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[1].GetComponent<TextMeshProUGUI>().text)
-        {
-            targetImage = answersMatchIt[1].transform.parent.GetComponent<Image>();
-            ApplyColor(correctColor, targetImage);
-            gamificationManager.mcqScore++;
-        }
-        else
-        {
-            targetImage = answersMatchIt[1].transform.parent.GetComponent<Image>();
-            ApplyColor(wrongColor, targetImage);
-        }
-        if (answersMatchIt[2].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[2].GetComponent<TextMeshProUGUI>().text)
-        {
-            targetImage = answersMatchIt[2].transform.parent.GetComponent<Image>();
-            ApplyColor(correctColor, targetImage);
-            gamificationManager.mcqScore++;
-        }
-        else
-        {
-            targetImage = answersMatchIt[2].transform.parent.GetComponent<Image>();
-            ApplyColor(wrongColor, targetImage);
-        }
-        if (answersMatchIt[3].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[3].GetComponent<TextMeshProUGUI>().text)
-        {
-            targetImage = answersMatchIt[3].transform.parent.GetComponent<Image>();
-            ApplyColor(correctColor, targetImage);
-            gamificationManager.mcqScore++;
-        }
-        else
-        {
-            targetImage = answersMatchIt[3].transform.parent.GetComponent<Image>();
-            ApplyColor(wrongColor, targetImage);
-        }
-        if (answersMatchIt[4].GetComponent<TextMeshProUGUI>().text == answerPlacedTextMatchIt[4].GetComponent<TextMeshProUGUI>().text)
-        {
-            targetImage = answersMatchIt[4].transform.parent.GetComponent<Image>();
-            ApplyColor(correctColor, targetImage);
-            gamificationManager.mcqScore++;
-        }
-        else
-        {
-            targetImage = answersMatchIt[4].transform.parent.GetComponent<Image>();
-            ApplyColor(wrongColor, targetImage);
+            if (answersMatchIt[i] == null || answerPlacedTextMatchIt[i] == null) continue;
+            var answerTmp = answersMatchIt[i].GetComponent<TextMeshProUGUI>();
+            var expectedTmp = answerPlacedTextMatchIt[i].GetComponent<TextMeshProUGUI>();
+            if (answerTmp == null || expectedTmp == null) continue;
+
+            targetImage = answersMatchIt[i].transform.parent != null
+                ? answersMatchIt[i].transform.parent.GetComponent<Image>()
+                : null;
+            if (answerTmp.text == expectedTmp.text)
+            {
+                ApplyColor(correctColor, targetImage);
+                if (gamificationManager != null) gamificationManager.mcqScore++;
+            }
+            else
+            {
+                ApplyColor(wrongColor, targetImage);
+            }
         }
 
         StartCoroutine(NextEnable());
@@ -907,6 +889,7 @@ public class QuizManagers : MonoBehaviour
     }
 
     private bool matchingSubmitted;
+    public bool IsMatchSubmitted => matchingSubmitted;
     public void RecordFillAnswer(TextMeshProUGUI expected, string selected)
     {
         int index = System.Array.FindIndex(answerPlacedTextFillIt, obj => obj == expected.gameObject);
@@ -923,8 +906,10 @@ public class QuizManagers : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         nextButton.gameObject.SetActive(true);
+        nextButton.interactable = true;
         nextButton.enabled = true;
-        nextButton.gameObject.GetComponent<BoxCollider>().enabled = true;
+        var nextCollider = nextButton.gameObject.GetComponent<BoxCollider>();
+        if (nextCollider != null) nextCollider.enabled = true;
     }
     private void ApplyColor(Color color, Image Image)
     {

@@ -38,6 +38,9 @@ namespace Klever.DPVR
         private GameObject runtimeRig;
         private XRInteractionManager interactionManager;
         private Camera interactionCamera;
+#if KLEVER_DPN
+        private XRRayInteractor classroomRay;
+#endif
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Install()
@@ -74,10 +77,28 @@ namespace Klever.DPVR
 
         private void Start()
         {
+#if UNITY_ANDROID && KLEVER_DPN && !UNITY_EDITOR
+            ApplyRecentsBranding();
+#endif
             OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
             StartCoroutine(LogRuntimeBaseline());
             StartCoroutine(RefreshDynamicContent());
         }
+
+#if UNITY_ANDROID && KLEVER_DPN && !UNITY_EDITOR
+        private void OnApplicationFocus(bool focused)
+        {
+            if (focused) ApplyRecentsBranding();
+        }
+
+        private static void ApplyRecentsBranding()
+        {
+            using (var unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (var activity = unity.GetStatic<AndroidJavaObject>("currentActivity"))
+            using (var recents = new AndroidJavaClass("com.klever.dpvr.KleverRecents"))
+                recents.CallStatic("apply", activity);
+        }
+#endif
 
         private static IEnumerator LogRuntimeBaseline()
         {
@@ -309,11 +330,19 @@ namespace Klever.DPVR
             var lineVisual = controllerObject.AddComponent<XRInteractorLineVisual>();
             lineVisual.stopLineAtFirstRaycastHit = true;
             lineVisual.stopLineAtSelection = false;
+            lineVisual.overrideInteractorLineLength = false;
+            lineVisual.lineWidth = 0.012f;
+            lineVisual.widthCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 0.5f));
+            lineVisual.validColorGradient = CreateLineGradient(new Color(0.24f, 1f, 0.74f, 0.95f), Color.white);
+            lineVisual.invalidColorGradient = CreateLineGradient(new Color(0.84f, 0.93f, 1f, 0.85f), new Color(1f, 1f, 1f, 0.95f));
             var lineRenderer = controllerObject.GetComponent<LineRenderer>();
             if (lineRenderer != null)
             {
-                lineRenderer.startWidth = 0.004f;
-                lineRenderer.endWidth = 0.0015f;
+                var lineShader = Shader.Find("Sprites/Default") ?? Shader.Find("Unlit/Color");
+                if (lineShader != null)
+                    lineRenderer.sharedMaterial = new Material(lineShader);
+                lineRenderer.startWidth = 0.012f;
+                lineRenderer.endWidth = 0.006f;
                 lineRenderer.useWorldSpace = true;
             }
 
@@ -325,7 +354,22 @@ namespace Klever.DPVR
             // The sports cursor remains a trigger, but must not occlude its own ray.
             cursorObject.layer = 2; // Unity's built-in Ignore Raycast layer.
             cursorObject.transform.SetParent(transform, false);
-            cursorObject.transform.localScale = Vector3.one * 0.025f;
+            cursorObject.transform.localScale = Vector3.one * 0.028f;
+            var cursorRenderer = cursorObject.GetComponent<Renderer>();
+            var unlitShader = Shader.Find("Unlit/Color") ?? Shader.Find("Sprites/Default");
+            if (cursorRenderer != null && unlitShader != null)
+                cursorRenderer.sharedMaterial = new Material(unlitShader) { color = Color.white };
+
+            var edgeObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            edgeObject.name = "DPVR Ray Cursor Edge";
+            edgeObject.layer = 2;
+            Destroy(edgeObject.GetComponent<Collider>());
+            edgeObject.transform.SetParent(cursorObject.transform, false);
+            edgeObject.transform.localPosition = Vector3.zero;
+            edgeObject.transform.localScale = Vector3.one * 1.45f;
+            var edgeRenderer = edgeObject.GetComponent<Renderer>();
+            if (edgeRenderer != null && unlitShader != null)
+                edgeRenderer.sharedMaterial = new Material(unlitShader) { color = new Color(0.03f, 0.08f, 0.12f, 1f) };
             try
             {
                 cursorObject.tag = "Cursor";
@@ -342,11 +386,21 @@ namespace Klever.DPVR
             body.useGravity = false;
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             var cursor = cursorObject.AddComponent<DpvrRayCursor>();
-            cursor.Configure(rayInteractor, cursorCollider);
+            cursor.Configure(rayInteractor, cursorCollider, edgeRenderer);
 #if KLEVER_DPN
+            classroomRay = rayInteractor;
             if (Debug.isDebugBuild)
                 controllerObject.AddComponent<DpvrViewDiagnostics>().Configure(head, rayInteractor);
 #endif
+        }
+
+        private static Gradient CreateLineGradient(Color start, Color end)
+        {
+            return new Gradient
+            {
+                colorKeys = new[] { new GradientColorKey(start, 0f), new GradientColorKey(end, 1f) },
+                alphaKeys = new[] { new GradientAlphaKey(start.a, 0f), new GradientAlphaKey(end.a, 1f) }
+            };
         }
 
         private InputActionProperty CreateActionProperty(
@@ -499,6 +553,17 @@ namespace Klever.DPVR
             ConvertMetaGrabbables(behaviours);
             BridgeMetaUnityEvents(behaviours);
             DisableMetaBehaviours(behaviours);
+#if KLEVER_DPN
+            foreach (var quiz in FindObjectsOfType<QuizManagers>(true))
+            {
+                if (!quiz.gameObject.scene.IsValid()) continue;
+                if (quiz.fillItReferenceManager != null && quiz.GetComponent<DpvrFillDrag>() == null)
+                    quiz.gameObject.AddComponent<DpvrFillDrag>().Configure(classroomRay);
+                if (quiz.matchItReferenceManager != null && quiz.colliderTriggerMatch != null &&
+                    quiz.GetComponent<DpvrMatchDrag>() == null)
+                    quiz.gameObject.AddComponent<DpvrMatchDrag>().Configure(classroomRay, quiz, quiz.colliderTriggerMatch);
+            }
+#endif
         }
 
         private void ConvertMetaGrabbables(MonoBehaviour[] behaviours)
@@ -621,6 +686,221 @@ namespace Klever.DPVR
     }
 
 #if KLEVER_DPN
+    [DefaultExecutionOrder(100)]
+    public sealed class DpvrFillDrag : MonoBehaviour
+    {
+        private XRRayInteractor interactor;
+        private ColliderTriggerFill[] slots;
+        private BoxCollider[] cards;
+        private BoxCollider dragged;
+        private Transform cardRoot;
+        private Vector3 initialLocalPosition;
+        private Vector3 pointerOffset;
+        private Plane boardPlane;
+
+        public void Configure(XRRayInteractor ray)
+        {
+            interactor = ray;
+            slots = GetComponentsInChildren<ColliderTriggerFill>(true);
+            if (slots.Length == 0) return;
+            var first = slots[0];
+            var objects = new[] { first.Answer1, first.Answer2, first.Answer3, first.Answer4, first.Answer5 };
+            cards = new BoxCollider[objects.Length];
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i] == null) continue;
+                cards[i] = objects[i].GetComponent<BoxCollider>();
+                var root = objects[i].transform.parent?.parent;
+                if (root != null) DpvrInteractionUtility.SetGrabEnabled(root.gameObject, false);
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (interactor == null || cards == null || !interactor.isActiveAndEnabled ||
+                LessonPause.IsPaused || dpn.DpnDaydreamController.State != dpn.DpnConnectionState.Connected)
+            {
+                ResetDrag();
+                return;
+            }
+            var origin = interactor.rayOriginTransform;
+            var ray = new Ray(origin.position, origin.forward);
+            if (dragged == null && DpvrInput.SelectWasPressedThisFrame)
+                BeginDrag(ray);
+            if (dragged == null) return;
+
+            if (DpvrInput.SelectIsPressed)
+            {
+                if (boardPlane.Raycast(ray, out float distance))
+                    cardRoot.position = ray.GetPoint(distance) + pointerOffset;
+                return;
+            }
+
+            ColliderTriggerFill target = null;
+            float nearest = float.PositiveInfinity;
+            foreach (var slot in slots)
+            {
+                if (slot == null || !slot.isActiveAndEnabled) continue;
+                var collider = slot.GetComponent<BoxCollider>();
+                if (collider != null && collider.enabled && collider.Raycast(ray, out var hit, nearest))
+                {
+                    nearest = hit.distance;
+                    target = slot;
+                }
+            }
+            if (target != null && target.TryDropDpvr(dragged))
+                cardRoot = null;
+            ResetDrag();
+        }
+
+        private void BeginDrag(Ray ray)
+        {
+            if (!DpvrRayDragHelper.TryFindHit(ray, cards, null, out var card, out var hit)) return;
+            var root = card.transform.parent?.parent;
+            if (root == null) return;
+            var plane = new Plane(-card.transform.forward, hit.point);
+            if (!plane.Raycast(ray, out _)) return;
+            dragged = card;
+            cardRoot = root;
+            initialLocalPosition = root.localPosition;
+            pointerOffset = root.position - hit.point;
+            boardPlane = plane;
+        }
+
+        private void OnDisable() => ResetDrag();
+
+        private void ResetDrag()
+        {
+            if (cardRoot != null) cardRoot.localPosition = initialLocalPosition;
+            cardRoot = null;
+            dragged = null;
+        }
+    }
+
+    internal static class DpvrRayDragHelper
+    {
+        public static bool TryFindHit(Ray ray, BoxCollider[] candidates, BoxCollider skip, out BoxCollider hitCollider, out RaycastHit hitInfo)
+        {
+            hitCollider = null;
+            hitInfo = default;
+            if (candidates == null) return false;
+            float nearest = float.PositiveInfinity;
+            foreach (var candidate in candidates)
+            {
+                if (candidate == null || candidate == skip || !candidate.enabled ||
+                    !candidate.gameObject.activeInHierarchy || !candidate.Raycast(ray, out var hit, nearest))
+                    continue;
+                nearest = hit.distance;
+                hitCollider = candidate;
+                hitInfo = hit;
+            }
+            return hitCollider != null;
+        }
+    }
+
+    [DefaultExecutionOrder(100)]
+    public sealed class DpvrMatchDrag : MonoBehaviour
+    {
+        private XRRayInteractor interactor;
+        private QuizManagers quiz;
+        private ColliderTriggerMatch match;
+        private BoxCollider[] cards;
+        private BoxCollider dragged;
+        private Vector3 initialWorldPosition;
+        private Vector3 pointerOffset;
+        private Plane boardPlane;
+
+        public void Configure(XRRayInteractor ray, QuizManagers owner, ColliderTriggerMatch matchTrigger)
+        {
+            interactor = ray;
+            quiz = owner;
+            match = matchTrigger;
+            if (match == null) return;
+            var objects = new[] { match.Answer1Pos, match.Answer2Pos, match.Answer3Pos, match.Answer4Pos, match.Answer5Pos };
+            cards = new BoxCollider[objects.Length];
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i] == null) continue;
+                cards[i] = objects[i].GetComponent<BoxCollider>();
+                DpvrInteractionUtility.SetGrabEnabled(objects[i], false);
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (interactor == null || cards == null || match == null || !interactor.isActiveAndEnabled ||
+                LessonPause.IsPaused || (quiz != null && quiz.IsMatchSubmitted) ||
+                dpn.DpnDaydreamController.State != dpn.DpnConnectionState.Connected)
+            {
+                ResetDrag();
+                return;
+            }
+
+            var origin = interactor.rayOriginTransform != null ? interactor.rayOriginTransform : interactor.transform;
+            var ray = new Ray(origin.position, origin.forward);
+            if (dragged == null && DpvrInput.SelectWasPressedThisFrame)
+                BeginDrag(ray);
+            if (dragged == null) return;
+
+            if (DpvrInput.SelectIsPressed)
+            {
+                if (boardPlane.Raycast(ray, out float distance))
+                    dragged.transform.position = ray.GetPoint(distance) + pointerOffset - dragged.transform.forward * 0.015f;
+                return;
+            }
+
+            BoxCollider target = null;
+            if (!DpvrRayDragHelper.TryFindHit(ray, cards, dragged, out target, out _))
+                target = FindOverlappingTarget(dragged.transform.position);
+
+            var selected = dragged;
+            selected.enabled = true;
+            if (target != null && match.TrySwapDpvr(selected.gameObject, target.gameObject))
+            {
+                dragged = null;
+                return;
+            }
+            ResetDrag();
+        }
+
+        private void BeginDrag(Ray ray)
+        {
+            if (!DpvrRayDragHelper.TryFindHit(ray, cards, null, out var card, out var hit)) return;
+            var plane = new Plane(-card.transform.forward, hit.point);
+            if (!plane.Raycast(ray, out _)) return;
+            dragged = card;
+            initialWorldPosition = card.transform.position;
+            pointerOffset = card.transform.position - hit.point;
+            boardPlane = plane;
+            dragged.enabled = false;
+        }
+
+        private BoxCollider FindOverlappingTarget(Vector3 worldCenter)
+        {
+            foreach (var candidate in cards)
+            {
+                if (candidate == null || candidate == dragged || !candidate.enabled || !candidate.gameObject.activeInHierarchy)
+                    continue;
+                var local = candidate.transform.InverseTransformPoint(worldCenter);
+                var half = candidate.size * 0.5f;
+                if (Mathf.Abs(local.x - candidate.center.x) <= half.x &&
+                    Mathf.Abs(local.y - candidate.center.y) <= half.y)
+                    return candidate;
+            }
+            return null;
+        }
+
+        private void OnDisable() => ResetDrag();
+
+        private void ResetDrag()
+        {
+            if (dragged == null) return;
+            dragged.transform.position = initialWorldPosition;
+            dragged.enabled = true;
+            dragged = null;
+        }
+    }
+
     // Development diagnostics never record entered digits or registration data.
     public sealed class DpvrViewDiagnostics : MonoBehaviour
     {
@@ -708,12 +988,14 @@ namespace Klever.DPVR
         private XRRayInteractor rayInteractor;
         private SphereCollider triggerCollider;
         private Renderer cursorRenderer;
+        private Renderer edgeRenderer;
 
-        public void Configure(XRRayInteractor interactor, SphereCollider collider)
+        public void Configure(XRRayInteractor interactor, SphereCollider collider, Renderer edge = null)
         {
             rayInteractor = interactor;
             triggerCollider = collider;
             cursorRenderer = GetComponent<Renderer>();
+            edgeRenderer = edge;
         }
 
         private void LateUpdate()
@@ -725,16 +1007,28 @@ namespace Klever.DPVR
             RaycastResult uiHit;
             bool hasPhysicsHit = rayInteractor.TryGetCurrent3DRaycastHit(out physicsHit);
             bool hasUiHit = rayInteractor.TryGetCurrentUIRaycastResult(out uiHit);
+            var originTransform = rayInteractor.rayOriginTransform != null ? rayInteractor.rayOriginTransform : rayInteractor.transform;
 
             if (hasPhysicsHit)
                 transform.position = physicsHit.point - physicsHit.normal * 0.004f;
             else if (hasUiHit)
                 transform.position = uiHit.worldPosition;
             else
-                transform.position = rayInteractor.transform.position + rayInteractor.transform.forward * 5f;
+                transform.position = originTransform.position + originTransform.forward * 5f;
+
+            bool visible = hasPhysicsHit || hasUiHit;
+            if (visible)
+            {
+                float distance = Vector3.Distance(originTransform.position, transform.position);
+                transform.localScale = Vector3.one * Mathf.Clamp(distance * 0.012f, 0.02f, 0.055f);
+                if (edgeRenderer != null)
+                    edgeRenderer.transform.position = transform.position + originTransform.forward * 0.004f;
+            }
 
             if (cursorRenderer != null)
-                cursorRenderer.enabled = hasPhysicsHit || hasUiHit;
+                cursorRenderer.enabled = visible;
+            if (edgeRenderer != null)
+                edgeRenderer.enabled = visible;
             if (triggerCollider != null)
                 triggerCollider.enabled = hasPhysicsHit;
         }

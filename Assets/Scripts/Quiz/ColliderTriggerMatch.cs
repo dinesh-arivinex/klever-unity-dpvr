@@ -15,11 +15,22 @@ public class ColliderTriggerMatch : MonoBehaviour
     [HideInInspector] public Vector3 pos1, pos2, pos3, pos4, pos5;
 
     private QuizManagers quizManager;
+    private bool slotsInitialized;
 
     private void Start()
     {
-        quizManager = FindAnyObjectByType<QuizManagers>();
+        EnsureInitialized();
+    }
 
+    private void EnsureInitialized()
+    {
+        if (quizManager == null)
+            quizManager = FindAnyObjectByType<QuizManagers>();
+
+        if (slotsInitialized)
+            return;
+
+        slotsInitialized = true;
         // Store the actual Vector3 positions, NOT the transform references!
         if (Answer1Pos != null) pos1 = Answer1Pos.transform.position;
         if (Answer2Pos != null) pos2 = Answer2Pos.transform.position;
@@ -30,6 +41,10 @@ public class ColliderTriggerMatch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+#if KLEVER_DPN
+        // The DPVR controller explicitly commits a swap on release.
+        return;
+#else
         // Check if the collision is between two answers
         if (IsAnswer(gameObject) && IsAnswer(other.gameObject))
         {
@@ -37,9 +52,10 @@ public class ColliderTriggerMatch : MonoBehaviour
             // we use GetInstanceID() to ensure the swap logic only runs ONCE per collision.
             if (gameObject.GetInstanceID() < other.gameObject.GetInstanceID())
             {
-                SwapPositions(gameObject, other.gameObject);
+                SwapPositions(gameObject, other.gameObject, true);
             }
         }
+#endif
     }
 
     private bool IsAnswer(GameObject obj)
@@ -47,8 +63,28 @@ public class ColliderTriggerMatch : MonoBehaviour
         return obj == Answer1Pos || obj == Answer2Pos || obj == Answer3Pos || obj == Answer4Pos || obj == Answer5Pos;
     }
 
-    private void SwapPositions(GameObject objA, GameObject objB)
+#if KLEVER_DPN
+    public bool TrySwapDpvr(GameObject draggedCard, GameObject targetCard)
     {
+        if (LessonPause.IsPaused || !isActiveAndEnabled ||
+            draggedCard == null || targetCard == null || draggedCard == targetCard ||
+            !draggedCard.activeInHierarchy || !targetCard.activeInHierarchy ||
+            !IsAnswer(draggedCard) || !IsAnswer(targetCard))
+            return false;
+
+        EnsureInitialized();
+        if (quizManager != null && quizManager.IsMatchSubmitted)
+            return false;
+
+        SwapPositions(draggedCard, targetCard, false);
+        Debug.Log($"[DPVR-MATCH] Swapped {draggedCard.name} and {targetCard.name}");
+        return true;
+    }
+#endif
+
+    private void SwapPositions(GameObject objA, GameObject objB, bool lockTemporarily)
+    {
+        EnsureInitialized();
         // 1. Get their current slot positions
         Vector3 slotA = GetCurrentSlotPosition(objA);
         Vector3 slotB = GetCurrentSlotPosition(objB);
@@ -66,9 +102,12 @@ public class ColliderTriggerMatch : MonoBehaviour
             quizManager.SwapMatchItAnswers(objA, objB);
         }
 
-        // 4. Start Coroutine to disable and re-enable colliders and grab
-        StartCoroutine(DisableAndReenableRoutine(objA, objB));
-        
+        // 4. Start Coroutine to disable and re-enable colliders and grab on physics-driven platforms
+        if (lockTemporarily)
+        {
+            StartCoroutine(DisableAndReenableRoutine(objA, objB));
+        }
+
         Debug.Log($"Swapped {objA.name} and {objB.name}");
     }
 

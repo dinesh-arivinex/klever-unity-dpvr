@@ -29,6 +29,10 @@ public class ColliderTriggerFill : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+#if KLEVER_DPN
+        // The controller explicitly commits a drop on release.
+        return;
+#endif
         if (LessonPause.IsPaused) return;
 
         if (other.gameObject == Answer1)
@@ -303,6 +307,45 @@ public class ColliderTriggerFill : MonoBehaviour
             }
         }
     }
+
+#if KLEVER_DPN
+    public bool TryDropDpvr(BoxCollider answer)
+    {
+        var slot = GetComponent<BoxCollider>();
+        if (LessonPause.IsPaused || !isActiveAndEnabled || slot == null || !slot.enabled ||
+            answer == null || !answer.enabled || !answer.gameObject.activeInHierarchy ||
+            PositionGetter == null || textfromRes == null || fillItQuizManagers == null) return false;
+        var card = answer.gameObject;
+        if (card != Answer1 && card != Answer2 && card != Answer3 && card != Answer4 && card != Answer5) return false;
+        var root = card.transform.parent?.parent;
+        var label = card.GetComponentInChildren<TextMeshProUGUI>(true);
+        if (root == null || label == null || string.IsNullOrWhiteSpace(label.text)) return false;
+        if (gamificationManager == null) gamificationManager = FindObjectOfType<GamificationManager>(true);
+        if (gamificationManager == null) return false;
+
+        slot.enabled = false;
+        answer.enabled = false;
+        var slotImage = GetComponent<Image>();
+        if (slotImage != null) slotImage.enabled = false;
+        DpvrInteractionUtility.SetGrabEnabled(root.gameObject, false);
+        root.position = PositionGetter.transform.position;
+        bool correct = label.text == textfromRes.text;
+        targetImage = card.GetComponent<Image>();
+        ApplyColor(correct ? correctColor : wrongColor, targetImage);
+        if (correct) gamificationManager.mcqScore++;
+        fillItQuizManagers.RecordFillAnswer(textfromRes, label.text);
+        if (++fillItQuizManagers.answerPlacedCount == fillItQuizManagers.totQuestionFillItCount)
+        {
+            var next = fillItQuizManagers.nextButton;
+            next.interactable = true;
+            next.enabled = true;
+            var nextCollider = next.GetComponent<BoxCollider>();
+            if (nextCollider != null) nextCollider.enabled = true;
+        }
+        Debug.Log("[DPVR-FILL] Placed card; count=" + fillItQuizManagers.answerPlacedCount);
+        return true;
+    }
+#endif
 
     private void ApplyColor(Color color, Image Image)
     {

@@ -13,6 +13,8 @@ namespace Klever.VR.Updates
         private TextMeshProUGUI heading, detail, actionText;
         private Button primary;
         private Button later;
+        private RectTransform savingSweep;
+        private Color primaryBaseDisabledColor;
         private int dismissedVersion;
         private Camera eye;
         private Material overlay;
@@ -35,6 +37,22 @@ namespace Klever.VR.Updates
             primary = MakeButton(surface.transform, "Update action", new Vector2(-190, -125), new Color(0.17f, 0.85f, 0.62f), out actionText);
             actionText.color = new Color(0.025f, 0.09f, 0.07f);
             actionText.text = "Please wait";
+            primaryBaseDisabledColor = primary.colors.disabledColor;
+            var sweepGo = new GameObject("Saving sweep", typeof(RectTransform), typeof(Image));
+            sweepGo.layer = 5;
+            sweepGo.transform.SetParent(primary.transform, false);
+            sweepGo.transform.SetSiblingIndex(0);
+            savingSweep = (RectTransform)sweepGo.transform;
+            savingSweep.anchorMin = new Vector2(0.5f, 0f);
+            savingSweep.anchorMax = new Vector2(0.5f, 0f);
+            savingSweep.pivot = new Vector2(0.5f, 0f);
+            savingSweep.sizeDelta = new Vector2(110, 8);
+            savingSweep.anchoredPosition = new Vector2(0, 2);
+            var sweepImage = sweepGo.GetComponent<Image>();
+            sweepImage.material = overlay;
+            sweepImage.color = new Color(0.75f, 1f, 0.92f, 0.95f);
+            sweepImage.raycastTarget = false;
+            sweepGo.SetActive(false);
             primary.onClick.AddListener(Act);
             TextMeshProUGUI laterText;
             later = MakeButton(surface.transform, "Later", new Vector2(220, -125), new Color(0.16f, 0.21f, 0.25f), out laterText);
@@ -180,16 +198,20 @@ namespace Klever.VR.Updates
             }
             panel.worldCamera = eye;
             heading.text = "Klever update · " + client.Release.VersionName;
+            bool savingResults = state == VrUpdateClient.UpdateState.VerifiedAwaitingInstaller && client.IsDeliveryPending;
             bool busy = state == VrUpdateClient.UpdateState.Downloading ||
-                        state == VrUpdateClient.UpdateState.Verifying || client.InstallationActive;
+                        state == VrUpdateClient.UpdateState.Verifying || client.InstallationActive || savingResults;
             busyMark.gameObject.SetActive(busy);
             if (busy)
             {
                 int phase = Mathf.FloorToInt(Time.unscaledTime * 4f) % 3;
                 busyMark.text = "Klever " + new string('·', phase + 1);
             }
+            bool showLater = state == VrUpdateClient.UpdateState.Available || state == VrUpdateClient.UpdateState.Unavailable;
+            later.gameObject.SetActive(showLater);
+            later.interactable = showLater && !client.InstallationActive;
+            ((RectTransform)primary.transform).anchoredPosition = showLater ? new Vector2(-190, -125) : new Vector2(0, -125);
             primary.interactable = false;
-            later.interactable = !client.InstallationActive;
             actionText.text = "Please wait";
             if (state == VrUpdateClient.UpdateState.Available) { detail.text = "A new app update is available. Your lessons and saved results will be kept."; actionText.text = "Download update"; primary.interactable = true; }
             else if (state == VrUpdateClient.UpdateState.Downloading)
@@ -205,19 +227,45 @@ namespace Klever.VR.Updates
             else if (state == VrUpdateClient.UpdateState.PermissionRequired) { detail.text = "Android needs one-time permission to install updates from Klever. Allow it, then return here."; actionText.text = "Continue setup"; primary.interactable = true; }
             else if (state == VrUpdateClient.UpdateState.VerifiedAwaitingInstaller)
             {
-                bool pending = client.IsDeliveryPending;
-                if (!pending && autoInstallerAttempt != client.Release.VersionCode)
+                if (!savingResults && autoInstallerAttempt != client.Release.VersionCode)
                 {
                     autoInstallerAttempt = client.Release.VersionCode;
                     if (client.TryOpenInstallerAutomatically()) return;
                 }
-                detail.text = pending ? "Finishing result delivery. Installation will be available when your saved results are confirmed." : "Update verified. Android may ask you to confirm installation. Klever will reopen afterward if your headset permits it.";
-                actionText.text = pending ? "Saving results…" : "Install update"; primary.interactable = !pending;
+                detail.text = savingResults ? "Finishing result delivery. Installation will be available when your saved results are confirmed." : "Update verified. Android may ask you to confirm installation. Klever will reopen afterward if your headset permits it.";
+                actionText.text = savingResults ? "Saving results" + new string('.', (Mathf.FloorToInt(Time.unscaledTime * 3f) % 3) + 1) : "Install update";
+                primary.interactable = !savingResults;
             }
             else detail.text = state == VrUpdateClient.UpdateState.Installing ? "Preparing the Android installer. Please wait…" : "Complete the Android installation prompt. If you cancel, your current app stays available.";
+            UpdateSavingButtonAnimation(savingResults);
 #if !KLEVER_DPN
             UpdateQuestPointer(busy);
 #endif
+        }
+        private void UpdateSavingButtonAnimation(bool active)
+        {
+            if (primary == null) return;
+            var colors = primary.colors;
+            if (active)
+            {
+                float wave = Mathf.Sin(Time.unscaledTime * 4.5f);
+                if (savingSweep != null)
+                {
+                    savingSweep.gameObject.SetActive(true);
+                    savingSweep.anchoredPosition = new Vector2(wave * 110f, 2f);
+                }
+                primary.transform.localScale = Vector3.one * (1f + 0.025f * Mathf.Sin(Time.unscaledTime * 5f));
+                colors.disabledColor = Color.Lerp(new Color(0.14f, 0.72f, 0.53f, 0.95f), new Color(0.32f, 0.96f, 0.74f, 1f), 0.5f + 0.5f * wave);
+                primary.colors = colors;
+                return;
+            }
+            if (savingSweep != null && savingSweep.gameObject.activeSelf) savingSweep.gameObject.SetActive(false);
+            if (primary.transform.localScale != Vector3.one) primary.transform.localScale = Vector3.one;
+            if (colors.disabledColor != primaryBaseDisabledColor)
+            {
+                colors.disabledColor = primaryBaseDisabledColor;
+                primary.colors = colors;
+            }
         }
         private void PlaceInFront()
         {
