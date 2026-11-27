@@ -773,6 +773,8 @@ public class QuizManagers : MonoBehaviour
     {
         if (LessonPause.IsPaused || matchingSubmitted) return;
         matchingSubmitted = true;
+        if (gamificationManager == null)
+            gamificationManager = FindAnyObjectByType<GamificationManager>(FindObjectsInactive.Include);
         for (int i = 0; i < answersMatchIt.Length && i < answerPlacedTextMatchIt.Length; i++)
         {
             if (answersMatchIt[i] == null || answerPlacedTextMatchIt[i] == null) continue;

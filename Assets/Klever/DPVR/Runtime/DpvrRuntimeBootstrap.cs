@@ -492,6 +492,7 @@ namespace Klever.DPVR
             }
             EventSystem eventSystem = runtimeEventSystem;
             eventSystem.enabled = true;
+            eventSystem.pixelDragThreshold = Mathf.Max(eventSystem.pixelDragThreshold, 40);
             EventSystem.current = eventSystem;
 
             XRUIInputModule xrInput = eventSystem.GetComponent<XRUIInputModule>();
@@ -1010,7 +1011,13 @@ namespace Klever.DPVR
             var originTransform = rayInteractor.rayOriginTransform != null ? rayInteractor.rayOriginTransform : rayInteractor.transform;
 
             if (hasPhysicsHit)
+#if KLEVER_DPN
+                transform.position = physicsHit.collider.GetComponent<DpvrBoardWebPointer>() != null
+                    ? physicsHit.point + physicsHit.normal * 0.004f
+                    : physicsHit.point - physicsHit.normal * 0.004f;
+#else
                 transform.position = physicsHit.point - physicsHit.normal * 0.004f;
+#endif
             else if (hasUiHit)
                 transform.position = uiHit.worldPosition;
             else

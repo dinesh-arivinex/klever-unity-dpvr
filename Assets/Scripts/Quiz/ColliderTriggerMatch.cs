@@ -25,7 +25,7 @@ public class ColliderTriggerMatch : MonoBehaviour
     private void EnsureInitialized()
     {
         if (quizManager == null)
-            quizManager = FindAnyObjectByType<QuizManagers>();
+            quizManager = GetComponentInParent<QuizManagers>(true) ?? FindAnyObjectByType<QuizManagers>(FindObjectsInactive.Include);
 
         if (slotsInitialized)
             return;

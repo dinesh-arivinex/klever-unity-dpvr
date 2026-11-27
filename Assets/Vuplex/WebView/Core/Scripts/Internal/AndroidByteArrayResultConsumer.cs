@@ -25,9 +25,9 @@ namespace Vuplex.WebView.Internal {
 
         public void accept(AndroidJavaObject result) {
 
-            AndroidJavaObject byteArrayObject = result.Get<AndroidJavaObject>("value");
+            using var resultOwner = result;
+            using var byteArrayObject = resultOwner.Get<AndroidJavaObject>("value");
             var bytes = _convertFromJavaByteArray(byteArrayObject);
-            byteArrayObject.Dispose();
             _callback(bytes);
             // Setting the callback to null is necessary in order to avoid a memory leak.
             _callback = null;

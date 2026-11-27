@@ -42,17 +42,21 @@ namespace Klever.VR
                 Height=b.size[vertical]*Mathf.Abs(Vector3.Dot(axes[vertical],up)),
                 Depth=b.extents[thin]*Mathf.Abs(Vector3.Dot(axes[thin],forward))};
         }
-        public static void FitSimulation(RectTransform viewport, Renderer surface, Vector3 viewer, RectTransform next = null)
+        public static void FitSimulation(RectTransform viewport, Renderer surface, Vector3 viewer, RectTransform next = null, RectTransform clock = null)
         {
             var frame = Measure(surface, viewer);
             if (frame.Width < 0.2f || frame.Height < 0.2f) return;
-            // Keep both controls close to the board surface, with a footer for Next.
+            // Keep the simulation screen large and place compact clock / Next pills cleanly below it.
             var face = frame.Center - frame.Forward * (frame.Depth + 0.008f);
-            FitBoardRect(viewport, frame.Rotation, face + frame.Up * (frame.Height * 0.075f),
-                frame.Width * 0.9f, frame.Height * 0.74f);
+            FitBoardRect(viewport, frame.Rotation, face + frame.Up * (frame.Height * 0.045f),
+                frame.Width * 0.96f, frame.Height * 0.86f);
+            var footerCenter = face - frame.Up * (frame.Height * 0.442f);
+            if (clock != null)
+                FitBoardRect(clock, frame.Rotation, footerCenter - frame.Right * (frame.Width * 0.35f),
+                    frame.Width * 0.24f, frame.Height * 0.065f);
             if (next != null)
-                FitBoardRect(next, frame.Rotation, face - frame.Up * (frame.Height * 0.39f),
-                    frame.Width * 0.82f, frame.Height * 0.14f);
+                FitBoardRect(next, frame.Rotation, footerCenter + frame.Right * (frame.Width * 0.39f),
+                    frame.Width * 0.16f, frame.Height * 0.065f);
         }
 
         private static void FitBoardRect(RectTransform rect, Quaternion rotation, Vector3 center, float maxWidth, float maxHeight)
